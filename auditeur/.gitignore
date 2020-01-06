@@ -1,0 +1,16 @@
+#fichiers composer
+composer.lock
+composer.phar
+vendor/
+
+#fichiers config
+*/.settings
+*/.buildpath
+*/project
+*/.idea
+.idea/*
+.idea
+*/src/config/config.inc.php
+*/config/config.inc.php
+
+*.map
