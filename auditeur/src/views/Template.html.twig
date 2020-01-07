@@ -7,12 +7,21 @@
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<script src="{{ root }}/public/lib/jquery/jquery-3.4.1.min.js"></script>
 
-		<!--	<link rel="stylesheet" href="{{ root }}/public/style/css/"> -->
+		<link rel="stylesheet" href="{{ root }}/public/style/css/Header.css"> 
 
 		<title>Net'Radio</title>
 
 	</head>
 	<body>
+        <div class="header">
+            <h1> Net'Radio </h1>
+            <nav> 
+                <li> Coucou </li>
+                <li> Bonjour </li>
+                <li> Salut </li>
+            </nav>
+            <input type="text" name="searchbar" placeholder="search.." size="70">
+        </div>
 		{% block body %}{% endblock %}
 	</body>
 </html>
