@@ -1,26 +1,3 @@
-.header {
-  background-color: grey;
-  display: flex;
-  align-items: center;
-  margin: 2em;
-}
+@import "../../../vendor/twbs/bootstrap/scss/bootstrap.scss";
 
-h1,
-nav {
-  flex: 1;
-}
 
-nav {
-  display: flex;
-  justify-content: space-around;
-}
-
-nav li {
-  list-style: none;
-}
-
-input {
-  display: float;
-  padding-right: 14px;
-  float: right;
-}

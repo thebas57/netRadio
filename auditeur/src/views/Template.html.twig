@@ -5,7 +5,9 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<script src="{{ root }}/public/lib/jquery/jquery-3.4.1.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>t
 
 		<link rel="stylesheet" href="{{ root }}/public/style/css/Header.css"> 
 
@@ -13,15 +15,14 @@
 
 	</head>
 	<body>
-        <div class="header">
-            <h1> Net'Radio </h1>
-            <nav> 
-                <li> Coucou </li>
-                <li> Bonjour </li>
-                <li> Salut </li>
-            </nav>
-            <input type="text" name="searchbar" placeholder="search.." size="70">
-        </div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<ul class="navbar-nav">
+				<li class="nav-item"><a href="#" class="nav-link">Test</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Test</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Test</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Test</a></li>
+			</ul>
+        </nav>
 		{% block body %}{% endblock %}
 	</body>
 </html>
