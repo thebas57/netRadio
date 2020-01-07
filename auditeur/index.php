@@ -23,7 +23,7 @@ $container['view'] = function ($container) {
     $uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
     $view->addExtension(new \Slim\Views\TwigExtension($router, $uri));
 
-    // $view->addExtension(new \Twig_Extension_Debug());
+//     $view->addExtension(new \Twig_Extension_Debug());
 
     return $view;
 };
@@ -53,6 +53,7 @@ session_start();
 /////////////
 
 $app->get('/','\\auditeur\\controllers\\Controller:afficherAccueil');
+$app->get('/inscription','\\auditeur\\controllers\\Controller:afficherInscription');
 
 
 
