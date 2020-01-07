@@ -1,0 +1,33 @@
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.pannelBtn {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+}
+
+.btn {
+  border: 1px solid black;
+  text-align: center;
+  padding: 6px 6px 6px 6px;
+  cursor: pointer;
+  width: 7em;
+}
+
+i {
+  margin-bottom: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.titre {
+  text-align: center;
+}
+
+/*# sourceMappingURL=style.css.map */
