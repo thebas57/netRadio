@@ -21,6 +21,16 @@ class Controller extends BaseController
         return $this->render($response, 'Accueil.html.twig');
     } //End of function afficherAccueil
 
+    /**
+     * Fonction permettant d'afficher les creneaux.
+     * @param $request
+     * @param $response
+     * @return mixed
+     */
+    public function voirCreneau($request, $response)
+    {
+        return $this->render($response, 'Creneau.html.twig');
+    } //End of function voirCreaneau
 
 
 }

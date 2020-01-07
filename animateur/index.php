@@ -55,6 +55,8 @@ session_start();
 //Page Accueil
 $app->get('/','\\animateur\\controllers\\Controller:afficherAccueil');
 
+// Accueil Creneau
+$app->get('/creneau','\\animateur\\controllers\\Controller:voirCreneau')->setName('creneau');
 
 
 /////////////

@@ -1,1 +1,41 @@
-test
+{% extends 'Template.html.twig' %}
+{% set root = base_url() %}
+
+{% block body %}
+	<div class="pannelBtn">
+
+		<a href="{{ root }}/creneau">
+			<div class="btn">
+				<i class="far fa-clock fa-3x"></i>
+			    </br>
+			    <p>Gérer les créneaux</p>
+		    </div>
+	    </a>
+
+	    <a href="http://google.com">
+		    <div class="btn">
+			    <i class="fas fa-align-left fa-3x"></i>
+		        </br>
+		        <p>Gérer le programme</p>
+	        </div>
+        </a>
+
+        <a href="http://google.com">
+	        <div class="btn">
+                <i class="far fa-calendar-alt fa-3x"></i>
+                </br>
+                <p>Gérer les actualités</p>
+            </div>
+        </a>
+
+        <a href="http://google.com">
+            <div class="btn">
+                <i class="fas fa-podcast fa-3x"></i>
+                </br>
+                <p>Gérer les émissions</p>
+            </div>
+        </a>
+        
+    </div>
+
+{% endblock %}
