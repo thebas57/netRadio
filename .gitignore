@@ -5,6 +5,8 @@ vendor/
 
 #fichiers config
 */.settings
+auditeur/src/config/config.inc.php
+animateur/src/config/config.inc.php
 */.buildpath
 */project
 */.idea
