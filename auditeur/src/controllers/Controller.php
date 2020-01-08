@@ -35,7 +35,7 @@ class Controller extends BaseController
     public function afficherConnexion($request, $response)
     {
         return $this->render($response, 'Connexion.html.twig');
-    } //End of function afficherInscription
+    } //End of function afficherConnexion
 
     public function gererInscription($request,$response){
         //recuperation des donnees du post

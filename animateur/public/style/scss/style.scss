@@ -12,21 +12,135 @@ p {
 .btn {
   border: 1px solid black;
   text-align: center;
-  padding : 6px 6px 6px 6px;
-  cursor:pointer;
-  width : 7em;
+  padding: 6px 6px 6px 6px;
+  cursor: pointer;
+  width: 7em;
 }
 
 i {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 a {
-    text-decoration: none;
-    color:inherit;
+  text-decoration: none;
+  color: inherit;
 }
 
 .titre {
-    text-align: center;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
+// DIV POUR LA LEGENDE CRENEAU
+.legend {
+  width: 210px;
+  text-align: center;
+  border: 1px solid black;
+  float: left;
+}
+
+.legend h4 {
+  font-size: 22px;
+  margin-bottom: 18px;
+  margin-top: 8px;
+}
+
+.legend .pannelLegende {
+  text-align: left;
+  font-size: 24px;
+  height: 100px;
+}
+
+.legend .pannelLegende ul {
+  margin: 0;
+  margin-bottom: 5px;
+  padding: 0;
+  float: left;
+  list-style: none;
+}
+
+.legend .pannelLegende ul li {
+  font-size: 80%;
+  list-style: none;
+  margin-left: 2px;
+  line-height: 20px;
+  margin-bottom: 12px;
+}
+
+.legend ul li span {
+  display: block;
+  float: left;
+  height: 16px;
+  width: 30px;
+  margin-right: 5px;
+  margin-left: 0;
+  border: 1px solid #999;
+}
+
+// FIN DIV LEGENDE
+
+// Div collection creneau
+
+.containerC {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 8em 8em 8em;
+  grid-row-gap: 10px;
+}
+
+.creneau {
+  height: 7em;
+  border: 2px inset black;
+  margin: 10px 10px 0 10px;
+}
+
+.time {
+  float: left;
+}
+
+.date {
+  font-size: 19px;
+  font-weight: bold;
+  margin: 10px 0 150px 10px;
+}
+
+.heure {
+  text-align: center;
+  margin-left: 35px;
+}
+
+.detail {
+  text-align: center;
+}
+
+.non {
+  font-size: 25px;
+}
+
+.logo {
+  float: right;
+  border: 2px solid black;
+  width: 50px;
+}
+
+.logo ul {
+  padding-left: 17px;
+  
+}
+
+.logo ul li {
+  list-style: none;
+}
+
+.programme {
+  font-weight: bold;
+  font-size: 19px;
+}
+
+.anim {
+  font-size: 15px;
+}
