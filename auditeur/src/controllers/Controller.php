@@ -26,6 +26,10 @@ class Controller extends BaseController
         return $this->render($response, 'Inscription.html.twig');
     } //End of function afficherInscription
 
+    public function afficherConnexion($request, $response)
+    {
+        return $this->render($response, 'Connexion.html.twig');
+    } //End of function afficherInscription
 
 
 }

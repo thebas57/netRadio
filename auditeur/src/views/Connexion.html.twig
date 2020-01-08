@@ -1,18 +1,7 @@
 {% extends 'Template.html.twig' %}
 {% set root = base_url() %}
-
-
-{% block head %}
-<!--  block head qui hérite de son parent, template.html.twig. On y ajoute le css désiré -->
-{{ parent() }}
-<link rel="stylesheet" href="{{ root }}/public/style/css/Inscription.css"> 
-{% endblock %}
-
 {% block body %}
-
-    <div class="col-sm-8 mx-auto">
-        <h1 class="titre mb-5 mt-3">Inscription</h1>
-    </div>
+    <h1 class="titre">Inscription</h1>
     <div class="divForm container-fluid">
         <form>
             <div class="form-group">
