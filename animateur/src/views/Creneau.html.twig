@@ -3,6 +3,83 @@
 
 {% block body %}
 
-    <h1 class="titre"> Gestion des Créneaux </h1>
+	<div class="titre">
+		<i class="fas fa-plus-circle fa-3x" style="margin-right:15px;"></i>
+		<h1>Gestion des Créneaux</h1>
+	</div>
 
+	<div class="legend">
+		<h4>
+			Légende
+		</h4>
+		<div class="pannelLegende">
+			<ul class='legendLabels'>
+				<li>
+					<span style='background:white;'></span>Créneau Libre</li>
+				<li>
+					<span style='background:Bisque;'></span>Créneau non attribué</li>
+				<li>
+					<span style='background:lightgreen;'></span>Créneau attribué</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="containerC">
+		{# En attendant le js je test en dur #}
+		<div class="creneau">
+            <div class="time">
+               </br><span class="date"> Tous les lundi</span></br></br>
+                <span class="heure"> 8h - 12h</span>
+            </div>
+            <div class="logo">
+                <ul>
+                    <li><i class="far fa-trash-alt fa-lg"></i></li>
+                    <li><i class="far fa-edit fa-lg"></i></li>
+                    <li><i class="far fa-address-card fa-lg"></i></i></li>
+                </ul>
+            </div>
+            <div class="detail">
+                </br></br><span class="non"> NON PROGRAMME</span>
+            </div>
+        </div>
+
+        <div class="creneau" style="background-color:lightgreen;">
+            <div class="time">
+               </br><span class="date"> Tous les lundi</span></br></br>
+                <span class="heure"> 8h - 12h</span>
+            </div>
+            <div class="logo">
+                <ul>
+                    <li><i class="far fa-trash-alt fa-lg"></i></li>
+                    <li><i class="far fa-edit fa-lg"></i></li>
+                    <li><i class="far fa-address-card fa-lg"></i></i></li>
+                </ul>
+            </div>
+            <div class="detail">
+                </br><span class="programme"> Des hauts et débats</span></br></br>
+                <span class="anim"> animé par moi</span>
+            </div>
+        </div>
+
+        <div class="creneau" style="background-color:Bisque;">
+            <div class="time">
+               </br><span class="date"> Tous les lundi</span></br></br>
+                <span class="heure"> 8h - 12h</span>
+            </div>
+            <div class="logo">
+                <ul>
+                    <li><i class="far fa-trash-alt fa-lg"></i></li>
+                    <li><i class="far fa-edit fa-lg"></i></li>
+                    <li><i class="far fa-address-card fa-lg"></i></i></li>
+                </ul>
+            </div>
+            <div class="detail">
+                </br><span class="programme"> Energy drink ou Pussy juice</span></br></br>
+                <span class="anim"> animé par moi aussi</span>
+            </div>
+        </div>
+		<div class="creneau"></div>
+		<div class="creneau"></div>
+		<div class="creneau"></div>
+	</div>
 {% endblock %}
