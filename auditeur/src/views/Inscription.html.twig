@@ -5,7 +5,8 @@
 {% block head %}
 <!--  block head qui hérite de son parent, template.html.twig. On y ajoute le css désiré -->
 {{ parent() }}
-<link rel="stylesheet" href="{{ root }}/public/style/css/Inscription.css"> 
+<link rel="stylesheet" href="{{ root }}/public/style/css/Inscription.css">
+<script src="{{ root }}/public/js/Inscription.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -36,7 +37,7 @@
 
             </div>
 
-            <button class="btn btn-primary" type="submit">S'inscrire</button>
+            <button class="btn btn-primary disabled" type="submit" disabled id="inscription">S'inscrire</button>
         </form>
     </div>
     <div class="erreur">
