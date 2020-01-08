@@ -5,6 +5,11 @@ namespace auditeur\controllers;
 use Illuminate\Database\Capsule\Manager as DB;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use auditeur\models\Utilisateur;
+use auditeur\models\Emission;
+use auditeur\models\Favoris;
+use auditeur\models\Programme;
+use auditeur\models\Creneau;
 
 
 class Controller extends BaseController
@@ -26,6 +31,44 @@ class Controller extends BaseController
         return $this->render($response, 'Inscription.html.twig');
     } //End of function afficherInscription
 
+    public function afficherConnexion($request, $response)
+    {
+        return $this->render($response, 'Connexion.html.twig');
+    } //End of function afficherInscription
 
+    public function gererInscription($request,$response){
+        //recuperation des donnees du post
+        $email = (isset($_POST['email'])) ? $_POST['email'] : null;
+        $login = (isset($_POST['login'])) ? $_POST['login'] : null;
+        $password = (isset($_POST['password'])) ? $_POST['password'] : null;
+
+        try {
+            if (!isset($email) || !isset($password) || !isset($login)){
+                throw new \Exception("Il manque une donnée");
+            }
+            if (!empty(Utilisateur::where("identifiant",$login)->first())){
+                throw new \Exception("Le nom d'utilisateur est déjà pris !");
+            }
+            $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+            $login = filter_var($login, FILTER_SANITIZE_STRING);
+
+            $password = password_hash($password,PASSWORD_DEFAULT);
+            $user = new Utilisateur();
+            $user->identifiant = $login;
+            $user->password = $password;
+            $user->email = $email;
+            $user->droit = 0;
+
+            $user->save();
+            unset($login);
+            unset($password);
+            unset($email);
+            unset($user);
+
+            return $this->redirect($response,'Accueil');
+        } catch (\Exception $e){
+            return $this->render($response,'Inscription.html.twig', [ 'erreur' =>$e->getMessage() ] );
+        }
+    }//End of function gererInscription
 
 }
