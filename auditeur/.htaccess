@@ -1,0 +1,23 @@
+RewriteEngine on
+
+#RewriteBase indispensable sur webetu :
+#RewriteBase /www/
+
+#Interdire l'accès aux répertoires contenant du code ou de la configuration
+RewriteRule ^sql(/.*|)$ - [NC,F]
+RewriteRule ^src(/.*|)$ - [NC,F]
+RewriteRule ^vendor(/.*|)$ - [NC,F]
+RewriteRule ^doc(/.*|)$ - [NC,F]
+RewriteRule ^.git(/.*|)$ - [NC,F]
+RewriteRule ^config(/.*|)$ - [NC,F]
+
+
+
+#Reecriture pour slim
+#RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [QSA,L]
+
+#augmente la taille des fichiers autorisée en upload
+php_value upload_max_filesize 64M
+php_value post_max_size 64M

@@ -5,9 +5,9 @@ use `netradio`;
 
 CREATE TABLE IF NOT EXISTS UTILISATEUR(
   utilisateur_id int(50) AUTO_INCREMENT,
-  identifiant varchar(50),
-  password varchar(500),
-  email varchar(100),
+  identifiant varchar(50) NOT NULL,
+  password varchar(500) NOT NULL,
+  email varchar(100) NOT NULL,
   droit int(5),
   deleted_at date,
   PRIMARY KEY (utilisateur_id)
@@ -15,14 +15,14 @@ CREATE TABLE IF NOT EXISTS UTILISATEUR(
 
 CREATE TABLE IF NOT EXISTS PROGRAMME(
   programme_id int(50) AUTO_INCREMENT,
-  nom varchar(50),
+  nom varchar(50) NOT NULL,
   description text,
   PRIMARY KEY (programme_id)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS EMISSION(
   emission_id int(50) AUTO_INCREMENT,
-  titre varchar(50),
+  titre varchar(50) NOT NULL,
   resume text,
   fichier blob,
   animateur int(50),
@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS EMISSION(
 
 CREATE TABLE IF NOT EXISTS FAVORIS(
     favoris_id int(50) AUTO_INCREMENT,
-    programme_id int(50),
-    utilisateur_id int(50),
+    programme_id int(50) NOT NULL,
+    utilisateur_id int(50) NOT NULL,
     deleted_at date,
     FOREIGN KEY (programme_id) references PROGRAMME(programme_id),
     FOREIGN KEY (utilisateur_id) references UTILISATEUR(utilisateur_id),
@@ -45,8 +45,8 @@ CREATE TABLE IF NOT EXISTS FAVORIS(
 
 CREATE TABLE IF NOT EXISTS CRENEAU(
   creneau_id int(50) AUTO_INCREMENT,
-  heure_debut date,
-  heure_fin date,
+  heure_debut date NOT NULL,
+  heure_fin date NOT NULL,
   emission_id int(50),
   deleted_at date,
   foreign key (emission_id) references EMISSION(emission_id),

@@ -55,7 +55,17 @@ session_start();
 //Page Accueil
 $app->get('/','\\animateur\\controllers\\Controller:afficherAccueil');
 
+// Accueil Creneau
+$app->get('/creneau','\\animateur\\controllers\\Controller:voirCreneau')->setName('creneau');
 
+// Accueil Programme
+$app->get('/programme','\\animateur\\controllers\\Controller:voirProgramme')->setName('programme');
+
+// Accueil Actualité
+$app->get('/actualite','\\animateur\\controllers\\Controller:voirActualite')->setName('actualite');
+
+// Accueil Emission
+$app->get('/emission','\\animateur\\controllers\\Controller:voirEmission')->setName('emission');
 
 /////////////
 // RUN     //
