@@ -58,6 +58,9 @@ $app->get('/','\\animateur\\controllers\\Controller:afficherAccueil');
 // Accueil Creneau
 $app->get('/creneau','\\animateur\\controllers\\Controller:voirCreneau')->setName('creneau');
 
+// Ajouter un creneau
+$app->get('/addCreneau','\\animateur\\controllers\\Controller:addCreneau')->setName('addCreneau');
+
 // Accueil Programme
 $app->get('/programme','\\animateur\\controllers\\Controller:voirProgramme')->setName('programme');
 

@@ -3,6 +3,11 @@ p {
   padding: 0;
 }
 
+.header {
+  background-color: grey;
+  color: white;
+}
+
 .pannelBtn {
   display: flex;
   flex-wrap: nowrap;
@@ -35,10 +40,11 @@ a {
 }
 
 .legend {
-  width: 210px;
+  width: 230px;
   text-align: center;
   border: 1px solid black;
   float: left;
+  margin-left: 15px;
 }
 
 .legend h4 {
@@ -72,7 +78,7 @@ a {
 .legend ul li span {
   display: block;
   float: left;
-  height: 16px;
+  height: 20px;
   width: 30px;
   margin-right: 5px;
   margin-left: 0;
@@ -124,6 +130,7 @@ a {
 
 .logo ul {
   padding-left: 17px;
+  margin-bottom: 0;
 }
 
 .logo ul li {
@@ -137,6 +144,12 @@ a {
 
 .anim {
   font-size: 15px;
+}
+
+.formulaire {
+  margin: 0 auto;
+  background-color: lightgrey;
+  width: 85%;
 }
 
 /*# sourceMappingURL=style.css.map */
