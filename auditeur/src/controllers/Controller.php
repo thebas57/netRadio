@@ -5,6 +5,11 @@ namespace auditeur\controllers;
 use Illuminate\Database\Capsule\Manager as DB;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use auditeur\models\Utilisateur;
+use auditeur\models\Emission;
+use auditeur\models\Favoris;
+use auditeur\models\Programme;
+use auditeur\models\Creneau;
 
 
 class Controller extends BaseController
@@ -33,7 +38,7 @@ class Controller extends BaseController
 
     public function gererInscription($request,$response){
         //recuperation des donnees du post
-        $email = (isset($_POST['mail'])) ? $_POST['mail'] : null;
+        $email = (isset($_POST['email'])) ? $_POST['email'] : null;
         $login = (isset($_POST['login'])) ? $_POST['login'] : null;
         $password = (isset($_POST['password'])) ? $_POST['password'] : null;
 
@@ -49,15 +54,20 @@ class Controller extends BaseController
 
             $password = password_hash($password,PASSWORD_DEFAULT);
             $user = new Utilisateur();
-            $user->login = $login;
+            $user->identifiant = $login;
             $user->password = $password;
             $user->email = $email;
+            $user->droit = 0;
 
+            $user->save();
             unset($login);
             unset($password);
             unset($email);
+            unset($user);
+
+            return $this->redirect($response,'Accueil');
         } catch (\Exception $e){
-            return $this->render($response,'Inscription.html.twig', [ erreur =>$e->getMessage() ] );
+            return $this->render($response,'Inscription.html.twig', [ 'erreur' =>$e->getMessage() ] );
         }
     }//End of function gererInscription
 
