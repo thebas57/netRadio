@@ -35,10 +35,23 @@ a {
 }
 
 // DIV POUR LA LEGENDE CRENEAU
-
 .legend {
+  width: 210px;
+  text-align: center;
+  border: 1px solid black;
+  float: left;
+}
+
+.legend h4 {
+  font-size: 22px;
+  margin-bottom: 18px;
+  margin-top: 8px;
+}
+
+.legend .pannelLegende {
   text-align: left;
-  font-weight: bold;
+  font-size: 24px;
+  height: 100px;
 }
 
 .legend .pannelLegende ul {
@@ -52,9 +65,9 @@ a {
 .legend .pannelLegende ul li {
   font-size: 80%;
   list-style: none;
-  margin-left: 0;
-  line-height: 18px;
-  margin-bottom: 2px;
+  margin-left: 2px;
+  line-height: 20px;
+  margin-bottom: 12px;
 }
 
 .legend ul li span {
@@ -68,3 +81,66 @@ a {
 }
 
 // FIN DIV LEGENDE
+
+// Div collection creneau
+
+.containerC {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 8em 8em 8em;
+  grid-row-gap: 10px;
+}
+
+.creneau {
+  height: 7em;
+  border: 2px inset black;
+  margin: 10px 10px 0 10px;
+}
+
+.time {
+  float: left;
+}
+
+.date {
+  font-size: 19px;
+  font-weight: bold;
+  margin: 10px 0 150px 10px;
+}
+
+.heure {
+  text-align: center;
+  margin-left: 35px;
+}
+
+.detail {
+  text-align: center;
+}
+
+.non {
+  font-size: 25px;
+}
+
+.logo {
+  float: right;
+  border: 2px solid black;
+  width: 50px;
+}
+
+.logo ul {
+  padding-left: 17px;
+  
+}
+
+.logo ul li {
+  list-style: none;
+}
+
+.programme {
+  font-weight: bold;
+  font-size: 19px;
+}
+
+.anim {
+  font-size: 15px;
+}
