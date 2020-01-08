@@ -1,31 +1,33 @@
 {% extends 'Template.html.twig' %}
 {% set root = base_url() %}
+
+{% block head %}
+<!--  block head qui hérite de son parent, template.html.twig. On y ajoute le css désiré -->
+{{ parent() }}
+<link rel="stylesheet" href="{{ root }}/public/style/css/Connexion.css"> 
+{% endblock %}
+
 {% block body %}
-    <h1 class="titre">Inscription</h1>
-    <div class="divForm container-fluid">
-        <form>
+    <div class="col-sm-8 mx-auto">
+        <h1 class="titre mb-5 mt-3">Connexion</h1>
+    </div>
+    <div class="divForm container-fluid col-sm-6 col-lg-4">
+        <form method="POST" action="{{ root }}/connexion">
             <div class="form-group">
-                <label for="mail">E-mail :</label>
-                <input type="email" class="form-control" id="mail">
-            </div>
-            <div class="form-group">
-                <label for="identifiant">Identifiant :</label>
-                <input type="text" class="form-control" id="identifiant">
+                <label for="identifiant"><i class="far fa-user"></i> Identifiant</label>
+                <input type="text" name="login" class="form-control" id="identifiant" placeholder="Identifiant">
             </div>
 
-            <div class="form-row">
-                <div class="form-group col-md-6 col-xs-12">
-                    <label for="mdp">Mot de Passe :</label>
-                    <input type="password" class="form-control" id="mdp">
+            <div class="form-row mb-4">
+                <div class="form-group col-12">
+                    <label for="mdp"><i class="fas fa-key"></i> Mot de Passe</label>
+                    <input type="password" name="password" class="form-control" id="mdp" placeholder="Mot de passe">
                 </div>
-                <div class="form -group col-md-6 col-xs-12">
-                    <label for="mdpRepete">Veuillez répéter votre mot de passe :</label>
-                    <input type="password" class="form-control" id="mdpRepete">
-                </div>
-
             </div>
 
-            <button class="btn btn-primary" type="submit">S'inscrire</button>
+            <div class="btn-submit">
+                <button class="btn btn-primary btn-submit" type="submit">Se connecter</button>
+            </div>
         </form>
     </div>
 {% endblock %}
