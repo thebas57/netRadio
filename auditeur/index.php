@@ -54,6 +54,7 @@ session_start();
 
 $app->get('/','\\auditeur\\controllers\\Controller:afficherAccueil');
 $app->get('/inscription','\\auditeur\\controllers\\Controller:afficherInscription');
+$app->post('/inscription','\\auditeur\\controllers\\Controller:gererInscription');
 
 
 
