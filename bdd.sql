@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS PROGRAMME(
   programme_id int(50) AUTO_INCREMENT,
   nom varchar(50) NOT NULL,
   description text,
+  deleted_at date,
   PRIMARY KEY (programme_id)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 

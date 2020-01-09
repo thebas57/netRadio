@@ -55,7 +55,7 @@ session_start();
 /////////////
 
 //Page Accueil gestionnaire
-$app->get('/','\\animateur\\controllers\\Controller:afficherAccueil');
+$app->get('/','\\animateur\\controllers\\Controller:afficherAccueil')->setName("accueil");
 
 //Page Connexion
 $app->get('/connexion','\\animateur\\controllers\\Controller:afficherConnexion')->setName('connexion');

@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css?family=Gayathri&display=swap');
+
+$minHeight : 10vh !default;
+$couleurBouton : #e19a3e !default;
+$fontGayathri : 'Gayathri', sans-serif !default;
+
+h2 {
+  margin-left: 10%;
+  margin-top: 2%;
+  margin-bottom: 1%;
+  font-family: $fontGayathri;
+}
+
+.myContainerFluid{
+  max-width: 90%;
+}
+
+.nameProg{
+  font-family: $fontGayathri;
+  font-size: 36px;
+  color: white;
+  min-width: 90%;
+  max-width: 90%;
+  text-align: center;
+}
+
+.containerBouton{
+  background: $couleurBouton;
+  padding: 1%;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  min-height: $minHeight;
+}
+
+.boutonAnimer{
+  font-family: $fontGayathri;
+  font-size: 2rem;
+  color: white;
+
+}
