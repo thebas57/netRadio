@@ -6,13 +6,13 @@ vendor/
 #fichiers config
 */.settings
 auditeur/src/config/config.inc.php
+auditeur/public/style/css/*
+animateur/public/style/css/*
 animateur/src/config/config.inc.php
 */.buildpath
 */project
 */.idea
 .idea/*
 .idea
-*/src/config/config.inc.php
-*/config/config.inc.php
 
 *.map
