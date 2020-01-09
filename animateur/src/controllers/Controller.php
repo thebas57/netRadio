@@ -65,4 +65,15 @@ class Controller extends BaseController
         return $this->render($response, 'Emission.html.twig');
     } //End of function voirEmission
 
+    /**
+     * Fonction permettant d'afficher les emissions.
+     * @param $request
+     * @param $response
+     * @return mixed
+     */
+    public function addCreneau($request, $response)
+    {
+        return $this->render($response, 'AddCreneau.html.twig');
+    } //End of function voirEmission
+
 }
