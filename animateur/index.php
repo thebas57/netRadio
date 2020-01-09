@@ -23,10 +23,13 @@ $container['view'] = function ($container) {
     $uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
     $view->addExtension(new \Slim\Views\TwigExtension($router, $uri));
 
-  //  $view->addExtension(new \Twig_Extension_Debug());
+    $view->addExtension(new \Twig\Extension\DebugExtension());
+    $view->getEnvironment()->addGlobal('session',$_SESSION);
+
 
     return $view;
 };
+
 
 
 ///////////////
@@ -53,7 +56,7 @@ session_start();
 /////////////
 
 //Page Accueil
-$app->get('/','\\animateur\\controllers\\Controller:afficherAccueil');
+$app->get('/','\\animateur\\controllers\\Controller:afficherAccueil')->setName('accueil');
 
 // Accueil Creneau
 $app->get('/creneau','\\animateur\\controllers\\Controller:voirCreneau')->setName('creneau');

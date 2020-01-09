@@ -10,7 +10,7 @@
 
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 		<link rel="stylesheet" href="{{ root }}/public/style/css/style.css"> 
-		
+		{% block css %}{% endblock %}
 		{% block script %}{% endblock %}
 
 		<title>Net'Radio</title>
@@ -18,7 +18,7 @@
 	</head>
 	<body>
 		<div class="header">
-			<h1>Net'Radio GESTION</h1>
+			<h1><a class="retourMenu" href="{{path_for('accueil')}}">Net'Radio GESTION</a></h1>
 		</div>
 		{% block body %}{% endblock %}
 	</body>
