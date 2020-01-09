@@ -45,8 +45,9 @@ CREATE TABLE IF NOT EXISTS FAVORIS(
 
 CREATE TABLE IF NOT EXISTS CRENEAU(
   creneau_id int(50) AUTO_INCREMENT,
-  heure_debut date NOT NULL,
-  heure_fin date NOT NULL,
+  heure_debut time NOT NULL,
+  heure_fin time NOT NULL,
+  date_creneau date NOT NULL,
   emission_id int(50),
   deleted_at date,
   foreign key (emission_id) references EMISSION(emission_id),
