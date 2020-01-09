@@ -31,7 +31,7 @@ class EstConnectAdmin extends BaseController
                 return $response;
             }
         } else {
-            return $this->redirect($response, 'connexion');
+            return $this->redirect($response, 'accueil');
         }
     }
 }
