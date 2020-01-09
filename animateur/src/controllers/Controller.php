@@ -104,8 +104,12 @@ class Controller extends BaseController
                 throw new \Exception("Vous n'avez pas le droit d'accéder à cette zone !");
             }
             $_SESSION['user'] = ['id' => $user->utilisateur_id, 'droit' => $user->droit];
+            if ($user->droit == 1){
+                return $this->redirect($response,'accueilAnimateur');
+            } else {
+                return $this->redirect($response,'accueil');
+            }
 
-            return $this->redirect($response,'accueil');
 
         } catch (\Exception $e) {
             return $this->render($response,'Connexion.html.twig', [ 'erreur' =>$e->getMessage() ] );

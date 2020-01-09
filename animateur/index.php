@@ -59,23 +59,23 @@ session_start();
 $app->get('/','\\animateur\\controllers\\Controller:afficherAccueil')->setName('accueil');
 
 //Page Connexion
-$app->get('/connexion','`\\animateur\\\controllers\\Controller:afficherConnexion')->setName('connexion');
-$app->post('/connexion','`\\animateur\\\controllers\\Controller:gererConnexion')->add(new \animateur\middlewares\EstConnectAdmin($container));
+$app->get('/connexion','`\\animateur\\\controllers\\Controller:afficherConnexion')->add(new \animateur\middlewares\EstConnectAdmin($app->getContainer()))->setName('connexion');
+$app->post('/connexion','`\\animateur\\\controllers\\Controller:gererConnexion')->add(new \animateur\middlewares\EstConnectAdmin($app->getContainer()));
 
 // Accueil Creneau
-$app->get('/creneau','\\animateur\\controllers\\Controller:voirCreneau')->setName('creneau');
+$app->get('/creneau','\\animateur\\controllers\\Controller:voirCreneau')->setName('creneau')->add(new \animateur\middlewares\EstConnectAdmin($app->getContainer()));
 
 // Ajouter un creneau
-$app->get('/addCreneau','\\animateur\\controllers\\Controller:addCreneau')->setName('addCreneau');
+$app->get('/addCreneau','\\animateur\\controllers\\Controller:addCreneau')->add(new \animateur\middlewares\EstConnectAdmin($app->getContainer()))->setName('addCreneau');
 
 // Accueil Programme
-$app->get('/programme','\\animateur\\controllers\\Controller:voirProgramme')->setName('programme');
+$app->get('/programme','\\animateur\\controllers\\Controller:voirProgramme')->add(new \animateur\middlewares\EstConnectAdmin($app->getContainer()))->setName('programme');
 
 // Accueil Actualité
-$app->get('/actualite','\\animateur\\controllers\\Controller:voirActualite')->setName('actualite');
+$app->get('/actualite','\\animateur\\controllers\\Controller:voirActualite')->add(new \animateur\middlewares\EstConnectAdmin($app->getContainer()))->setName('actualite');
 
 // Accueil Emission
-$app->get('/emission','\\animateur\\controllers\\Controller:voirEmission')->setName('emission');
+$app->get('/emission','\\animateur\\controllers\\Controller:voirEmission')->add(new \animateur\middlewares\EstConnectAdmin($app->getContainer()))->setName('emission');
 
 /////////////
 // RUN     //

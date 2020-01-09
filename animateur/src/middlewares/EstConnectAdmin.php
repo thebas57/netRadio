@@ -23,7 +23,8 @@ class EstConnectAdmin extends BaseController
     public function __invoke($request, $response, $next)
     {
         if (isset($_SESSION['user'])) {
-            if ($_SESSION['user']['droit'] == 0) {
+            $user = $_SESSION['user'];
+            if ($user['droit'] == 0) {
                 return $this->redirect($response, 'accueil');
             } else {
                 $response = $next($request, $response);
