@@ -58,6 +58,10 @@ session_start();
 //Page Accueil
 $app->get('/','\\animateur\\controllers\\Controller:afficherAccueil')->setName('accueil');
 
+//Page Connexion
+$app->get('/connexion','`\\animateur\\\controllers\\Controller:afficherConnexion')->setName('connexion');
+$app->post('/connexion','`\\animateur\\\controllers\\Controller:gererConnexion')->add(new \animateur\middlewares\EstConnectAdmin($container));
+
 // Accueil Creneau
 $app->get('/creneau','\\animateur\\controllers\\Controller:voirCreneau')->setName('creneau');
 
