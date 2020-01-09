@@ -22,11 +22,11 @@ $container['view'] = function ($container) {
     $router = $container->get('router');
     $uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
     $view->addExtension(new \Slim\Views\TwigExtension($router, $uri));
-
-//     $view->addExtension(new \Twig_Extension_Debug());
-
+    $view->addExtension(new \Twig\Extension\DebugExtension());
+    $view->getEnvironment()->addGlobal('session',$_SESSION);
     return $view;
 };
+
 
 
 ///////////////
