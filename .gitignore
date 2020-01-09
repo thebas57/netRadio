@@ -1,7 +1,8 @@
 #fichiers composer
-composer.lock
 composer.phar
 vendor/
+auditeur/vendor/*
+animateur/vendor/*
 
 #fichiers config
 */.settings
