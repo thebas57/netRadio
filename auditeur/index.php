@@ -56,7 +56,6 @@ $app->get('/','\\auditeur\\controllers\\Controller:afficherAccueil')->setName("A
 $app->get('/inscription','\\auditeur\\controllers\\Controller:afficherInscription');
 $app->get('/connexion','\\auditeur\\controllers\\Controller:afficherConnexion');
 $app->get('/monCompte','\\auditeur\\controllers\\Controller:afficherCompte');
-
 $app->get('/deconnexion','\\auditeur\\controllers\\Controller:deconnexion');
 
 $app->post('/inscription','\\auditeur\\controllers\\Controller:gererInscription');
