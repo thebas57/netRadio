@@ -67,11 +67,20 @@ $app->get('/addCreneau','\\animateur\\controllers\\Controller:addCreneau')->setN
 // Accueil Programme
 $app->get('/programme','\\animateur\\controllers\\Controller:voirProgramme')->setName('programme');
 
+// Ajouter un programme
+$app->get('/addProgramme','\\animateur\\controllers\\Controller:afficherAddProgramme')->setName('addProgramme');
+$app->post('/addProgramme','\\animateur\\controllers\\Controller:addProgramme');
+
+
 // Accueil Actualité
 $app->get('/actualite','\\animateur\\controllers\\Controller:voirActualite')->setName('actualite');
 
 // Accueil Emission
 $app->get('/emission','\\animateur\\controllers\\Controller:voirEmission')->setName('emission');
+
+// Ajouter une émssion
+$app->get('/addEmission','\\animateur\\controllers\\Controller:afficherAddEmission')->setName('addEmission');
+$app->post('/addEmission','\\animateur\\controllers\\Controller:addEmission');
 
 /////////////
 // RUN     //
