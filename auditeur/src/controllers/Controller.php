@@ -37,6 +37,14 @@ class Controller extends BaseController
         return $this->render($response, 'Connexion.html.twig');
     } //End of function afficherConnexion
 
+
+
+    public function afficherCompte($request, $response)
+    {
+        return $this->render($response, 'MonCompte.html.twig');
+    } //End of function afficherConnexion
+
+
     public function gererInscription($request,$response){
         //recuperation des donnees du post
         $email = (isset($_POST['email'])) ? $_POST['email'] : null;

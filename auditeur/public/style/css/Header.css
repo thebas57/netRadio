@@ -41,4 +41,8 @@ body {
   border-radius: 0.25rem;
 }
 
+body {
+  min-width: 310px;
+}
+
 /*# sourceMappingURL=Header.css.map */
