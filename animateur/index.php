@@ -59,8 +59,9 @@ session_start();
 $app->get('/','\\animateur\\controllers\\Controller:afficherAccueil')->setName('accueil');
 
 //Page Connexion
-$app->get('/connexion','`\\animateur\\\controllers\\Controller:afficherConnexion')->add(new \animateur\middlewares\EstConnectAdmin($app->getContainer()))->setName('connexion');
-$app->post('/connexion','`\\animateur\\\controllers\\Controller:gererConnexion')->add(new \animateur\middlewares\EstConnectAdmin($app->getContainer()));
+$app->get('/connexion','\\animateur\\controllers\\Controller:afficherConnexion')->setName('connexion');
+$app->post('/connexion','\\animateur\\controllers\\Controller:gererConnexion');
+$app->get('/deconnexion','\\animateur\\controllers\\Controller:deconnexion');
 
 // Accueil Creneau
 $app->get('/creneau','\\animateur\\controllers\\Controller:voirCreneau')->setName('creneau')->add(new \animateur\middlewares\EstConnectAdmin($app->getContainer()));

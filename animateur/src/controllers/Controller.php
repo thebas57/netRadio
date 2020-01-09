@@ -2,7 +2,7 @@
 
 namespace animateur\controllers;
 
-use auditeur\models\Utilisateur;
+use animateur\models\Utilisateur;
 use Illuminate\Database\Capsule\Manager as DB;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -115,5 +115,12 @@ class Controller extends BaseController
             return $this->render($response,'Connexion.html.twig', [ 'erreur' =>$e->getMessage() ] );
         }
     }//End of function gererConnexion
+
+    public function deconnexion($request, $response){
+        if ( isset($_SESSION['user'])){
+            unset($_SESSION['user']);
+        }
+        return $this->redirect($response,'accueil');
+    }//End of function deconnexion
 
 }

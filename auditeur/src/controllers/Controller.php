@@ -114,5 +114,5 @@ class Controller extends BaseController
         }
 
         return $this->redirect($response,'Accueil');
-    }
+    }//End of function deconnexion
 }
