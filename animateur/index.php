@@ -31,7 +31,6 @@ $container['view'] = function ($container) {
 };
 
 
-
 ///////////////
 // ELOQUENT //
 //////////////
@@ -55,8 +54,8 @@ session_start();
 // ROUTAGE //
 /////////////
 
-//Page Accueil
-$app->get('/','\\animateur\\controllers\\Controller:afficherAccueil')->setName('accueil');
+//Page Accueil gestionnaire
+$app->get('/','\\animateur\\controllers\\Controller:afficherAccueil');
 
 //Page Connexion
 $app->get('/connexion','\\animateur\\controllers\\Controller:afficherConnexion')->setName('connexion');
@@ -77,6 +76,12 @@ $app->get('/actualite','\\animateur\\controllers\\Controller:voirActualite')->ad
 
 // Accueil Emission
 $app->get('/emission','\\animateur\\controllers\\Controller:voirEmission')->add(new \animateur\middlewares\EstConnectAdmin($app->getContainer()))->setName('emission');
+
+
+
+//page accueil animateur
+
+$app->get("/animateur", "\\animateur\\controllers\\AnimateurController:accueil");
 
 /////////////
 // RUN     //
