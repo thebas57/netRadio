@@ -39,10 +39,6 @@ a {
   justify-content: center;
 }
 
-.retourMenu {
-  width: 5%;
-}
-
 .retourMenu:hover {
   text-decoration: none;
   color: orange;
