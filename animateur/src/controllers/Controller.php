@@ -256,7 +256,7 @@ class Controller extends BaseController
      */
     public function supprProgramme($request, $response, $args)
     {
-        $id = $args['id'];
+        
 /*
         $emissions = DB::table('emission') 
             ->join('emission','emission.programme_id','=',$id)->get();
@@ -267,6 +267,23 @@ class Controller extends BaseController
 
         //$emissions->delete();
         */
+        $id = $args['id'];
+
+        $emissions = Emission::where('programme_id',intval($id))->get();
+        var_dump($emissions);
+        exit;
+        foreach ($emissions as $key => $emission) {
+            $emission->delete();
+        }
+        /*
+        
+
+        foreach ($emissions as $key => $emission) {
+            $emission = $emissions::where($id, '=',$emissions->programme_id)->get();
+            $emission->delete();
+        }
+        */
+
         $programme = Programme::find(intVal($id));
         $programme->delete();
     } //End of function supprCreneau
