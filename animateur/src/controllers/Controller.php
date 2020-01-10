@@ -257,6 +257,15 @@ class Controller extends BaseController
     public function supprProgramme($request, $response, $args)
     {
         $id = $args['id'];
+
+        $emissions = DB::table('emission') 
+            ->join('emission','emission.programme_id','=',$id)->get();
+
+        foreach ($emissions as $key => $emission) {
+            $emission->delete();
+        }
+
+        //$emissions->delete();
         $programme = Programme::find(intVal($id));
         $programme->delete();
     } //End of function supprCreneau
