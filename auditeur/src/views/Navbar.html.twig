@@ -37,7 +37,7 @@
             </ul>
         {% else %}
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a href="monCompte/{{ session.user.id }}" class="nav-link"><i class="fas fa-user"></i></a></li>
+                <li class="nav-item"><a href="monCompte/{{ session.user.id }}" class="nav-link" data-id="{{ session.user.id }}><i class="fas fa-user"></i></a></li>
                 <li class="nav-item"><a href="deconnexion" class="nav-link"><i class="fas fa-sign-out-alt ml-1"></i></a></li>
             </ul>
         {% endif %}

@@ -133,10 +133,7 @@ class Controller extends BaseController
       {
         if ($existLogin) 
         {
-          return $response->withJson([
-            "error_code" => 1,
-            "message" => "Erreur, nom et prénom du character déjà pris"
-          ]);
+          
         }
       }
 
@@ -144,10 +141,6 @@ class Controller extends BaseController
 
         $login->save();
 
-        return $response->withJson([
-          "error_code" => 0,
-          "message" => "Login mis à jour"
-        ]);
-}
+    }
 }
 
