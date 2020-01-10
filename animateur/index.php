@@ -79,6 +79,8 @@ $app->get('/programme','\\animateur\\controllers\\Controller:voirProgramme')->ad
 $app->get('/addProgramme','\\animateur\\controllers\\Controller:afficherAddProgramme')->setName('addProgramme');
 $app->post('/addProgramme','\\animateur\\controllers\\Controller:addProgramme');
 
+// Supprimer un pprogramme
+$app->get('/supprProgramme/{id}','\\animateur\\controllers\\Controller:supprProgramme');
 
 // Accueil Actualité
 $app->get('/actualite','\\animateur\\controllers\\Controller:voirActualite')->add(new \animateur\middlewares\EstConnectAdmin($app->getContainer()))->setName('actualite');
@@ -95,6 +97,9 @@ $app->get("/animateur", "\\animateur\\controllers\\AnimateurController:accueil")
 // Ajouter une émssion
 $app->get('/addEmission','\\animateur\\controllers\\Controller:afficherAddEmission')->setName('addEmission');
 $app->post('/addEmission','\\animateur\\controllers\\Controller:addEmission');
+
+// Supprimer un emission
+$app->get('/supprEmission/{id}','\\animateur\\controllers\\Controller:supprEmission');
 
 /////////////
 // RUN     //

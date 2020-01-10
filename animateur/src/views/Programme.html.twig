@@ -1,6 +1,10 @@
 {% extends 'Template.html.twig' %}
 {% set root = base_url() %}
 
+{% block script %}
+	<script src="{{ root }}/public/js/Programme.js"></script>
+{% endblock %}
+
 {% block css %}
 	<link rel="stylesheet" href="{{ root }}/public/style/css/Programme.css">
 {% endblock %}
@@ -15,6 +19,11 @@
 	</div>
 
 	<div class="containerP">
+
+		{% if programmes is empty %}
+			Aucune programme trouvé.
+		{% endif %}
+
 		{% for programme in programmes %}
 			<div class="programme">
 				<b><label>Nom :</label></b>
@@ -23,7 +32,7 @@
 				<p>{{programme.description}}</p>
 				<div class="logo">
 					<i class="far fa-edit fa-2x"></i>
-					<i class="far fa-trash-alt fa-2x"></i>
+					<a href="#" class="supprProgramme" data-id="{{programme.programme_id}}"><i class="far fa-trash-alt fa-2x"></i></a>
 					<i class="far fa-eye fa-2x"></i>
 				</div>
 			</div>

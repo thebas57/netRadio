@@ -246,7 +246,33 @@ class Controller extends BaseController
         $id = $args['id'];
         $creneau = Creneau::find(intVal($id));
         $creneau->delete();
-    } //End of function addEmission
+    } //End of function supprCreneau
+
+    /**
+     * Fonction permettant de supprimer des programmes.
+     * @param $request
+     * @param $response
+     * @return mixed
+     */
+    public function supprProgramme($request, $response, $args)
+    {
+        $id = $args['id'];
+        $programme = Programme::find(intVal($id));
+        $programme->delete();
+    } //End of function supprCreneau
+
+    /**
+     * Fonction permettant de supprimer des emissions.
+     * @param $request
+     * @param $response
+     * @return mixed
+     */
+    public function supprEmission($request, $response, $args)
+    {
+        $id = $args['id'];
+        $emission = Emission::find(intVal($id));
+        $emission->delete();
+    } //End of function supprEmission
 
     /**
      * Fonction permettant l'ajout d'une emssion en BDD
