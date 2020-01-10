@@ -39,9 +39,11 @@ class Controller extends BaseController
 
 
 
-    public function afficherCompte($request, $response)
+    public function afficherCompte($request, $response, $args)
     {
-        return $this->render($response, 'MonCompte.html.twig');
+
+        $user = Utilisateur::find($args['id']);
+        return $this->render($response, 'MonCompte.html.twig', ['utilisateur' => $user]);
     } //End of function afficherConnexion
 
 
@@ -115,4 +117,37 @@ class Controller extends BaseController
 
         return $this->redirect($response,'Accueil');
     }//End of function deconnexion
+    
+
+
+    public function updateLogin($request,$response, $args){
+        
+        $existLogin = Utilisateur::where('identifiant', 'like', $_POST['newLogin'])
+          ->first();
+
+          
+      // test si le login existe
+      $login = Utilisateur::find($args['id']);
+
+      if($login->identifiant != $_POST['newLogin'])
+      {
+        if ($existLogin) 
+        {
+          return $response->withJson([
+            "error_code" => 1,
+            "message" => "Erreur, nom et prénom du character déjà pris"
+          ]);
+        }
+      }
+
+        $login->identifiant      = $_POST['newLogin'];
+
+        $login->save();
+
+        return $response->withJson([
+          "error_code" => 0,
+          "message" => "Login mis à jour"
+        ]);
 }
+}
+
