@@ -81,7 +81,7 @@ $app->get('/emission','\\animateur\\controllers\\Controller:voirEmission')->add(
 
 //page accueil animateur
 
-$app->get("/animateur", "\\animateur\\controllers\\AnimateurController:accueil");
+$app->get("/animateur", "\\animateur\\controllers\\AnimateurController:accueil")->setName("accueilAnimateur");
 
 /////////////
 // RUN     //
