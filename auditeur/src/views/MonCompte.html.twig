@@ -5,32 +5,59 @@
 <!--  block head qui hérite de son parent, template.html.twig. On y ajoute le css désiré -->
 {{ parent() }}
 <link rel="stylesheet" href="{{ root }}/public/style/css/Compte.css"> 
+<script src="{{ root }}/public/js/monCompte.js"></script>
 {% endblock %}
 
 {% block body %}
-    {{ parent() }}
-    <div class="col-8 mx-auto my-5 manageAcc">
-        <div class="col-sm-8 mx-auto">
-            <h1 class="titre mb-2 mt-3">rff</h1>
+{{ parent() }}
+    <div class="col-lg-4 col-sm-6 col-6 mx-auto my-5 manageAcc">
+        <div class="col-sm-8 mx-auto">  
+            <h1 class="titre"><i class="far fa-user"></i> {{ utilisateur.identifiant }}</h1>
         </div>
         <div class="divForm container-fluid col-sm-8 col-lg-8">
-            <form method="POST" action="{{ root }}/connexion">
-                <div class="form-group">
-                    <label for="identifiant"><i class="far fa-user"></i> Identifiant</label>
-                    <input type="text" name="login" class="form-control" id="identifiant" placeholder="Identifiant">
-                </div>
+            <div class="infoCompte">
+                <h5 for="email"><i class="fas fa-at"></i> Mail : {{ utilisateur.email }}</h5>
+            </div>
 
-                <div class="form-row mb-4">
-                    <div class="form-group col-12">
-                        <label for="mdp"><i class="fas fa-key"></i> Mot de Passe</label>
-                        <input type="password" name="password" class="form-control" id="mdp" placeholder="Mot de passe">
+            <div class="form-group btn-gestion col-12">
+                <button class="btn btn-changeLogin mr-2 mb-2 mt-2" data-toggle="modal" data-target="#modalNewLogin" type="button"><i class="fas fa-user-cog"></i> Changer mon login</button>
+                <button class="btn btn-changeMdp mb-3" role="button" href=" "><i class="fas fa-key"></i> Changer mon mot de passe</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div role="dialog" class="modal-login modal fade" id="modalNewLogin" aria-hidden="true" tabindex="-1">
+        <div id="editLogin" class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+                <div class="col-sm-10 mx-auto modal-header">
+                    <h2 class="titre mb-3 mt-3"><i class="far fa-user"></i> Modification de mon identifiant</h1>
+                </div>
+                <div class="divModal container-fluid col-sm-8 col-lg-8 modal-body">
+                    <div class="divLogin">
+                        <label class="loginActuel">Votre identifiant actuel est <b> {{ utilisateur.identifiant }}</b></label>
+                    </div>
+
+                    <div class="divLoginModif">
+                        <label class="lblNewLogin">Veuillez entrer votre nouvel identifiant :</label>
+                        <input type="text" class="form-control newLogin" id="newLogin" name="newLogin" placeholder="Ex : Allan42">
+
                     </div>
                 </div>
 
-                <div class="btn-submit">
-                    <button class="btn btn-primary btn-submit" type="submit">Se connecter</button>
+                <div class="modal-footer col-sm-10 mx-auto">
+                    <div class="btn-newLogin col-12">
+                        <button class="btn btn-confirm btn-success mb-2 mt-2"><i class="fas fa-check" data-id="{{ session.uder.id }}"></i> Confirmer</button>
+                        <button class="btn btn-close btn-secondary mb-2 mt-2" data-dismiss="modal"><i class="fas fa-check"></i> Annuler</button>
+
+                    </div>
                 </div>
-            </form>
+
+            </div>
         </div>
-    </div>
+    <div>
+
+
 {% endblock %}

@@ -6,11 +6,11 @@ use animateur\controllers\BaseController;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Class EstConnectUser
- * Acces au page seulement pour les admins
+ * Class EstConnectGestionnaire
+ * Acces au page seulement pour les Gestionnaires
  * @package animateur\middlewares
  */
-class EstConnectAdmin extends BaseController
+class EstConnectGestionnaire extends BaseController
 {
 
     /**
@@ -24,14 +24,12 @@ class EstConnectAdmin extends BaseController
     {
         if (isset($_SESSION['user'])) {
             $user = $_SESSION['user'];
-            if ($user['droit'] == 0) {
-                return $this->redirect($response, 'accueil');
-            } else {
+            if ($user['droit'] == 2) {
                 $response = $next($request, $response);
                 return $response;
             }
         } else {
-            return $this->redirect($response, 'accueil');
+            return $this->redirect($response, 'deconnexion');
         }
     }
 }

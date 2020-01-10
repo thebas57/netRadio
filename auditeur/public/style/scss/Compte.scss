@@ -1,4 +1,4 @@
-.titre, .btn-submit, .divForm  {
+.titre, .divForm, .btn-newLogin, .divModal  {
     text-align: center;
   }
 
@@ -7,6 +7,19 @@ body {
     background-repeat: no-repeat;
 }
 
+.manageAcc, .modal-login {
+    min-width: 290px;
+}
+
+.btn-changeLogin, .btn-changeMdp {
+    background-color: #c6842f;
+    border-color: #c6842f;
+    color: white;
+}
+
 .manageAcc {
-    border: 1px solid red;
+    border: 1px solid 000000e6;
+    border-radius: 10px;
+    background-color: #0000001c;
+    box-shadow: black 2px 4px 15px
 }

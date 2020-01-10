@@ -60,20 +60,20 @@ $app->get('/','\\animateur\\controllers\\Controller:afficherAccueil')->setName("
 //Page Connexion
 $app->get('/connexion','\\animateur\\controllers\\Controller:afficherConnexion')->setName('connexion');
 $app->post('/connexion','\\animateur\\controllers\\Controller:gererConnexion');
-$app->get('/deconnexion','\\animateur\\controllers\\Controller:deconnexion');
+$app->get('/deconnexion','\\animateur\\controllers\\Controller:deconnexion')->setName("deconnexion");
 
 // Accueil Creneau
-$app->get('/creneau','\\animateur\\controllers\\Controller:voirCreneau')->setName('creneau')->add(new \animateur\middlewares\EstConnectAdmin($app->getContainer()));
+$app->get('/creneau','\\animateur\\controllers\\Controller:voirCreneau')->setName('creneau')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()));
 
 // Ajouter un creneau
-$app->get('/addCreneau','\\animateur\\controllers\\Controller:afficherAddCreneau')->setName('addCreneau');
+$app->get('/addCreneau','\\animateur\\controllers\\Controller:afficherAddCreneau')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('addCreneau');
 $app->post('/addCreneau','\\animateur\\controllers\\Controller:addCreneau');
 
 // Supprimer un creneau
 $app->get('/supprCreneau/{id}','\\animateur\\controllers\\Controller:supprCreneau');
 
 // Accueil Programme
-$app->get('/programme','\\animateur\\controllers\\Controller:voirProgramme')->add(new \animateur\middlewares\EstConnectAdmin($app->getContainer()))->setName('programme');
+$app->get('/programme','\\animateur\\controllers\\Controller:voirProgramme')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('programme');
 
 // Ajouter un programme
 $app->get('/addProgramme','\\animateur\\controllers\\Controller:afficherAddProgramme')->setName('addProgramme');
@@ -83,16 +83,23 @@ $app->post('/addProgramme','\\animateur\\controllers\\Controller:addProgramme');
 $app->get('/supprProgramme/{id}','\\animateur\\controllers\\Controller:supprProgramme');
 
 // Accueil Actualité
-$app->get('/actualite','\\animateur\\controllers\\Controller:voirActualite')->add(new \animateur\middlewares\EstConnectAdmin($app->getContainer()))->setName('actualite');
+$app->get('/actualite','\\animateur\\controllers\\Controller:voirActualite')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('actualite');
+
+$app->get('/ajoutStaff','\\animateur\\controllers\\Controller:afficherAjoutStaff')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()));
+$app->post('/ajoutStaff','\\animateur\\controllers\\Controller:ajoutStaff');
+
+$app->get('/listeUsers','\\animateur\\controllers\\Controller:afficherListeUsers')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()));
+$app->get('/supprUser/{id}','\\animateur\\controllers\\Controller:supprUser');
 
 // Accueil Emission
-$app->get('/emission','\\animateur\\controllers\\Controller:voirEmission')->add(new \animateur\middlewares\EstConnectAdmin($app->getContainer()))->setName('emission');
+$app->get('/emission','\\animateur\\controllers\\Controller:voirEmission')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('emission');
 
 
 
 //page accueil animateur
 
 $app->get("/animateur", "\\animateur\\controllers\\AnimateurController:accueil")->setName("accueilAnimateur");
+$app->get("/animateur/animerProgramme/{id}", "\\animateur\\controllers\\AnimateurController:emissionsAAnimer");
 
 // Ajouter une émssion
 $app->get('/addEmission','\\animateur\\controllers\\Controller:afficherAddEmission')->setName('addEmission');

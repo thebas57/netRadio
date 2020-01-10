@@ -14,12 +14,15 @@ p {
   justify-content: space-around;
 }
 
-.btn {
+.bouton {
   border: 1px solid black;
   text-align: center;
   padding: 6px 6px 6px 6px;
   cursor: pointer;
   width: 7em;
+  &:hover{
+    background-color: #e19a3e;
+  }
 }
 
 i {
