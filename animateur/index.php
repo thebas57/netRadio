@@ -66,7 +66,11 @@ $app->get('/deconnexion','\\animateur\\controllers\\Controller:deconnexion');
 $app->get('/creneau','\\animateur\\controllers\\Controller:voirCreneau')->setName('creneau')->add(new \animateur\middlewares\EstConnectAdmin($app->getContainer()));
 
 // Ajouter un creneau
-$app->get('/addCreneau','\\animateur\\controllers\\Controller:addCreneau')->add(new \animateur\middlewares\EstConnectAdmin($app->getContainer()))->setName('addCreneau');
+$app->get('/addCreneau','\\animateur\\controllers\\Controller:afficherAddCreneau')->setName('addCreneau');
+$app->post('/addCreneau','\\animateur\\controllers\\Controller:addCreneau');
+
+// Supprimer un creneau
+$app->get('/supprCreneau/{id}','\\animateur\\controllers\\Controller:supprCreneau');
 
 // Accueil Programme
 $app->get('/programme','\\animateur\\controllers\\Controller:voirProgramme')->add(new \animateur\middlewares\EstConnectAdmin($app->getContainer()))->setName('programme');

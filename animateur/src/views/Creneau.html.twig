@@ -1,6 +1,10 @@
 {% extends 'Template.html.twig' %}
 {% set root = base_url() %}
 
+{% block script %}
+	<script src="{{ root }}/public/js/Creneau.js"></script>
+{% endblock %}
+
 {% block css %}
 	<link rel="stylesheet" href="{{ root }}/public/style/css/Creneau.css">
 {% endblock %}
@@ -30,6 +34,26 @@
 
 	<div class="containerC">
 		{# En attendant le js je test en dur #}
+        {% for key,creneau in creneaux %}
+		<div class="creneau">
+            <div class="time">
+                <span class="date"> Tous les lundi</span></br></br>
+                <span class="heure"> {{creneau.heure_debut}} - {{creneau.heure_fin}}</span>
+            </div>
+            <div class="logo">
+                <ul>
+                    <a href="#" class="supprCreneau" data-id="{{ creneau.creneau_id }}"><li><i class="far fa-trash-alt fa-lg"></i></li></a>
+                    <li><i class="far fa-edit fa-lg"></i></li>
+                    <li><i class="far fa-address-card fa-lg"></i></i></li>
+                </ul>
+            </div>
+            <div class="detail">
+                <span class="programme"> {{userEmission[key].emission}}</span></br></br>
+                <span class="anim"> animé par {{userEmission[key].user}}</span>
+            </div>
+        </div>
+		{% endfor %}
+
 		<div class="creneau">
             <div class="time">
                 <span class="date"> Tous les lundi</span></br></br>
@@ -50,7 +74,7 @@
         <div class="creneau" style="background-color:lightgreen;">
             <div class="time">
                 <span class="date"> Tous les lundi</span></br></br>
-                <span class="heure"> 8h - 12h</span>
+                <span class="heure"> 12h - 12h</span>
             </div>
             <div class="logo">
                 <ul>
@@ -82,8 +106,5 @@
                 <span class="anim"> animé par moi aussi</span>
             </div>
         </div>
-		<div class="creneau"></div>
-		<div class="creneau"></div>
-		<div class="creneau"></div>
 	</div>
 {% endblock %}

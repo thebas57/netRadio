@@ -5,6 +5,7 @@ namespace animateur\controllers;
 use animateur\models\Programme;
 use animateur\models\Emission;
 use animateur\models\Utilisateur;
+use animateur\models\Creneau;
 
 use Illuminate\Database\Capsule\Manager as DB;
 use Psr\Http\Message\RequestInterface;
@@ -22,7 +23,8 @@ class Controller extends BaseController
      */
     public function afficherAccueil($request, $response)
     {
-        return $this->render($response, 'Accueil.html.twig');
+        $mdp = password_hash("theo", PASSWORD_DEFAULT);
+        return $this->render($response, 'Accueil.html.twig', ["mdp" => $mdp]);
     } //End of function afficherAccueil
 
     /**
@@ -33,7 +35,33 @@ class Controller extends BaseController
      */
     public function voirCreneau($request, $response)
     {
-        return $this->render($response, 'Creneau.html.twig');
+
+        $emission = new Emission();
+        $anim = new Utilisateur();
+        $tab = [];
+
+        $creneaux = Creneau::all();
+
+        foreach ($creneaux as $key => $creneau) {
+            // modif format heure
+            $hddModif = date('G:i', strtotime($creneau->heure_debut));
+            $creneau->heure_debut = $hddModif;
+
+            $hdfModif = date('G:i', strtotime($creneau->heure_fin));
+            $creneau->heure_fin = $hdfModif;
+
+            // Pour récupérer donnée avec clé etrangere
+            $emission = Emission::find($creneau->emission_id);
+            $anim = Utilisateur::find($emission->animateur);
+            $tmp = ['user' => $anim->identifiant, 'emission' => $emission->titre];
+            array_push($tab, $tmp);
+        }
+
+        unset($emission);
+        unset($anim);
+        unset($tmp);
+
+        return $this->render($response, 'Creneau.html.twig', ['creneaux' => $creneaux, 'userEmission' => $tab]);
     } //End of function voirCreaneau
 
     /**
@@ -45,6 +73,7 @@ class Controller extends BaseController
     public function voirProgramme($request, $response)
     {
         $prog = Programme::all();
+
         return $this->render($response, 'Programme.html.twig', ['programmes' => $prog]);
     } //End of function voirProgramme
 
@@ -67,13 +96,20 @@ class Controller extends BaseController
      */
     public function voirEmission($request, $response, $args)
     {
-        $emission = Emission::all();
-        /*
-        $anim = Utilisateur::first()
-            ->leftJoin('utilisateur', 'utilisateur.utilisateur_id', '=', 'emission.animateur')
-            ->get();
-            */
-        return $this->render($response, 'Emission.html.twig', ['emissions' => $emission]);
+        $user = new Utilisateur();
+        $programme = new Programme();
+        $tab = [];
+        $emissions = Emission::all();
+        foreach ($emissions as $key => $emission) {
+            $user = Utilisateur::find($emission->animateur);
+            $programme = Programme::find($emission->programme_id);
+            $tmp = ['user' => $user->identifiant, 'programme' => $programme->nom];
+            array_push($tab, $tmp);
+        }
+        unset($user);
+        unset($programme);
+        unset($tmp);
+        return $this->render($response, 'Emission.html.twig', ['emissions' => $emissions, 'userProg' => $tab]);
     } //End of function voirEmission
 
     /**
@@ -84,8 +120,44 @@ class Controller extends BaseController
      */
     public function addCreneau($request, $response)
     {
-        return $this->render($response, 'AddCreneau.html.twig');
-    } //End of function addCreneau
+        try {
+            //on récupère les données du formulaire
+            $hdd = (!empty($_POST['hdd'])) ? $_POST['hdd'] : null;
+            $hdf = (!empty($_POST['hdf'])) ? $_POST['hdf'] : null;
+            $date = (!empty($_POST['date'])) ? $_POST['date'] : null;
+            $emission = (!empty($_POST['emission'])) ? $_POST['emission'] : null;
+
+            //on verifie que les champs sont tous remplis
+            if (!isset($hdd) || !isset($hdf) || !isset($date) || !isset($emission))
+                throw new \Exception("un champs requis n'a pas été rempli");
+
+            //on filtre les données
+            $hdd = filter_var($hdd, FILTER_SANITIZE_STRING);
+            $hdf = filter_var($hdf, FILTER_SANITIZE_STRING);
+            $date = filter_var($date, FILTER_SANITIZE_STRING);
+            $emission = filter_var($emission, FILTER_SANITIZE_STRING);
+
+            //on les insère en bdd
+            $creneau = new Creneau();
+            $creneau->heure_debut = $hdd;
+            $creneau->heure_fin = $hdf;
+            $creneau->date_creneau = $date;
+            $creneau->emission_id = $emission;
+            $creneau->save();
+
+            //libération des variables
+            unset($hdf);
+            unset($hdd);
+            unset($date);
+            unset($emission);
+
+            //redirection
+            $creneau = Creneau::all();
+            return $this->redirect($response, 'creneau');
+        } catch (\Exception $e) {
+            die($e->getMessage());
+        }
+    } //end of function addCreneau
 
     /**
      * Fonction permettant d'ajouter des programmes.
@@ -97,6 +169,19 @@ class Controller extends BaseController
     {
         return $this->render($response, 'AddProgramme.html.twig');
     } //End of function addProgramme
+
+    /**
+     * Fonction permettant d'afficher l'ajout des creneaux.
+     * @param $request
+     * @param $response
+     * @return mixed
+     */
+    public function afficherAddCreneau($request, $response, $args)
+    {
+        $creneau = Creneau::all();
+        $emission = Emission::all();
+        return $this->render($response, 'AddCreneau.html.twig', ['creneaux' => $creneau, 'emissions' => $emission]);
+    } //End of function afficherAddCreneau
 
     /**
      * Fonction permettant l'ajout d'un programme en BDD
@@ -148,6 +233,19 @@ class Controller extends BaseController
         $prog = Programme::all();
         $anim = Utilisateur::all();
         return $this->render($response, 'AddEmission.html.twig', ['programmes' => $prog, 'utilisateurs' => $anim]);
+    } //End of function addEmission
+
+    /**
+     * Fonction permettant de supprimer des creneaux.
+     * @param $request
+     * @param $response
+     * @return mixed
+     */
+    public function supprCreneau($request, $response, $args)
+    {
+        $id = $args['id'];
+        $creneau = Creneau::find(intVal($id));
+        $creneau->delete();
     } //End of function addEmission
 
     /**

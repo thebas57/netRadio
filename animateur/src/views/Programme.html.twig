@@ -6,8 +6,7 @@
 {% endblock %}
 
 {% block body %}
-<<<<<<< HEAD
-
+	{{ parent() }}
 	<div class="titre">
 		<a href="{{ root }}/addProgramme">
 			<i class="fas fa-plus-circle fa-3x" style="margin-right:15px;"></i>
@@ -30,9 +29,5 @@
 			</div>
 		{% endfor %}
 	</div>
-=======
-	{{ parent() }}
-	<h1 class="titre">Gestion des Programmes</h1>
->>>>>>> 3ed80ab6c9097163ce6811320ca370f85675c4fd
 
 {% endblock %}
