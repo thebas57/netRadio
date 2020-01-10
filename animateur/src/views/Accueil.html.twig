@@ -6,7 +6,7 @@
 	<div class="pannelBtn">
 
 		<a href="{{ root }}/creneau">
-			<div class="btn">
+			<div class="bouton">
 				<i class="far fa-clock fa-3x"></i>
 			    </br>
 			    <p>Gérer les créneaux</p>
@@ -14,7 +14,7 @@
 	    </a>
 
 	    <a href="{{ root }}/programme">
-		    <div class="btn">
+		    <div class="bouton">
 			    <i class="fas fa-align-left fa-3x"></i>
 		        </br>
 		        <p>Gérer le programme</p>
@@ -22,7 +22,7 @@
         </a>
 
         <a href="{{ root }}/actualite">
-	        <div class="btn">
+	        <div class="bouton">
                 <i class="far fa-calendar-alt fa-3x"></i>
                 </br>
                 <p>Gérer les actualités</p>
@@ -30,12 +30,29 @@
         </a>
 
         <a href="{{ root }}/emission">
-            <div class="btn">
+            <div class="bouton">
                 <i class="fas fa-podcast fa-3x"></i>
                 </br>
                 <p>Gérer les émissions</p>
             </div>
         </a>
+
+        {% if session.user.droit == 2 %}
+            <a href="{{ root }}/ajoutStaff">
+                <div class="bouton">
+                    <i class="fas fa-user-plus fa-3x"></i>
+                    </br>
+                    <p>Ajouter un membre du staff</p>
+                </div>
+            </a>
+            <a href="{{ root }}/listeUsers">
+                <div class="bouton">
+                    <i class="far fa-id-badge fa-3x"></i>
+                    </br>
+                    <p>Voir la liste des comptes</p>
+                </div>
+            </a>
+        {% endif %}
         
     </div>
 

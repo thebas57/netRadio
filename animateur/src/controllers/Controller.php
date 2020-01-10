@@ -123,4 +123,50 @@ class Controller extends BaseController
         return $this->redirect($response,'accueil');
     }//End of function deconnexion
 
+    public function afficherAjoutStaff($request,$response){
+        return $this->render($response,'AjoutStaff.html.twig');
+    }//End of function afficherAjoutStaff
+
+    public function ajoutStaff($request,$response){
+        $email = (isset($_POST['email'])) ? $_POST['email'] : null;
+        $login = (isset($_POST['identifiant'])) ? $_POST['identifiant'] : null;
+        $password = (isset($_POST['password'])) ? $_POST['password'] : null;
+        $droit = (isset($_POST['droit'])) ? $_POST['droit'] : null ;
+
+        $login = filter_var($login, FILTER_SANITIZE_STRING);
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+        $droit = filter_var($droit, FILTER_SANITIZE_NUMBER_INT);
+
+        $password = password_hash($password,PASSWORD_DEFAULT);
+
+        $user = new Utilisateur();
+        $user->identifiant = $login;
+        $user->droit = $droit;
+        $user->password = $password;
+        $user->email = $email;
+        $user->save();
+
+        return $this->redirect($response,'accueil');
+
+    }//End of function ajoutStaff
+
+    public function afficherListeUsers($request,$response){
+
+        $users = Utilisateur::all();
+
+        return $this->render($response,'VoirUsers.html.twig',['users' => $users]);
+
+    }//End of function afficherListeUsers
+
+    public function supprUser($request,$response,$args){
+        $id = $args['id'];
+
+        if (is_numeric($id)){
+            $user = Utilisateur::find(intval($id));
+            if (isset($user)){
+                $user->delete();
+            }
+        }
+    }//End of function supprUser
+
 }

@@ -1,0 +1,28 @@
+{% extends "Template.html.twig" %}
+{% set root = base_url() %}
+{% block script %}
+    <script src="{{ root }}/public/js/VoirUsers.js"></script>
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>N°</th>
+                <th>Identifiant</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="bodyTableau">
+            {% for user in users %}
+                <tr>
+                    <td>{{user.utilisateur_id}}</td>
+                    <td>{{user.identifiant}}</td>
+                    <td><a href="#" class="supprUser" data-id="{{ user.utilisateur_id }}" ><i class="far fa-trash-alt fa-2x"></i></a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
