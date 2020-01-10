@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block body %}
+    {{ parent() }}
     <div class="col-sm-8 mx-auto">
         <h1 class="titre mb-5 mt-3">Connexion</h1>
     </div>
@@ -29,5 +30,10 @@
                 <button class="btn btn-primary btn-submit" type="submit">Se connecter</button>
             </div>
         </form>
+    </div>
+    <div class="erreur">
+        {% if erreur %}
+            {{ erreur }}
+        {% endif %}
     </div>
 {% endblock %}

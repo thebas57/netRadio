@@ -45,7 +45,7 @@ class Controller extends BaseController
     public function voirProgramme($request, $response)
     {
         $prog = Programme::all();
-        return $this->render($response, 'Programme.html.twig',['programmes'=>$prog]);
+        return $this->render($response, 'Programme.html.twig', ['programmes' => $prog]);
     } //End of function voirProgramme
 
     /**
@@ -65,7 +65,7 @@ class Controller extends BaseController
      * @param $response
      * @return mixed
      */
-    public function voirEmission($request, $response,$args)
+    public function voirEmission($request, $response, $args)
     {
         $emission = Emission::all();
         /*
@@ -73,7 +73,7 @@ class Controller extends BaseController
             ->leftJoin('utilisateur', 'utilisateur.utilisateur_id', '=', 'emission.animateur')
             ->get();
             */
-        return $this->render($response, 'Emission.html.twig',['emissions'=>$emission]);
+        return $this->render($response, 'Emission.html.twig', ['emissions' => $emission]);
     } //End of function voirEmission
 
     /**
@@ -85,7 +85,7 @@ class Controller extends BaseController
     public function addCreneau($request, $response)
     {
         return $this->render($response, 'AddCreneau.html.twig');
-    } //End of function addProgramme
+    } //End of function addCreneau
 
     /**
      * Fonction permettant d'ajouter des programmes.
@@ -143,11 +143,11 @@ class Controller extends BaseController
      * @param $response
      * @return mixed
      */
-    public function afficherAddEmission($request, $response,$args)
+    public function afficherAddEmission($request, $response, $args)
     {
         $prog = Programme::all();
         $anim = Utilisateur::all();
-        return $this->render($response, 'AddEmission.html.twig', ['programmes'=>$prog,'utilisateurs'=>$anim]);
+        return $this->render($response, 'AddEmission.html.twig', ['programmes' => $prog, 'utilisateurs' => $anim]);
     } //End of function addEmission
 
     /**
@@ -199,4 +199,52 @@ class Controller extends BaseController
             die($e->getMessage());
         }
     } //end of function addEmission
+
+    public function afficherConnexion($request, $response)
+    {
+        return $this->render($response, 'Connexion.html.twig');
+    } //End of function afficherConnexion
+
+    public function gererConnexion($request, $response)
+    {
+        $login = (isset($_POST['login'])) ? $_POST['login'] : null;
+        $password = (isset($_POST['password'])) ? $_POST['password'] : null;
+
+        try {
+            if (!isset($login) || !isset($password)) {
+                throw new \Exception("Il manque un champ !");
+            }
+
+            $login = filter_var($login, FILTER_SANITIZE_STRING);
+
+            $user = Utilisateur::where("identifiant", $login)->first();
+            if (!isset($user)) {
+                throw new \Exception("Le nom d'utilisateur n'existe pas !");
+            }
+            if (!password_verify($password, $user->password)) {
+                throw new \Exception("Les mots de passe ne correspondent pas !");
+            }
+
+            if ($user->droit == 0) {
+                throw new \Exception("Vous n'avez pas le droit d'accéder à cette zone !");
+            }
+            $_SESSION['user'] = ['id' => $user->utilisateur_id, 'droit' => $user->droit];
+            if ($user->droit == 1) {
+                return $this->redirect($response, 'accueilAnimateur');
+            } else {
+                return $this->redirect($response, 'accueil');
+            }
+        } catch (\Exception $e) {
+            return $this->render($response, 'Connexion.html.twig', ['erreur' => $e->getMessage()]);
+        }
+    } //End of function gererConnexion
+
+    public function deconnexion($request, $response)
+    {
+        if (isset($_SESSION['user'])) {
+            unset($_SESSION['user']);
+        }
+        return $this->redirect($response, 'accueil');
+    } //End of function deconnexion
+
 }

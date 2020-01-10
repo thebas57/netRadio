@@ -1,0 +1,30 @@
+{% extends "Template.html.twig" %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ base_url() }}/public/style/css/AccueilAnimateur.css"/>
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <h2>Vos programmes :</h2>
+
+    <div class="container-fluid myContainerFluid">
+        <table class="table table-dark table-borderless">
+            <tbody>
+                {% for programme in programmes%}
+                    <tr>
+                        <td class="nameProg">
+                            {{ programme.nom }}
+                        </td>
+                        <td class="containerBouton">
+                            <a href="{{ base_url() }}/animerEmission/{{ programme.programme_id }}" class="boutonAnimer">Animer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+{% endblock %}

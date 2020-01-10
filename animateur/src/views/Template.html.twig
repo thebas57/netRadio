@@ -1,25 +1,32 @@
+{% extends "Navbar.html.twig" %}
 {% set root = base_url() %}
-<!doctype html>
-<html lang="fr">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-		<script src="https://kit.fontawesome.com/81967f5e6f.js" crossorigin="anonymous"></script>
+{% block html %}
+	<!doctype html>
+	<html lang="fr">
+		<head>
+			{% block head %}
+				{{ parent() }}
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<meta http-equiv="X-UA-Compatible" content="ie=edge">
+			<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+			<link rel="stylesheet" href="{{ root }}/public/style/css/style.css">
+			<link rel="stylesheet" href="{{ root }}/public/lib/style/css/all.min.css">
 
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-		<link rel="stylesheet" href="{{ root }}/public/style/css/style.css"> 
-		{% block css %}{% endblock %}
-		{% block script %}{% endblock %}
+			{% block css %}{% endblock %}
+			{% block script %}{% endblock %}
 
-		<title>Net'Radio</title>
+			<title>Net'Radio</title>
+			{% endblock %}
+		</head>
+		<body>
 
-	</head>
-	<body>
-		<div class="header">
-			<h1><a class="retourMenu" href="{{path_for('accueil')}}">Net'Radio GESTION</a></h1>
-		</div>
-		{% block body %}{% endblock %}
-	</body>
-</html>
+			{% block body %}
+				{{ parent() }}
+			{% endblock %}
+		</body>
+	</html>
+{% endblock %}

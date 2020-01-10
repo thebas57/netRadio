@@ -37,6 +37,14 @@ class Controller extends BaseController
         return $this->render($response, 'Connexion.html.twig');
     } //End of function afficherConnexion
 
+
+
+    public function afficherCompte($request, $response)
+    {
+        return $this->render($response, 'MonCompte.html.twig');
+    } //End of function afficherConnexion
+
+
     public function gererInscription($request,$response){
         //recuperation des donnees du post
         $email = (isset($_POST['email'])) ? $_POST['email'] : null;
@@ -99,4 +107,12 @@ class Controller extends BaseController
             return $this->render($response,'Connexion.html.twig', [ 'erreur' =>$e->getMessage() ] );
         }
     }//End of function gererConnexion
+
+    public function deconnexion($request, $response){
+        if ( isset($_SESSION['user'])){
+            unset($_SESSION['user']);
+        }
+
+        return $this->redirect($response,'Accueil');
+    }//End of function deconnexion
 }

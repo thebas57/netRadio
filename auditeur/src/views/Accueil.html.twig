@@ -2,6 +2,7 @@
 {% set root = base_url() %}
 
 {% block body %}
+    {{ parent() }}
     Test
     {{dump(session)}}
 {% endblock %}
