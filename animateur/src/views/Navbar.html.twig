@@ -4,7 +4,7 @@
 {% endblock %}
 {% block body %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a href="{{ path_for('accueil') }}"> <img class="navbar-brand" src="{{ root }}/public/images/logo_netradio.png"></a>
+        <a href="{%block redirection %}{{ path_for('accueil') }}{% endblock %}"> <img class="navbar-brand" src="{{ root }}/public/images/logo_netradio.png"></a>
         <!-- collapse : hides the content
         data-target: assign a control of one collapsible element. Need the class collapse to the collapsible element
         aria-expended : false means that the collapsible element is closed by default-->
