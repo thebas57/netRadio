@@ -7,18 +7,21 @@
 {% block body %}
     {{ parent() }}
 
-    <h2>Vos programmes :</h2>
+    <h1>{{ programmeNom }}</h1>
+
+    <h2>Emissions à venir</h2>
 
     <div class="container-fluid myContainerFluid">
         <table class="table table-dark table-borderless">
             <tbody>
-                {% for programme in programmes%}
+                {% for emission in emissions%}
                     <tr>
                         <td class="nameProg">
-                            {{ programme.nom }}
+
+                            {{ emission.date }} - de {{ emission.debut }} à {{ emission.fin }}
                         </td>
                         <td class="containerBouton">
-                            <a href="{{ base_url() }}/animateur/animerProgramme/{{ programme.programme_id }}" class="boutonAnimer">Animer</a>
+                            <a href="{{ base_url() }}/animerEmission/{{ emission.emission_id }}" class="boutonAnimer">Enregistrer</a>
                         </td>
                     </tr>
                 {% endfor %}

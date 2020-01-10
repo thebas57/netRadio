@@ -2,6 +2,7 @@
 
 namespace animateur\controllers;
 
+use animateur\models\Creneau;
 use animateur\models\Emission;
 use animateur\models\Programme;
 use animateur\models\Utilisateur;
@@ -34,5 +35,37 @@ class AnimateurController extends BaseController
         }
 
         return $this->render($response, "AccueilAnimateur.html.twig", ["programmes" => $lesProgrammes]);
+    }
+
+    public function emissionsAAnimer($request, $response, $args){
+        $idProgramme = $args["id"];
+        $idUser = $_SESSION["user"]["id"];
+        $emissions = Emission::where("programme_id", "=", $idProgramme)->where("animateur", "=", $idUser)->get();
+        $lesEmissions = [];
+        foreach ($emissions as $emission){
+            $creneau = Creneau::where("emission_id", "=", $emission->emission_id)->first();
+
+
+            //conversion dates et time en fr
+            list($year, $month, $day) = explode("-", $creneau->date_creneau);
+            $dateCreneau = "${day}/${month}/${year}";
+            list($hour, $minut, $sec) = explode(":", $creneau->heure_debut);
+            $heureDebut = "${hour}h${minut}";
+            list($hour, $minut, $sec) = explode(":", $creneau->heure_fin);
+            $heureFin = "${hour}h${minut}";
+
+
+            $tmp = [
+                "emission_id" => $emission->emission_id,
+                "creneau_id" => $creneau->creneau_id,
+                "date" => $dateCreneau,
+                "debut" => $heureDebut,
+                "fin" => $heureFin
+            ];
+            $lesEmissions[] = $tmp;
+        }
+        $programme = Programme::find($idProgramme);
+
+        return $this->render($response, "EmissionsAnimateur.html.twig", ["emissions" => $lesEmissions, "programmeNom" => $programme->nom]);
     }
 }
