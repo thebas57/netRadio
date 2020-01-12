@@ -159,6 +159,8 @@ class Controller extends BaseController
         }
     } //end of function addCreneau
 
+    
+
     /**
      * Fonction permettant d'ajouter des programmes.
      * @param $request
@@ -182,6 +184,42 @@ class Controller extends BaseController
         $emission = Emission::all();
         return $this->render($response, 'AddCreneau.html.twig', ['creneaux' => $creneau, 'emissions' => $emission]);
     } //End of function afficherAddCreneau
+
+    /**
+     * Fonction permettant d'afficher la modif des creneaux.
+     * @param $request
+     * @param $response
+     * @return mixed
+     */
+    public function afficherModifCreneau($request, $response, $args)
+    {
+        $id = Creneau::find(intVal($args['id']));
+        $emission = Emission::all();
+        return $this->render($response, 'ModifCreneau.html.twig', ['creneau' => $id, 'emissions' => $emission]);
+    } //End of function afficherModifCreneau
+
+    /**
+     * Fonction permettant d'ajouter des creneau.
+     * @param $request
+     * @param $response
+     * @return mixed
+     */
+    public function modifCreneau($request, $response,$args)
+    {
+
+        $creneau = Creneau::find(intVal($args['id']));
+
+        //on les insère en bdd
+        $creneau->heure_debut = $_POST['hdd'];
+        $creneau->heure_fin = $_POST['hdf'];
+        $creneau->date_creneau = $_POST['date'];
+        $creneau->emission_id = $_POST['emission'];
+        $creneau->save();
+
+        //redirection
+        $creneau = Creneau::all();
+        return $this->redirect($response, 'creneau');
+    } //end of function addCreneau
 
     /**
      * Fonction permettant l'ajout d'un programme en BDD
@@ -298,8 +336,17 @@ class Controller extends BaseController
     public function supprEmission($request, $response, $args)
     {
         $id = $args['id'];
-        $emission = Emission::find(intVal($id));
-        $emission->delete();
+
+        $creneaux = Creneau::where('emission_id',intval($id))->get();
+        if (count($creneaux)>0) {
+            throw new \Exception("Impossible, cette émission est attribuée à un créneau");
+        }
+        else {
+            $emission = Emission::find(intVal($id));
+            $emission->delete();
+        }
+
+
     } //End of function supprEmission
 
     /**

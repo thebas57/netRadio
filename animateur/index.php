@@ -108,6 +108,10 @@ $app->post('/addEmission','\\animateur\\controllers\\Controller:addEmission');
 // Supprimer un emission
 $app->get('/supprEmission/{id}','\\animateur\\controllers\\Controller:supprEmission');
 
+// Modifier un créneau
+$app->get('/modifCreneau{id}', "\\animateur\\controllers\\Controller:afficherModifCreneau")->setName('modifCreneau');
+$app->post('/modifCreneau{id}', "\\animateur\\controllers\\Controller:modifCreneau");
+
 /////////////
 // RUN     //
 /////////////
