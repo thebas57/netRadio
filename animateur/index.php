@@ -66,10 +66,21 @@ $app->get('/deconnexion','\\animateur\\controllers\\Controller:deconnexion')->se
 $app->get('/creneau','\\animateur\\controllers\\Controller:voirCreneau')->setName('creneau')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()));
 
 // Ajouter un creneau
-$app->get('/addCreneau','\\animateur\\controllers\\Controller:addCreneau')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('addCreneau');
+$app->get('/addCreneau','\\animateur\\controllers\\Controller:afficherAddCreneau')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('addCreneau');
+$app->post('/addCreneau','\\animateur\\controllers\\Controller:addCreneau');
+
+// Supprimer un creneau
+$app->get('/supprCreneau/{id}','\\animateur\\controllers\\Controller:supprCreneau');
 
 // Accueil Programme
 $app->get('/programme','\\animateur\\controllers\\Controller:voirProgramme')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('programme');
+
+// Ajouter un programme
+$app->get('/addProgramme','\\animateur\\controllers\\Controller:afficherAddProgramme')->setName('addProgramme');
+$app->post('/addProgramme','\\animateur\\controllers\\Controller:addProgramme');
+
+// Supprimer un pprogramme
+$app->get('/supprProgramme/{id}','\\animateur\\controllers\\Controller:supprProgramme');
 
 // Accueil Actualité
 $app->get('/actualite','\\animateur\\controllers\\Controller:voirActualite')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('actualite');
@@ -89,6 +100,17 @@ $app->get('/emission','\\animateur\\controllers\\Controller:voirEmission')->add(
 
 $app->get("/animateur", "\\animateur\\controllers\\AnimateurController:accueil")->setName("accueilAnimateur");
 $app->get("/animateur/animerProgramme/{id}", "\\animateur\\controllers\\AnimateurController:emissionsAAnimer");
+
+// Ajouter une émssion
+$app->get('/addEmission','\\animateur\\controllers\\Controller:afficherAddEmission')->setName('addEmission');
+$app->post('/addEmission','\\animateur\\controllers\\Controller:addEmission');
+
+// Supprimer un emission
+$app->get('/supprEmission/{id}','\\animateur\\controllers\\Controller:supprEmission');
+
+// Modifier un créneau
+$app->get('/modifCreneau{id}', "\\animateur\\controllers\\Controller:afficherModifCreneau")->setName('modifCreneau');
+$app->post('/modifCreneau{id}', "\\animateur\\controllers\\Controller:modifCreneau");
 
 /////////////
 // RUN     //

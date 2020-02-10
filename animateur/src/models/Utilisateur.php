@@ -19,4 +19,11 @@ class Utilisateur extends \Illuminate\Database\Eloquent\Model
         return $this->hasMany("animateur\models\Emission");
     }
 
+    /*
+    public function identifiant() 
+    {
+        return $this->leftJoin('utilisateur', 'utilisateur.utilisateur_id', '=', 'emission.animateur')->value('identifiant');
+    }
+
+    */
 }

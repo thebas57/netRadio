@@ -1,8 +1,42 @@
 {% extends 'Template.html.twig' %}
 {% set root = base_url() %}
 
+{% block script %}
+	<script src="{{ root }}/public/js/Programme.js"></script>
+{% endblock %}
+
+{% block css %}
+	<link rel="stylesheet" href="{{ root }}/public/style/css/Programme.css">
+{% endblock %}
+
 {% block body %}
 	{{ parent() }}
-	<h1 class="titre">Gestion des Programmes</h1>
+	<div class="titre">
+		<a href="{{ root }}/addProgramme">
+			<i class="fas fa-plus-circle fa-3x" style="margin-right:15px;"></i>
+		</a>
+		<h1>Gestion des Programmes</h1>
+	</div>
+
+	<div class="containerP">
+
+		{% if programmes is empty %}
+			<p> Aucune programme trouvé.</p> 
+		{% endif %}
+
+		{% for programme in programmes %}
+			<div class="programme">
+				<b><label>Nom :</label></b>
+				<p>{{programme.nom}}</p>
+				<b><label>Description :</label></b>
+				<p>{{programme.description}}</p>
+				<div class="logo">
+					<i class="far fa-edit fa-2x"></i>
+					<a href="#" class="supprProgramme" data-id="{{programme.programme_id}}"><i class="far fa-trash-alt fa-2x"></i></a>
+					<i class="far fa-eye fa-2x"></i>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
 
 {% endblock %}

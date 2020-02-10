@@ -1,8 +1,48 @@
 {% extends 'Template.html.twig' %}
 {% set root = base_url() %}
 
+{% block script %}
+	<script src="{{ root }}/public/js/Emission.js"></script>
+{% endblock %}
+
+{% block css %}
+	<link rel="stylesheet" href="{{ root }}/public/style/css/Emission.css">
+{% endblock %}
+
 {% block body %}
-    {{ parent() }}
-    <h1 class="titre"> Gestion des Emissions </h1>
+	{{ parent() }}
+	<div class="titre">
+		<a href="{{ root }}/addEmission">
+			<i class="fas fa-plus-circle fa-3x" style="margin-right:15px;"></i>
+		</a>
+		<h1>Gestion des émissions</h1>
+	</div>
+
+    <div class="containerE">
+
+		{% if emissions is empty %}
+			Aucune émission trouvée.
+		{% endif %}
+
+		{% for key,emission in emissions %}
+			<div class="emission">
+				<b><label>Titre :</label></b>
+				<p>{{emission.titre}}</p>
+				<b><label>Resume :</label></b>
+				<p>{{emission.resume}}</p>
+                <b><label>Animateur :</label></b>
+				<p>{{userProg[key].user}}</p>
+                <b><label>Programme :</label></b>
+				<p>{{userProg[key].programme}}</p>
+                <b><label>Fichier :</label></b>
+				<p>{{emission.fichier}}</p>
+				<div class="logo">
+					<i class="far fa-edit fa-2x"></i>
+					<a href="#" class="supprEmission" data-id="{{emission.emission_id}}"><i class="far fa-trash-alt fa-2x"></i></a>
+					<i class="far fa-eye fa-2x"></i>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
 
 {% endblock %}
