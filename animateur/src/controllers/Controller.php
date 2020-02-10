@@ -269,7 +269,7 @@ class Controller extends BaseController
     public function afficherAddEmission($request, $response, $args)
     {
         $prog = Programme::all();
-        $anim = Utilisateur::all();
+        $anim = Utilisateur::where('droit',2)->get();
         return $this->render($response, 'AddEmission.html.twig', ['programmes' => $prog, 'utilisateurs' => $anim]);
     } //End of function addEmission
 
