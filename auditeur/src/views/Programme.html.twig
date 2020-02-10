@@ -15,7 +15,7 @@
         <div class="" style="border-width: 2px; border-color:red; border-style: solid;">
             <h4>{{programme.nom}}</h4>
             <p>{{programme.description}}</p>
-            <a class="btn btn-outline-primary" href="#">Voir</a>
+            <a class="btn btn-outline-primary" href="{{ root }}/emissions/{{ programme.programme_id }}">Voir</a>
         </div>
     {% endfor %}
     </div>

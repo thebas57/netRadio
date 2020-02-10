@@ -1,0 +1,19 @@
+{% extends 'Template.html.twig' %}
+
+{% set root = base_url() %}
+
+{% block body %}
+
+    {{ parent() }}
+
+    <div id="emissions">
+        {% for emission in emissions %}
+            <div>
+                {{ dump(emission) }}
+                <h5>{{ emission.titre }}</h5>
+                <p>{{ emission.resume }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
