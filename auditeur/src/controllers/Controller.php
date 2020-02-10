@@ -37,7 +37,12 @@ class Controller extends BaseController
         return $this->render($response, 'Connexion.html.twig');
     } //End of function afficherConnexion
 
+    public function afficherProgrammes($request, $response){
 
+        $programmes = Programme::all();
+
+        return $this->render($response,'Programme.html.twig', [ "programmes" => $programmes]);
+    }//End of function afficherConnexion
 
     public function afficherCompte($request, $response, $args)
     {
