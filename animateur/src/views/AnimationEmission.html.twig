@@ -1,0 +1,30 @@
+{% extends "Template.html.twig" %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ base_url() }}/public/style/css/AnimationEmission.css">
+{% endblock %}
+
+{% block body %}
+
+    <h1>{{ programmeNom }}</h1>
+    <h2>émission du {{ creneau.date }} de {{ creneau.debut }} à {{ creneau.fin }}</h2>
+
+
+    <div id="musiques">
+
+        <h5>Vos musiques</h5>
+        <form>
+            <input type="file" name="songs" id="songs" accept="audio/*" multiple>
+        </form>
+
+        <ul id="musiquesList">
+
+        </ul>
+
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{{ base_url() }}/public/js/animationEmission.js"></script>
+{% endblock %}
