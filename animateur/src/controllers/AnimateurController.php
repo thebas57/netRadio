@@ -68,4 +68,14 @@ class AnimateurController extends BaseController
 
         return $this->render($response, "EmissionsAnimateur.html.twig", ["emissions" => $lesEmissions, "programmeNom" => $programme->nom]);
     }
+
+    public function addSongEmission($request,$response){
+        $id = (!empty($_POST['id'])) ? $_POST['id'] : null;
+        $song = (!empty($_POST['song'])) ? $_POST['song'] : null;
+        $id = intval($id);
+        $emission = Emission::where("emission_id",$id);
+
+        $emission->fichier = $song;
+        $emission->save();
+    }
 }

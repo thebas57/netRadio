@@ -112,6 +112,8 @@ $app->get('/supprEmission/{id}','\\animateur\\controllers\\Controller:supprEmiss
 $app->get('/modifCreneau{id}', "\\animateur\\controllers\\Controller:afficherModifCreneau")->setName('modifCreneau');
 $app->post('/modifCreneau{id}', "\\animateur\\controllers\\Controller:modifCreneau");
 
+$app->post('/addSongEmission','\\animateur\\controllers\\AnimateurController:addSongEmission');
+
 /////////////
 // RUN     //
 /////////////
