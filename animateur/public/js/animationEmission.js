@@ -14,7 +14,6 @@ $(document).ready(() => {
                     type: "audio\*"
                 });
 
-
                 $("#songs").change(() => {
                     let fichier = document.querySelector("#songs");
 
@@ -54,6 +53,7 @@ $(document).ready(() => {
                     lecteur.onended = function () {
                         $("#onAir h3").addClass("red");
                         recorder = lancerRecordMicro(recorder);
+                        $("#finEmission").prop("disabled", false);
                     };
 
                     let retour = arreterEnregistrement(pisteEmission, recorder, dataRecord);
@@ -61,6 +61,9 @@ $(document).ready(() => {
                     dataRecord = retour.dataRecord;
                     recorder = retour.recorder;
                     pisteEmission = concatener2Blobs(pisteEmission, musiques[id]);
+                    changerDureeEmission(pisteEmission);
+
+                    $("#finEmission").prop("disabled", true);
                 });
 
                 $("#musiquesList").on("click", ".suppMusique", (evenement) => {
@@ -162,6 +165,7 @@ $(document).ready(() => {
         dataRecord = []; //reinitialisation des données du record
 
         pisteEmission = concatener2Blobs(pisteEmission, blobby);
+        changerDureeEmission(pisteEmission);
         return {pisteEmission : pisteEmission, recorder: recorder, dataRecord: dataRecord};
     }
 
@@ -171,5 +175,19 @@ $(document).ready(() => {
         });
 
         return tmp;
+    }
+
+    function changerDureeEmission(pisteEmission){
+        let audio = document.createElement("audio");
+        audio.setAttribute("src", pisteEmission);
+
+        let duration = audio.duration;
+
+        let min = Math.floor(((duration / 60)));
+        let sec = Math.floor(((duration % 60)));
+        let heure = Math.floor(((min / 60)));
+        min = Math.floor(((min % 60)));
+
+        $("#footer").html(" Temps total de l'émission : " + heure + " h " + min + " min " + sec + " sec");
     }
 });
