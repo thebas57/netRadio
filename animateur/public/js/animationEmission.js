@@ -43,9 +43,12 @@ function afficherMusiques(musiques) {
     musiques.forEach((element, index) => {
 
         let enregistrement = document.createElement("article");
-        let labelEnregistrement = document.createElement("button");
-        let deleteEnregistrement = document.createElement("button");
+        let labelEnregistrement = document.createElement("a");
+        let deleteEnregistrement = document.createElement("a");
         let audio = document.createElement("audio");
+
+        labelEnregistrement.setAttribute("href", "#");
+        deleteEnregistrement.setAttribute("href", "#");
 
         audio.setAttribute("controls", true);
         audio.setAttribute("id", "audio" + index);
