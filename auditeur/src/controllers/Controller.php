@@ -40,7 +40,7 @@ class Controller extends BaseController
     public function afficherProgrammes($request, $response)
     {
 
-        $programmes = Programme::all();
+        $programmes = Programme::where("deleted_at",null)->get();
 
         return $this->render($response, 'Programme.html.twig', ["programmes" => $programmes]);
     }//End of function afficherConnexion
@@ -48,7 +48,12 @@ class Controller extends BaseController
     public function afficherEmissions($request, $response, $args){
         $id = intval($args['id']);
 
-        $emissions = Emission::where("programme_id","=",$id);
+        $emissions = DB::table("EMISSION")
+            ->leftJoin('CRENEAU','CRENEAU.creneau_id','=','EMISSION.emission_id')
+            ->where("EMISSION.programme_id","=",$id)
+            ->where("EMISSION.deleted_at",null)
+            ->where("CRENEAU.deleted_at",null)
+            ->get();
 
         return $this->render($response, 'Emissions.html.twig', ['emissions' => $emissions]);
 

@@ -370,8 +370,8 @@ class Controller extends BaseController
                 throw new \Exception("un champs requis n'a pas été rempli");
 
             //on filtre les données
-            $titre = filter_var($titre, FILTER_SANITIZE_STRING);
-            $resume = filter_var($resume, FILTER_SANITIZE_STRING);
+            $titre = filter_var($titre, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+            $resume = filter_var($resume, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
             $animateur = filter_var($animateur, FILTER_SANITIZE_NUMBER_INT);
             $programme = filter_var($programme, FILTER_SANITIZE_NUMBER_INT);
 

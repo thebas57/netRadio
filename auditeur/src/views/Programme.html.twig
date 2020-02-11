@@ -8,14 +8,12 @@
         Barre de recherche
     </div>
 
-    <br>
-
     <div class="conteneur-programmes">
     {% for programme in programmes %}
-        <div class="" style="border-width: 2px; border-color:red; border-style: solid;">
+        <div class="programme" style="border-width: 2px; border-color:red; border-style: solid;">
             <h4>{{programme.nom}}</h4>
             <p>{{programme.description}}</p>
-            <a class="btn btn-outline-primary" href="{{ root }}/emissions/{{ programme.programme_id }}">Voir</a>
+            <a class="btn btn-outline-info" href="{{ root }}/emissions/{{ programme.programme_id }}">Voir les émissions</a>
         </div>
     {% endfor %}
     </div>

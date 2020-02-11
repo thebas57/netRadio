@@ -1,5 +1,25 @@
-.conteneur-programmes{
+
+.conteneur-programmes {
+  margin-top: 5vh;
+  margin-left: 2vw;
+  margin-right: 2vw;
+  margin-bottom: 5vh;
   display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
+  flex-wrap: wrap;
+}
+
+.programme {
+  min-width: 400px;
+  border-width: 2px;
+  border-radius: 20px;
+  border-color: #e19a3e !important;
+  border-style: solid;
+  padding: 20px;
+  margin-right: 2vw;
+  margin-top: 2vh;
+  text-align: center;
+
+  color: #e19a3e;
+  background-color: lighten(#343a40, 5%);
+
 }

@@ -3,15 +3,21 @@
 {% set root = base_url() %}
 
 {% block body %}
-
+    <link rel="stylesheet" href="{{ root }}/public/style/css/Emission.css">
     {{ parent() }}
 
-    <div id="emissions">
+    <div id="conteneur-emission">
         {% for emission in emissions %}
             <div>
-                {{ dump(emission) }}
                 <h5>{{ emission.titre }}</h5>
                 <p>{{ emission.resume }}</p>
+                {% if (emission.creneau_id is not null) %}
+
+                    <p>Le {{ emission.date_creneau }} de {{ emission.heure_debut }} à {{ emission.heure_fin }}</p>
+
+                {% else %}
+                    <p>Pas de créneau de prévu.</p>
+                {% endif %}
             </div>
         {% endfor %}
     </div>
