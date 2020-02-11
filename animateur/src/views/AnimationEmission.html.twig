@@ -9,19 +9,38 @@
     <h1>{{ programmeNom }}</h1>
     <h2>émission du {{ creneau.date }} de {{ creneau.debut }} à {{ creneau.fin }}</h2>
 
-
-    <div id="musiques">
-
-        <h5>Vos musiques</h5>
-        <form>
-            <input type="file" name="songs" id="songs" accept="audio/*" multiple>
-        </form>
-
-        <ul id="musiquesList">
-
-        </ul>
-
+    <div id="onAir">
+        <h3>On Air</h3>
     </div>
+
+    <div id="content">
+
+        <div id="timer">
+            0:00
+        </div>
+
+        <div id="actions">
+            <button id="lancerEnregistrement" class="btn btn-info btn-block"><i class="fas fa-microphone-alt">&emsp;</i>Lancer Enregistrement</button>
+            <button id="finEmission" class="btn btn-info btn-block"><i class="fas fa-stop-circle">&emsp;</i>Terminer l'émisson</button>
+        </div>
+
+        <div id="musiques">
+
+            <h5>Vos musiques</h5>
+            <form>
+                <input type="file" name="songs" id="songs" accept="audio/*" multiple>
+            </form>
+
+            <ul id="musiquesList">
+
+            </ul>
+
+        </div>
+    </div>
+
+    <footer>
+        Temps total de l'émission : 00 h 00 min 00 s
+    </footer>
 
 {% endblock %}
 

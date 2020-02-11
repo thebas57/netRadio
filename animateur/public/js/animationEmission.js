@@ -1,5 +1,8 @@
 $(document).ready(() => {
+    $("#finEmission").hide();
+
     let musiques = [];
+    let onAir = false;
 
 
     $("#songs").change(() => {
@@ -24,7 +27,23 @@ $(document).ready(() => {
 
         let musique = document.getElementById("audio" + id);
         musique.muted = false;
-        document.getElementById("audio" + id).play();
+        let lecteur = document.getElementById("audio" + id);
+        lecteur.play();
+        $("#timer").html(lecteur.duration);
+        $("#onAir h3").removeClass("red");
+
+        lecteur.addEventListener("timeupdate", (event) => {
+            let time = ((Math.floor(lecteur.duration) - Math.floor(lecteur.currentTime)));
+
+            let min = ((Math.floor(time / 60)));
+            let sec = ((time % 60));
+
+            $("#timer").html(min + " min " + sec);
+        });
+
+        lecteur.onended = function () {
+            $("#onAir h3").addClass("red");
+        };
     });
 
     $("#musiquesList").on("click", ".suppMusique", (evenement) => {
@@ -33,7 +52,20 @@ $(document).ready(() => {
         musiques.splice(id, 1);
 
         afficherMusiques(musiques);
-    })
+    });
+
+    $("#lancerEnregistrement").click(() => {
+       $("#finEmission").show();
+       $("#lancerEnregistrement").hide();
+       lancerRecordMicro();
+    });
+
+    $("#finEmission").click(() => {
+        $("#finEmission").hide();
+        $("#lancerEnregistrement").show();
+
+        $("#onAir h3").removeClass("red");
+    });
 
 });
 
@@ -73,4 +105,8 @@ function afficherMusiques(musiques) {
 
         document.getElementById("musiquesList").appendChild(li)
     });
+}
+
+function lancerRecordMicro() {
+    $("#onAir h3").addClass("red");
 }
