@@ -5,6 +5,7 @@
   border: 1px solid black;
   float: left;
   margin-left: 15px;
+  background-color: #e19a3ed2;
 }
 
 .legend h4 {
@@ -59,6 +60,7 @@
   height: 7em;
   border: 2px inset black;
   margin: 10px 10px 0 10px;
+  background-color: #e19a3ed2;
 }
 
 .time {
@@ -78,6 +80,18 @@
 
 .detail {
   text-align: center;
+}
+
+.titre {
+  width: 60%;
+  margin: 0 auto;
+  color: #e19a3e;
+  background-color: #343a40;
+  padding-top: 7px;
+  margin-bottom: 15px;
+  a:hover {
+    color: white;
+  }
 }
 
 .non {
@@ -124,6 +138,10 @@
 
 .btn-primary:hover{
     background-color: green;
+}
+
+a:hover {
+  color:white;
 }
 
 
