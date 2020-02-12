@@ -69,6 +69,32 @@ class AnimateurController extends BaseController
         return $this->render($response, "EmissionsAnimateur.html.twig", ["emissions" => $lesEmissions, "programmeNom" => $programme->nom]);
     }
 
+    public function animerEmission($request, $response, $args){
+        $emission_id = $args["id"];
+        $emission = Emission::find($emission_id);
+        $creneau = Creneau::where("emission_id", "=", $emission_id)->first();
+
+        //conversion dates et time en fr
+        list($year, $month, $day) = explode("-", $creneau->date_creneau);
+        $dateCreneau = "${day}/${month}/${year}";
+        list($hour, $minut, $sec) = explode(":", $creneau->heure_debut);
+        $heureDebut = "${hour}h${minut}";
+        list($hour, $minut, $sec) = explode(":", $creneau->heure_fin);
+        $heureFin = "${hour}h${minut}";
+
+        $programme = Programme::where("programme_id", "=", $emission->programme_id)->first();
+
+        return $this->render($response, "AnimationEmission.html.twig",
+            ["creneau" => [
+                "date" => $dateCreneau,
+                "debut" => $heureDebut,
+                "fin" => $heureFin
+            ],
+             "programmeNom" => $programme->nom,
+             "emission_id" => $emission_id
+            ]);
+    }
+
     public function addSongEmission($request,$response){
         $id = (!empty($_POST['emission_id'])) ? $_POST['emission_id'] : null;
         $song = (!empty($_POST['song'])) ? $_POST['song'] : null;
