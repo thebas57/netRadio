@@ -3,7 +3,7 @@
     font-size: 1.3em; 
 }
 
-a {
+.btn-live a {
     color: #e19a3e;
     &:hover {
         color: #fff;
@@ -36,6 +36,11 @@ a {
     }
 
 }
+
+.dropdown a:hover {
+    text-decoration: none;
+    color: #b32200;
+}
  
 .navbar-brand {
     min-width: 110px;
@@ -58,7 +63,7 @@ body {
 
 @media all and (min-width: 1315px) {
     body {
-        background-image: url("https://images.wallpaperscraft.com/image/evening_hill_radio_tower_130835_3840x2400.jpg");
+        background-image: url("https://images.wallpaperscraft.com/image/evening_hill_radio_tower_130835_3415x3415.jpg");
         // https://mb.cision.com/Public/13765/2085545/98c43535772ead27_org.jpg
         background-repeat: no-repeat;
         background-size: cover;
