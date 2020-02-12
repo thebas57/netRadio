@@ -3,30 +3,61 @@
 
 {% block body %}
     {{ parent() }}
+    <link rel="stylesheet" href="{{ root }}/public/style/css/AjoutStaff.css"> 
 
-    <div class="container-fluid ">
-        <form action="{{ root }}/ajoutStaff" method="post" class="row">
-            <div class="form-group col-xl-6 col-md-6">
-                <label for="identifiant">Identifiant :</label>
-                <input type="text" class="form-control" id="identifiant" name="identifiant">
-            </div>
-            <div class="form-group col-xl-6 col-md-6">
-                <label for="email">E-mail :</label>
-                <input type="email" class="form-control" id="email" name="email">
-            </div>
-            <div class="form-group col-xl-6 col-md-6">
-                <label for="password">Mot de Passe :</label>
-                <input type="password" class="form-control" id="password" name="password">
-            </div>
-            <div class="form-group col-xl-6 col-md-6">
-                <label for="droit">Rôle :</label>
-                <select class="form-control" id="droit" name="droit">
-                    <option value="1" selected>Animateur</option>
-                    <option value="2">Gestionnaire</option>
-                </select>
-            </div>
-            <div class="col-md-4"></div>
-            <button type="submit" class="btn btn-outline-primary col-md-4">Ajouter</button>
-        </form>
+    <div class="container">
+			<div class="row main">
+				<div class="panel-heading col-6 mx-auto">
+	               <div class="panel-title text-center">
+	               		<h1 class="title">Ajouter un membre</h1>
+	               	</div>
+	            </div> 
+				<div class="main-register main-center col-6">
+					<form action="{{ root }}/ajoutStaff" method="post" class="row">
+						
+						<div class="form-group">
+                            <i class="fas fa-portrait"></i>
+							<label for="identifiant" class="cols-sm-2 control-label">Identifiant</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<input type="text" class="form-control" name="identifiant" id="identifiant"  placeholder="Entrer un identifiant"/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+                            <i class="fas fa-at"></i>
+							<label for="email" class="cols-sm-2 control-label">Email</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<input type="text" class="form-control" name="email" id="email"  placeholder="Entrer un Email"/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+                            <i class="fas fa-key"></i>
+							<label for="password" class="cols-sm-2 control-label">Mot de passe</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<input type="password" class="form-control" name="password" id="password"  placeholder="Entrer un mot de passe"/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+                            <label for="droit">Rôle :</label>
+                            <select class="form-control" id="droit" name="droit">
+                                <option value="1" selected>Animateur</option>
+                                <option value="2">Gestionnaire</option>
+                            </select>
+                        </div>
+
+						<div class="form-group ">
+							<button type="submit" class="btn btn-primary btn-lg btn-block login-button">Ajouter</button>
+						</div>
+					</form>
+				</div>
+			</div>
     </div>
 {% endblock %}
