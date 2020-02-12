@@ -88,7 +88,22 @@ $(document).ready(() => {
                     dataRecord = retour.dataRecord;
                     recorder = retour.recorder;
 
-                    console.log(pisteEmission);
+                    //envoi en bdd
+                    let emission_id = $("#emission_id").val();
+                    let datas = new FormData();
+                    datas.append("emission_id", emission_id);
+                    datas.append("song", pisteEmission);
+
+                    let route = $("#route").val();
+
+                    fetch(route + "/addSongEmission", {
+                        method: "POST",
+                        body: datas
+                    }).then(
+                        () => {
+                            window.location.href = route + "/animateur";
+                        }
+                    )
                 });
 
                 //enregistrement de l'audio

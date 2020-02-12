@@ -6,6 +6,8 @@
 
 {% block body %}
 
+    <input type="hidden" name="route" id="route" value="{{ base_url() }}">
+    <input type="hidden" name="emission_id" id="emission_id" value="{{ emission_id }}">
     <h1>{{ programmeNom }}</h1>
     <h2>émission du {{ creneau.date }} de {{ creneau.debut }} à {{ creneau.fin }}</h2>
 
