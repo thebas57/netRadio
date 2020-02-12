@@ -2,16 +2,19 @@
 
 {% set root = base_url() %}
 
-{% block body %}
+{% block head %}
+    {{ parent() }}
     <script src="{{ root }}/public/js/Emission.js"></script>
     <link rel="stylesheet" href="{{ root }}/public/style/css/Emission.css">
+{% endblock %}
+
+{% block body %}
     {{ parent() }}
 
     <div id="conteneur-emission">
         {% for emission in emissions %}
             <div class="emission">
                 <h5>{{ emission.titre }}</h5>
-                <p>{{ emission.emission_id }}</p>
                 <p>{{ emission.resume }}</p>
                 {% if (emission.creneau_id is not null) %}
 
