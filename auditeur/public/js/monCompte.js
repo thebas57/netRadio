@@ -11,19 +11,28 @@ $(document).ready(() => {
         }
         else 
         {
+
+            datas = new FormData();
+            datas.append("id",myId);
+            datas.append("login",val);
             fetch("monCompte",
             {
                 headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/json'
                 },
                 method: "POST",
-                body: JSON.stringify({id: myId, login: val})
+                body: datas,
             })
             .then(           
                  function(res){
                      $.notify("Le login a été mis à jour", "success");
-                     document.location.href=myId;
+                    document.location.href=myId;
+
+                    res.json().then((res) => {
+                        console.log(res);
+                        
+                    })
                     
                     }
             )

@@ -119,15 +119,25 @@ class Controller extends BaseController
     }//End of function deconnexion
     
 
+    public function ecouterDirect($request, $response)
+    {
+        return $this->render($response, 'Direct.html.twig');
+    } //End of function ecouterDirect
+
 
     public function updateLogin($request,$response, $args){
         
-        $existLogin = Utilisateur::where('identifiant', 'like', $_POST['newLogin'])
-          ->first();
+        $newlog = $_POST['login'];
+        $postId = intval($_POST['id']);
+        // $existLogin = Utilisateur::where('identifiant', 'like',$newlog)
+            //   ->first();
 
+        
           
       // test si le login existe
-      $login = Utilisateur::find($args['id']);
+      $login = Utilisateur::find($postId);
+      
+        // return json_encode($_POST['id']);
 
     //   if($login->identifiant != $_POST['newLogin'])
     //   {
@@ -140,9 +150,10 @@ class Controller extends BaseController
     //   echo "<script>alert(\"laaaaa\")</script>";
       
 
-        $login->identifiant      = $_POST['newLogin'];
+        $login->identifiant   = $newlog;
 
         $login->save();
+         return json_encode($login);
 
     }
 }
