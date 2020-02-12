@@ -11,7 +11,7 @@ $(document).ready(() => {
                 let musiques = [];
                 let onAir = false;
                 let pisteEmission = new Blob([],{
-                    type: "audio\*"
+                    type: "audio/ogg"
                 });
 
                 $("#songs").change(() => {
@@ -37,6 +37,7 @@ $(document).ready(() => {
                     let musique = document.getElementById("audio" + id);
                     musique.muted = false;
                     let lecteur = document.getElementById("audio" + id);
+                    recorder.pause();
                     lecteur.play();
                     $("#timer").html(lecteur.duration);
                     $("#onAir h3").removeClass("red");
@@ -96,17 +97,19 @@ $(document).ready(() => {
                     console.log(pisteEmission);
                     let route = $("#route").val();
 
-                    fetch(route + "/addSongEmission", {
-                        method: "POST",
-                        body: datas
-                    }).then(
-                        (res) => {
-                            res.json().then((res) => {
-                                console.log(res);
-                            })
-                            // window.location.href = route + "/animateur";
-                        }
-                    )
+                    $("#testEcoute").prop("src",window.URL.createObjectURL(pisteEmission));
+
+                    // fetch(route + "/addSongEmission", {
+                    //     method: "POST",
+                    //     body: datas
+                    // }).then(
+                    //     (res) => {
+                    //         res.json().then((res) => {
+                    //             console.log(res);
+                    //         })
+                    //         // window.location.href = route + "/animateur";
+                    //     }
+                    // )
                 });
 
                 //enregistrement de l'audio
@@ -189,7 +192,10 @@ $(document).ready(() => {
 
     function concatener2Blobs(blob1, blob2) {
         let tmp = new Blob([blob1, blob2], {
-            type: "audio\*"
+            type: "audio/*"
+        });
+        tmp = new Blob([tmp],{
+            type: "audio/ogg"
         });
 
         return tmp;
