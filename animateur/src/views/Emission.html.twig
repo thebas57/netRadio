@@ -37,8 +37,8 @@
                 <b><label>Fichier :</label></b>
 				<p>{{emission.fichier}}</p>
 				<div class="logo">
-					<i class="far fa-edit fa-2x"></i>
-					<a href="#" class="supprEmission" data-id="{{emission.emission_id}}"><i class="far fa-trash-alt fa-2x"></i></a>
+					 <a href="{{ path_for('modifEmission', {'id' : emission.emission_id } ) }}"<i class="far fa-edit fa-2x"></i></a>
+					<a href="{{ path_for('supprEmission', {'id' : emission.emission_id } ) }}" class="supprEmission" data-id="{{emission.emission_id}}"><i class="far fa-trash-alt fa-2x"></i></a>
 					<i class="far fa-eye fa-2x"></i>
 				</div>
 			</div>

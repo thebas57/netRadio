@@ -4,7 +4,7 @@
 {% endblock %}
 {% block body %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a href="{%block redirection %}{{ path_for('accueil') }}{% endblock %}"> <img class="navbar-brand" src="{{ root }}/public/images/logo_netradio.png"></a>
+        <a style='margin-right:45px;' href="{%block redirection %}{{ path_for('accueil') }}{% endblock %}"> <img class="navbar-brand" src="{{ root }}/public/images/logo_netradio.png"></a>
         <!-- collapse : hides the content
         data-target: assign a control of one collapsible element. Need the class collapse to the collapsible element
         aria-expended : false means that the collapsible element is closed by default-->
@@ -25,6 +25,20 @@
                     <li class="nav-item"><a href="connexion" class="nav-link">Connexion<i class="fas fa-sign-in-alt ml-1"></i></a></li>
                 </ul>
             {% else %}
+                <ul class="navbar-nav">
+                    <li class="nav-item li-item"><a href="programme" class="nav-link">Programmes<i class="icone fas fa-align-left ml-1"></i></a></li>
+                    <li class="nav-item li-item"><a href="emission" class="nav-link">Emissions<i class="icone fas fa-podcast ml-1"></i></a></li>
+                    <li class="nav-item li-item"><a href="creneau" class="nav-link">Créneaux<i class="icone fas fa-clock ml-1"></i></a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Plus</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="actualite">Actualité<i class="icone fas fa-calendar-alt ml-1"></i></a>
+                            <a class="dropdown-item" href="ajoutStaff">Membre du staff<i class="icone fas fa-user-plus ml-1"></i></a>
+                            <a class="dropdown-item" href="listeUsers">Liste des comptes<i class="icone fas fa-id-badge ml-1"></i></a>
+                        </div>
+                    </li>
+                </ul> 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a href="monCompte" class="nav-link"><i class="fas fa-user"></i></a></li>
                     <li class="nav-item"><a href="deconnexion" class="nav-link"><i class="fas fa-sign-out-alt ml-1"></i></a></li>

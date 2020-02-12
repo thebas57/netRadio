@@ -23,7 +23,7 @@ class Controller extends BaseController
      */
     public function afficherAccueil($request, $response)
     {
-        $mdp = password_hash("theo", PASSWORD_DEFAULT);
+        $mdp = password_hash("0403", PASSWORD_DEFAULT);
         return $this->render($response, 'Accueil.html.twig', ["mdp" => $mdp]);
     } //End of function afficherAccueil
 
@@ -199,7 +199,7 @@ class Controller extends BaseController
     } //End of function afficherModifCreneau
 
     /**
-     * Fonction permettant d'ajouter des creneau.
+     * Fonction permettant de modifier des creneaux.
      * @param $request
      * @param $response
      * @return mixed
@@ -219,6 +219,77 @@ class Controller extends BaseController
         //redirection
         $creneau = Creneau::all();
         return $this->redirect($response, 'creneau');
+    } //end of function modifCreneau
+
+    /**
+     * Fonction permettant d'afficher la modif des creneaux.
+     * @param $request
+     * @param $response
+     * @return mixed
+     */
+    public function afficherModifEmission($request, $response, $args)
+    {
+        $id = Emission::find(intVal($args['id']));
+        $programmes = Programme::all();
+        $utilisateurs = Utilisateur::all();
+        return $this->render($response, 'ModifEmission.html.twig', ['emission' => $id, 'programmes' => $programmes, 'utilisateurs' => $utilisateurs]);
+    } //End of function afficherModifCreneau
+
+    /**
+     * Fonction permettant de modifier des emissions.
+     * @param $request
+     * @param $response
+     * @return mixed
+     */
+    public function modifEmission($request, $response,$args)
+    {
+
+        $emission = Emission::find(intVal($args['id']));
+
+        //on les insère en bdd
+        $emission->titre = $_POST['titre'];
+        $emission->resume = $_POST['resume'];
+        $emission->fichier = $_POST['fichier'];
+        $emission->animateur = $_POST['animateur'];
+        $emission->programme_id = $_POST['programme'];
+        $emission->save();
+
+        //redirection
+        $emission = Emission::all();
+        return $this->redirect($response, 'emission');
+    } //end of function modifEmission
+
+    /**
+     * Fonction permettant d'afficher la modif des creneaux.
+     * @param $request
+     * @param $response
+     * @return mixed
+     */
+    public function afficherModifProgramme($request, $response, $args)
+    {
+        $id = Programme::find(intVal($args['id']));
+        return $this->render($response, 'ModifProgramme.html.twig', ['programme' => $id]);
+    } //End of function afficherModifCreneau
+
+    /**
+     * Fonction permettant de modifier des programmes.
+     * @param $request
+     * @param $response
+     * @return mixed
+     */
+    public function modifProgramme($request, $response,$args)
+    {
+
+        $programme = Programme::find(intVal($args['id']));
+
+        //on les insère en bdd
+        $programme->nom = $_POST['nom'];
+        $programme->description = $_POST['desc'];
+        $programme->save();
+
+        //redirection
+        $programme = Programme::all();
+        return $this->redirect($response, 'programme');
     } //end of function addCreneau
 
     /**
@@ -336,14 +407,14 @@ class Controller extends BaseController
     public function supprEmission($request, $response, $args)
     {
         $id = $args['id'];
-
+        $emission = Emission::find(intVal($id));
         $creneaux = Creneau::where('emission_id',intval($id))->get();
         if (count($creneaux)>0) {
             throw new \Exception("Impossible, cette émission est attribuée à un créneau");
         }
-        else {
-            $emission = Emission::find(intVal($id));
+        else {   
             $emission->delete();
+            return $this->redirect($response, 'emission');
         }
 
 

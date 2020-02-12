@@ -106,12 +106,20 @@ $app->get("/animateur/animerEmission/{id}", "\\animateur\\controllers\\Animateur
 $app->get('/addEmission','\\animateur\\controllers\\Controller:afficherAddEmission')->setName('addEmission');
 $app->post('/addEmission','\\animateur\\controllers\\Controller:addEmission');
 
-// Supprimer un emission
-$app->get('/supprEmission/{id}','\\animateur\\controllers\\Controller:supprEmission');
+// Supprimer une emission
+$app->get('/supprEmission{id}','\\animateur\\controllers\\Controller:supprEmission')->setName('supprEmission');
 
 // Modifier un créneau
 $app->get('/modifCreneau{id}', "\\animateur\\controllers\\Controller:afficherModifCreneau")->setName('modifCreneau');
 $app->post('/modifCreneau{id}', "\\animateur\\controllers\\Controller:modifCreneau");
+
+// Modifier un programme
+$app->get('/modifProgramme{id}', "\\animateur\\controllers\\Controller:afficherModifProgramme")->setName('modifProgramme');
+$app->post('/modifProgramme{id}', "\\animateur\\controllers\\Controller:modifProgramme");
+
+// Modifier une emission
+$app->get('/modifEmission{id}', "\\animateur\\controllers\\Controller:afficherModifEmission")->setName('modifEmission');
+$app->post('/modifEmission{id}', "\\animateur\\controllers\\Controller:modifEmission");
 
 /////////////
 // RUN     //

@@ -1,8 +1,14 @@
     {% extends 'Template.html.twig' %}
 {% set root = base_url() %}
 
+{% block css %}
+	<link rel="stylesheet" href="{{ root }}/public/style/css/Accueil.css">
+{% endblock %}
+
 {% block body %}
     {{ parent() }}
+
+
 	<div class="pannelBtn">
 
 		<a href="{{ root }}/creneau">
