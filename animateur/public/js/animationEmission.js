@@ -93,15 +93,18 @@ $(document).ready(() => {
                     let datas = new FormData();
                     datas.append("emission_id", emission_id);
                     datas.append("song", pisteEmission);
-
+                    console.log(pisteEmission);
                     let route = $("#route").val();
 
                     fetch(route + "/addSongEmission", {
                         method: "POST",
                         body: datas
                     }).then(
-                        () => {
-                            window.location.href = route + "/animateur";
+                        (res) => {
+                            res.json().then((res) => {
+                                console.log(res);
+                            })
+                            // window.location.href = route + "/animateur";
                         }
                     )
                 });
