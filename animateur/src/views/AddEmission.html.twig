@@ -11,17 +11,11 @@
 
 {% block body %}
 	{{ parent() }}
-	<style>
-		body {
-			background-color: lightgrey;
-		}
-	</style>
 
 	<div class="titre">
 		<h1>Ajouter une émission</h1>
 	</div>
-
-	<div class="formulaire divForm container-fluid">
+	<div class="fondFormulaire formulaire divForm container-fluid ">
 		<form action="{{ base_url() }}/addEmission" method="post" class="myForm" id="xxxx">
 			<div class="form-group">
 				<label for="titre">Titre :</label>
