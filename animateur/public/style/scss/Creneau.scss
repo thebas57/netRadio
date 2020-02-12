@@ -1,0 +1,131 @@
+// DIV POUR LA LEGENDE CRENEAU
+.legend {
+  width: 230px;
+  text-align: center;
+  border: 1px solid black;
+  float: left;
+  margin-left: 15px;
+}
+
+.legend h4 {
+  font-size: 22px;
+  margin-bottom: 18px;
+  margin-top: 8px;
+}
+
+.legend .pannelLegende {
+  text-align: left;
+  font-size: 24px;
+  height: 100px;
+}
+
+.legend .pannelLegende ul {
+  margin: 0;
+  margin-bottom: 5px;
+  padding: 0;
+  float: left;
+  list-style: none;
+}
+
+.legend .pannelLegende ul li {
+  font-size: 80%;
+  list-style: none;
+  margin-left: 2px;
+  line-height: 20px;
+  margin-bottom: 12px;
+}
+
+.legend ul li span {
+  display: block;
+  float: left;
+  height: 20px;
+  width: 30px;
+  margin-right: 5px;
+  margin-left: 0;
+  border: 1px solid #999;
+}
+
+// Div collection creneau
+
+.containerC {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 8em 8em 8em;
+  grid-row-gap: 10px;
+}
+
+.creneau {
+  height: 7em;
+  border: 2px inset black;
+  margin: 10px 10px 0 10px;
+}
+
+.time {
+  float: left;
+}
+
+.date {
+  font-size: 19px;
+  font-weight: bold;
+  margin: 10px 0 150px 10px;
+}
+
+.heure {
+  text-align: center;
+  margin-left: 35px;
+}
+
+.detail {
+  text-align: center;
+}
+
+.non {
+  font-size: 25px;
+}
+
+.logo {
+  float: right;
+  border: 2px solid black;
+  width: 50px;
+}
+
+.logo ul {
+  padding-left: 17px;
+  margin-bottom: 0;
+}
+
+.logo ul li {
+  list-style: none;
+}
+
+.programme {
+  font-weight: bold;
+  font-size: 19px;
+}
+
+.anim {
+  font-size: 15px;
+}
+
+// Formulaire ajout creneau
+
+.formulaire {
+  margin: 0 auto;
+  background-color: white;
+  width: 85%;
+  padding:20px;
+  border-radius:5px;
+}
+
+.btn-primary {
+    background-color: grey;
+} 
+
+.btn-primary:hover{
+    background-color: green;
+}
+
+
+
+
