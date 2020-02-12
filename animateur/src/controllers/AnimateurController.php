@@ -70,7 +70,7 @@ class AnimateurController extends BaseController
     }
 
     public function addSongEmission($request,$response){
-        $id = (!empty($_POST['id'])) ? $_POST['id'] : null;
+        $id = (!empty($_POST['emission_id'])) ? $_POST['emission_id'] : null;
         $song = (!empty($_POST['song'])) ? $_POST['song'] : null;
         $id = intval($id);
         $emission = Emission::where("emission_id",$id);
