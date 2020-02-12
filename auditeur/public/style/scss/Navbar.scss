@@ -8,15 +8,6 @@
 
 }
 
-.btn-outline-success {
-    font-weight: bold;
-
-    &:hover {
-        color: #fff !important;
-        background-color: #e19a3e !important;
-        border-color: #e19a3e !important;
-    }
-}
 
 .btn-search {
     border-color: #fff !important;
@@ -24,18 +15,23 @@
 
 }
 
-.btn-live {
+.btn-live, .btn-submenu {
     border-color: #e19a3e !important;
     color: #e19a3e !important;
+    font-weight: bold;
+
+    &:hover, &:focus {
+        color: #fff !important;
+        background-color: #e19a3e !important;
+        border-color: #e19a3e !important;
+        box-shadow: 0 0 0 .2rem rgba(215, 101, 33, 0.42);
+    }
+
 }
  
 .navbar-brand {
     min-width: 110px;
     max-width: 130px;
-}
-
-body {
-    min-width: 240px;
 }
 
 .nav-link:hover {
@@ -46,4 +42,112 @@ body {
 
 body {
     min-width: 310px;
+    background-image: url("https://images.wallpaperscraft.com/image/evening_hill_radio_tower_130835_3415x3415.jpg");
+    // https://mb.cision.com/Public/13765/2085545/98c43535772ead27_org.jpg
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+@media all and (min-width: 1315px) {
+    body {
+        background-image: url("https://images.wallpaperscraft.com/image/evening_hill_radio_tower_130835_3840x2400.jpg");
+        // https://mb.cision.com/Public/13765/2085545/98c43535772ead27_org.jpg
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+}
+
+.dropdown-menu {
+    background-color: #ffe7db;
+    border-color: black;
+}
+
+li {
+    list-style: none;
+}
+
+.txt-drop {
+    color: #4f3e28;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #b32200;
+}
+
+.dropdown-submenu > a::after {
+    margin-top: 10px !important;
+    border-left-color: #ffe7db  !important;
+}
+
+@media all and (min-width:991px) {  
+    .dropdown:after{
+        content: ''; 
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        transition: opacity .15s ease-in-out;
+        opacity: 0;
+        visibility:hidden;
+        background-color: rgba(0,0,0,.7);
+        pointer-events: none;
+    }
+    .dropdown.show .prog{
+      position:relative;
+    }
+    .dropdown.show:after{
+      opacity:1; 
+      visibility:visible;
+      position: fixed;
+    }
+  }
+
+  .dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
 }

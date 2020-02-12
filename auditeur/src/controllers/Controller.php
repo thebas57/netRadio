@@ -129,13 +129,16 @@ class Controller extends BaseController
       // test si le login existe
       $login = Utilisateur::find($args['id']);
 
-      if($login->identifiant != $_POST['newLogin'])
-      {
-        if ($existLogin) 
-        {
-          
-        }
-      }
+    //   if($login->identifiant != $_POST['newLogin'])
+    //   {
+    //     if ($existLogin) 
+    //     {
+    //         echo "<script>alert(\"icciiii\")</script>";
+    //     }
+    //   }
+
+    //   echo "<script>alert(\"laaaaa\")</script>";
+      
 
         $login->identifiant      = $_POST['newLogin'];
 
