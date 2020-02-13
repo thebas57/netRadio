@@ -1,8 +1,24 @@
 {% extends 'Template.html.twig' %}
 {% set root = base_url() %}
 
+{% block head %}
+<!--  block head qui hérite de son parent, template.html.twig. On y ajoute le css désiré -->
+{{ parent() }}
+<link rel="stylesheet" href="{{ root }}/public/style/css/Direct.css"> 
+{% endblock %}
+
 {% block body %}
     {{ parent() }}
-    sedfujksfncsdùpiksdlcx
+    
+    <div class="col-lg-6 mx-auto my-5 col-sm-8 col-10 leDirect py-3">
+        
+        <i class="fa fa-spinner fa-pulse fa-4x ico-btn"></i>
+        {# <i class="fas fa-pause-circle fa-4x pl-2 ico-btn"></i>
+        <i class="fas fa-play-circle fa-4x ico-btn pl-2"></i> #}
+        {# <audio controls>
+            <source src="{{ root }}/piano.mp3" type="audio/mpeg">
+            <source src="{{ root }}/piano.mp3" type="audio/ogg">
 
+        </audio> #}
+    </div>
 {% endblock %}
