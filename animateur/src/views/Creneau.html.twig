@@ -34,6 +34,10 @@
 
 	<div class="containerC">
 		{# En attendant le js je test en dur #}
+        {% if creneaux is empty %}
+			<span style="color:white;"> Aucun créneau trouvé. </span>
+        {%  endif %}
+
         {% for key,creneau in creneaux %}
 		<div class="creneau">
             <div class="time">
@@ -52,58 +56,5 @@
             </div>
         </div>
 		{% endfor %}
-
-		<div class="creneau">
-            <div class="time">
-                <span class="date"> Tous les lundi</span></br></br>
-                <span class="heure"> 8h - 12h</span>
-            </div>
-            <div class="logo">
-                <ul>
-                    <li><i class="far fa-trash-alt fa-lg"></i></li>
-                    <li><i class="far fa-edit fa-lg"></i></li>
-                    <li><i class="far fa-address-card fa-lg"></i></i></li>
-                </ul>
-            </div>
-            <div class="detail">
-                </br><span class="non"> NON PROGRAMME</span>
-            </div>
-        </div>
-
-        <div class="creneau" style="background-color:lightgreen;">
-            <div class="time">
-                <span class="date"> Tous les lundi</span></br></br>
-                <span class="heure"> 12h - 12h</span>
-            </div>
-            <div class="logo">
-                <ul>
-                    <li><i class="far fa-trash-alt fa-lg"></i></li>
-                    <li><i class="far fa-edit fa-lg"></i></li>
-                    <li><i class="far fa-address-card fa-lg"></i></i></li>
-                </ul>
-            </div>
-            <div class="detail">
-                <span class="programme"> Des hauts et débats</span></br></br>
-                <span class="anim"> animé par moi</span>
-            </div>
-        </div>
-
-        <div class="creneau" style="background-color:Bisque;">
-            <div class="time">
-                <span class="date"> Tous les lundi</span></br></br>
-                <span class="heure"> 8h - 12h</span>
-            </div>
-            <div class="logo">
-                <ul>
-                    <li><i class="far fa-trash-alt fa-lg"></i></li>
-                    <li><i class="far fa-edit fa-lg"></i></li>
-                    <li><i class="far fa-address-card fa-lg"></i></i></li>
-                </ul>
-            </div>
-            <div class="detail">
-                <span class="programme"> Energy drink ou Pussy juice</span></span></br></br>
-                <span class="anim"> animé par moi aussi</span>
-            </div>
-        </div>
 	</div>
 {% endblock %}

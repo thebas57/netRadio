@@ -121,8 +121,32 @@ class Controller extends BaseController
 
     public function ecouterDirect($request, $response)
     {
-        $creneaux = Creneau::all();
-        return $this->render($response, 'Direct.html.twig', ['creneaux' => $creneaux]);
+        $creneauMtn = null;
+        $creneauAvenir = [];
+        $creneauPasse = [];
+        $hActuelle = date("H:i:s");
+        $dateActuelle = date("Y-m-d");
+
+        $creneaux = Creneau::where('date_creneau',$dateActuelle)->orderBy('heure_debut')->get();
+
+        foreach ($creneaux as $creneau) {
+            if($creneau->heure_debut < $hActuelle && $hActuelle < $creneau->heure_fin) {
+                $creneauMtn = $creneau;
+            }
+            else if($creneau->heure_debut > $hActuelle){
+                array_push($creneauAvenir,$creneau);
+            }
+            else {
+                array_push($creneauPasse,$creneau);
+            }
+        }
+
+            $hAvenir = $creneauAvenir[0]->heure_debut;
+            $h1 = strtotime($creneauAvenir[0]->heure_debut);
+            $h2 = strtotime($hActuelle);
+            $hAvenir = gmdate("H:i", $h1-$h2);
+
+        return $this->render($response, 'Direct.html.twig', ['creneaux' => $creneaux,'creneauMtn' => $creneauMtn, 'creneauAvenir' => $creneauAvenir, 'creneauPasse' => $creneauPasse, 'hAvenir'=>$hAvenir]);
     } //End of function ecouterDirect
 
 
