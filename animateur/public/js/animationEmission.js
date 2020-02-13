@@ -11,7 +11,7 @@ $(document).ready(() => {
                 let musiques = [];
                 let onAir = false;
                 let pisteEmission = new Blob([],{
-                    type: "audio/ogg"
+                    'type' : 'audio/mpeg; codecs=opus',
                 });
 
                 $("#songs").change(() => {
@@ -195,7 +195,7 @@ $(document).ready(() => {
             type: "audio/*"
         });
         tmp = new Blob([tmp],{
-            type: "audio/ogg"
+            'type' : 'audio/mpeg; codecs=opus',
         });
 
         return tmp;
