@@ -1,8 +1,17 @@
 {% extends 'Template.html.twig' %}
 {% set root = base_url() %}
 
-{% block body %}
-    {{ parent() }}
-    sedfujksfncsdùpiksdlcx
 
+{% block head %}
+<!--  block head qui hérite de son parent, template.html.twig. On y ajoute le css désiré -->
+{{ parent() }}
+<link rel="stylesheet" href="{{ root }}/public/style/css/Direct.css">
+<script src="{{ root }}/public/js/Direct.js"></script>
+{% endblock %}
+
+{% block body %}
+	{{ parent() }}
+	{% for creneau in creneaux %}
+		{{creneau.date_creneau}}
+	{% endfor %}
 {% endblock %}

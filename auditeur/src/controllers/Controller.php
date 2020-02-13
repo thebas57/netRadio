@@ -121,7 +121,8 @@ class Controller extends BaseController
 
     public function ecouterDirect($request, $response)
     {
-        return $this->render($response, 'Direct.html.twig');
+        $creneaux = Creneau::all();
+        return $this->render($response, 'Direct.html.twig', ['creneaux' => $creneaux]);
     } //End of function ecouterDirect
 
 
