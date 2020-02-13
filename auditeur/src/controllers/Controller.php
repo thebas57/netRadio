@@ -27,16 +27,34 @@ class Controller extends BaseController
         return $this->render($response, 'Accueil.html.twig');
     } //End of function afficherAccueil
 
+    /**
+     * @param $request
+     * @param $response
+     * @return mixed
+     * Affiche la page d'inscription
+     */
     public function afficherInscription($request, $response)
     {
         return $this->render($response, 'Inscription.html.twig');
     } //End of function afficherInscription
 
+    /**
+     * @param $request
+     * @param $response
+     * @return mixed
+     * Affiche la page de connexion
+     */
     public function afficherConnexion($request, $response)
     {
         return $this->render($response, 'Connexion.html.twig');
     } //End of function afficherConnexion
 
+    /**
+     * @param $request
+     * @param $response
+     * @return mixed
+     * Affiche la page avec tous les programmes
+     */
     public function afficherProgrammes($request, $response)
     {
 
@@ -45,6 +63,13 @@ class Controller extends BaseController
         return $this->render($response, 'Programme.html.twig', ["programmes" => $programmes]);
     }//End of function afficherConnexion
 
+    /**
+     * @param $request
+     * @param $response
+     * @param $args
+     * @return mixed
+     * Permet d'afficher les émissions selon le programme choisi
+     */
     public function afficherEmissions($request, $response, $args){
         $id = intval($args['id']);
 
@@ -59,6 +84,13 @@ class Controller extends BaseController
 
     }//End of function afficherEmissions
 
+    /**
+     * @param $request
+     * @param $response
+     * @param $args
+     * @return mixed
+     * Affiche le compte de l'utilisateur
+     */
     public function afficherCompte($request, $response, $args)
     {
 
@@ -67,6 +99,12 @@ class Controller extends BaseController
     } //End of function afficherConnexion
 
 
+    /**
+     * @param $request
+     * @param $response
+     * @return ResponseInterface
+     * Gère l'inscription de l'utilisateur
+     */
     public function gererInscription($request, $response)
     {
         //recuperation des donnees du post
@@ -103,6 +141,12 @@ class Controller extends BaseController
         }
     }//End of function gererInscription
 
+    /**
+     * @param $request
+     * @param $response
+     * @return ResponseInterface
+     * Gère la connexion après envoi du formulaire
+     */
     public function gererConnexion($request, $response)
     {
         $login = (isset($_POST['login'])) ? $_POST['login'] : null;
@@ -132,6 +176,12 @@ class Controller extends BaseController
         }
     }//End of function gererConnexion
 
+    /**
+     * @param $request
+     * @param $response
+     * @return ResponseInterface
+     * Déconnexion de l'utilisateur
+     */
     public function deconnexion($request, $response)
     {
         if (isset($_SESSION['user'])) {
@@ -141,7 +191,12 @@ class Controller extends BaseController
         return $this->redirect($response, 'Accueil');
     }//End of function deconnexion
 
-
+    /**
+     * @param $request
+     * @param $response
+     * @param $args
+     * Permet de modifier le login de l'utilisateur
+     */
     public function updateLogin($request, $response, $args)
     {
 

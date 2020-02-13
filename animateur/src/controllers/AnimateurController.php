@@ -95,6 +95,12 @@ class AnimateurController extends BaseController
             ]);
     }
 
+    /**
+     * @param $request
+     * @param $response
+     * @return false|string
+     * Stocke le blob d'une émission en BDD
+     */
     public function addSongEmission($request,$response){
         $id = (!empty($_POST['emission_id'])) ? $_POST['emission_id'] : null;
         $song = (!empty($_FILES['song'])) ? $_FILES['song'] : null;

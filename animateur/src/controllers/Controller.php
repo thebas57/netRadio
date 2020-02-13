@@ -399,11 +399,23 @@ class Controller extends BaseController
         }
     } //end of function addEmission
 
+    /**
+     * @param $request
+     * @param $response
+     * @return mixed
+     * Affiche la page de connexion
+     */
     public function afficherConnexion($request, $response)
     {
         return $this->render($response, 'Connexion.html.twig');
     } //End of function afficherConnexion
 
+    /**
+     * @param $request
+     * @param $response
+     * @return ResponseInterface
+     * Permet de gérer la connexion (lors de l'envoi du formulaire)
+     */
     public function gererConnexion($request, $response)
     {
         $login = (isset($_POST['login'])) ? $_POST['login'] : null;
@@ -438,6 +450,12 @@ class Controller extends BaseController
         }
     } //End of function gererConnexion
 
+    /**
+     * @param $request
+     * @param $response
+     * @return ResponseInterface
+     * Permet de déconnecter l'utilisateur
+     */
     public function deconnexion($request, $response)
     {
         if (isset($_SESSION['user'])) {
@@ -446,10 +464,22 @@ class Controller extends BaseController
         return $this->redirect($response, 'accueil');
     } //End of function deconnexion
 
+    /**
+     * @param $request
+     * @param $response
+     * @return mixed
+     * Affiche la page permettant d'ajouter des membres du staff
+     */
     public function afficherAjoutStaff($request,$response){
         return $this->render($response,'AjoutStaff.html.twig');
     }//End of function afficherAjoutStaff
 
+    /**
+     * @param $request
+     * @param $response
+     * @return ResponseInterface
+     * Gère l'ajout de staff en BDD
+     */
     public function ajoutStaff($request,$response){
         $email = (isset($_POST['email'])) ? $_POST['email'] : null;
         $login = (isset($_POST['identifiant'])) ? $_POST['identifiant'] : null;
@@ -481,6 +511,12 @@ class Controller extends BaseController
 
     }//End of function afficherListeUsers
 
+    /**
+     * @param $request
+     * @param $response
+     * @param $args
+     * Supprime un utilisateur
+     */
     public function supprUser($request,$response,$args){
         $id = $args['id'];
 
