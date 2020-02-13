@@ -159,7 +159,6 @@ class Controller extends BaseController
         }
     } //end of function addCreneau
 
-    
 
     /**
      * Fonction permettant d'ajouter des programmes.
@@ -204,7 +203,7 @@ class Controller extends BaseController
      * @param $response
      * @return mixed
      */
-    public function modifCreneau($request, $response,$args)
+    public function modifCreneau($request, $response, $args)
     {
 
         $creneau = Creneau::find(intVal($args['id']));
@@ -294,24 +293,24 @@ class Controller extends BaseController
      */
     public function supprProgramme($request, $response, $args)
     {
-        
-/*
-        $emissions = DB::table('emission') 
-            ->join('emission','emission.programme_id','=',$id)->get();
 
-        foreach ($emissions as $key => $emission) {
-            $emission->delete();
-        }
+        /*
+                $emissions = DB::table('emission')
+                    ->join('emission','emission.programme_id','=',$id)->get();
 
-        //$emissions->delete();
-        */
+                foreach ($emissions as $key => $emission) {
+                    $emission->delete();
+                }
+
+                //$emissions->delete();
+                */
 
         $id = $args['id'];
 
         $programme = Programme::find(intVal($id));
         $programme->delete();
-        
-        $emissions = Emission::where('programme_id',intval($id))->get();
+
+        $emissions = Emission::where('programme_id', intval($id))->get();
         foreach ($emissions as $key => $emission) {
             $emission->delete();
         }
@@ -337,11 +336,10 @@ class Controller extends BaseController
     {
         $id = $args['id'];
 
-        $creneaux = Creneau::where('emission_id',intval($id))->get();
-        if (count($creneaux)>0) {
+        $creneaux = Creneau::where('emission_id', intval($id))->get();
+        if (count($creneaux) > 0) {
             throw new \Exception("Impossible, cette émission est attribuée à un créneau");
-        }
-        else {
+        } else {
             $emission = Emission::find(intVal($id));
             $emission->delete();
         }
@@ -470,8 +468,9 @@ class Controller extends BaseController
      * @return mixed
      * Affiche la page permettant d'ajouter des membres du staff
      */
-    public function afficherAjoutStaff($request,$response){
-        return $this->render($response,'AjoutStaff.html.twig');
+    public function afficherAjoutStaff($request, $response)
+    {
+        return $this->render($response, 'AjoutStaff.html.twig');
     }//End of function afficherAjoutStaff
 
     /**
@@ -480,17 +479,18 @@ class Controller extends BaseController
      * @return ResponseInterface
      * Gère l'ajout de staff en BDD
      */
-    public function ajoutStaff($request,$response){
+    public function ajoutStaff($request, $response)
+    {
         $email = (isset($_POST['email'])) ? $_POST['email'] : null;
         $login = (isset($_POST['identifiant'])) ? $_POST['identifiant'] : null;
         $password = (isset($_POST['password'])) ? $_POST['password'] : null;
-        $droit = (isset($_POST['droit'])) ? $_POST['droit'] : null ;
+        $droit = (isset($_POST['droit'])) ? $_POST['droit'] : null;
 
         $login = filter_var($login, FILTER_SANITIZE_STRING);
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
         $droit = filter_var($droit, FILTER_SANITIZE_NUMBER_INT);
 
-        $password = password_hash($password,PASSWORD_DEFAULT);
+        $password = password_hash($password, PASSWORD_DEFAULT);
 
         $user = new Utilisateur();
         $user->identifiant = $login;
@@ -499,15 +499,16 @@ class Controller extends BaseController
         $user->email = $email;
         $user->save();
 
-        return $this->redirect($response,'accueil');
+        return $this->redirect($response, 'accueil');
 
     }//End of function ajoutStaff
 
-    public function afficherListeUsers($request,$response){
+    public function afficherListeUsers($request, $response)
+    {
 
         $users = Utilisateur::all();
 
-        return $this->render($response,'VoirUsers.html.twig',['users' => $users]);
+        return $this->render($response, 'VoirUsers.html.twig', ['users' => $users]);
 
     }//End of function afficherListeUsers
 
@@ -517,15 +518,62 @@ class Controller extends BaseController
      * @param $args
      * Supprime un utilisateur
      */
-    public function supprUser($request,$response,$args){
+    public function supprUser($request, $response, $args)
+    {
         $id = $args['id'];
 
-        if (is_numeric($id)){
+        if (is_numeric($id)) {
             $user = Utilisateur::find(intval($id));
-            if (isset($user)){
+            if (isset($user)) {
                 $user->delete();
             }
         }
     }//End of function supprUser
 
+    /**
+     * @param $request
+     * @param $response
+     * @return mixed
+     * Affichage de la page de modif de compte.
+     */
+    public function afficherMonCompte($request, $response)
+    {
+
+        $userCo = $_SESSION["user"];
+        $id = intval($userCo["id"]);
+        unset($userCo);
+        $user = Utilisateur::select("utilisateur_id", "identifiant", "email")->where("utilisateur_id", $id)->first();
+
+        return $this->render($response, 'MonCompte.html.twig', ["user" => $user]);
+    }//End of function afficherMonCompte
+
+    public function modifMonCompte($request, $response)
+    {
+        $login = (isset($_POST['login'])) ? $_POST['login'] : null;
+        $password = (isset($_POST['password'])) ? $_POST['password'] : null;
+
+        if (is_null($password) && is_null($login)) {
+            return json_encode(["error" => "Vous n'avez rien à faire ici !", "status" => 404]);
+        }
+
+        $id = $_SESSION['user']["id"];
+        $user = Utilisateur::find($id);
+
+        if (is_null($password)) {
+//            return json_encode($user);
+            $login = filter_var($login, FILTER_SANITIZE_STRING);
+
+            $user->identifiant = $login;
+            $user->save();
+
+            return json_encode(["error" => "Modification du login reussie ! ", "status" => 200]);
+        } else {
+            if (password_verify($password, $user->password)) {
+              return json_encode(["error" => "Les mots de passe sont identiques !", "status" => 400]);
+            }
+            $user->password = password_hash($password,PASSWORD_DEFAULT);
+            $user->save();
+            return json_encode(["error" => "Mot de passe modifie !","status" => 200]);
+        }
+    }//End of function modifMonCompte
 }

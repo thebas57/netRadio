@@ -1,0 +1,30 @@
+{% extends 'Template.html.twig' %}
+{% set root = base_url() %}
+{% block head %}
+    {{ parent() }}
+    <script src="{{ root }}/public/js/MonCompte.js"></script>
+    <input type="hidden" name="root" id="root" value="{{ root }}">
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="col-lg-4 col-sm-6 col-6 mx-auto my-5">
+        <h1>Modifier mon profil</h1>
+
+        <div id="modification">
+            <div id="loginDiv" class="">
+                <input type="text" class="form-control" name="login" placeholder="{{ user.identifiant }}"
+                       id="login"><br>
+                <button class="btn btn-outline-primary" id="modif-login">Modifier</button>
+            </div>
+            <br><br>
+            <div id="passwordDiv" class="">
+                <input type="password" name="password" class="form-control" placeholder="" value="" id="password">
+                <input type="password" name="passwordVerif" class="form-control" placeholder="" value=""
+                       style="margin-top:2vh;display: none;" id="passwordVerif"><br>
+                <button class="btn btn-outline-primary" id="modif-password">Modifier</button>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
