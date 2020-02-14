@@ -29,7 +29,7 @@ $(() => {
     $('#passwordDiv').on('click', '#modif-password', function () {
         //Gérer modif password
         let datas = new FormData();
-        if ($("#password").val() !== $("#passwordVerif").val()) {
+        if (($("#password").val() !== $("#passwordVerif").val()) && $("#password").val() !== "") {
             $(this).notify("Les mots de passe ne correspondent pas.", {position: "right", className: "error"});
         } else {
             datas.append("password", $("#password").val());
