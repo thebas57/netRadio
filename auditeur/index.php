@@ -56,7 +56,7 @@ $app->get('/','\\auditeur\\controllers\\Controller:afficherAccueil')->setName("A
 $app->get('/inscription','\\auditeur\\controllers\\Controller:afficherInscription');
 $app->get('/connexion','\\auditeur\\controllers\\Controller:afficherConnexion');
 $app->get('/monCompte/{id}','\\auditeur\\controllers\\Controller:afficherCompte');
-$app->get('/direct','\\auditeur\\controllers\\Controller:ecouterDirect');
+$app->get('/direct','\\auditeur\\controllers\\Controller:ecouterDirect')->setName("direct");
 
 
 $app->get('/programmes','\\auditeur\\controllers\\Controller:afficherProgrammes');
