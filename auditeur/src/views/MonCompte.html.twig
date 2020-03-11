@@ -12,11 +12,11 @@
 {{ parent() }}
     <div class="col-lg-4 col-sm-6 col-6 mx-auto my-5 manageAcc">
         <div class="col-sm-8 mx-auto">  
-            <h1 class="titre"><i class="far fa-user"></i> {{ utilisateur.identifiant }}</h1>
+            <h1 class="titre-compte pt-2"><i class="far fa-user"></i> {{ utilisateur.identifiant }}</h1>
         </div>
         <div class="divForm container-fluid col-sm-8 col-lg-8">
             <div class="infoCompte">
-                <h5 for="email"><i class="fas fa-at"></i> Mail : {{ utilisateur.email }}</h5>
+                <h5 class="email" for="email"><i class="fas fa-at"></i> Mail : {{ utilisateur.email }}</h5>
             </div>
 
             <div class="form-group btn-gestion col-12">
