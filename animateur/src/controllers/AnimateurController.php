@@ -94,4 +94,49 @@ class AnimateurController extends BaseController
              "emission_id" => $emission_id
             ]);
     }
+
+    public function receiveAudio($request, $response){
+        $emission_id = (isset($_POST["emission_id"])) ? $_POST["emission_id"] : null;
+        $audio = (isset($_FILES["audio"])) ? $_FILES["audio"] : null;
+
+        if(!isset($emission_id) || !isset($audio)){
+            return json_encode(["error" => "un champ requis n'a pas été rempli", "code" => 500]);
+        }
+
+        $emission = Emission::find($emission_id);
+
+        if(!isset($emission) || empty($emission)){
+            return json_encode(["error" => "Emission non trouvée", "code" => 404]);
+        }
+
+        $tmp = $emission->fichier;
+
+        if(!isset($emission->fichier)){
+            $emission->fichier = $audio;
+        }else{
+            setDossierDeTravail($emission->titre);
+            //concaténation :p
+            $emission->fichier = DB::raw("concatenate(", $emission->fichier, ",", $audio, ")");
+        }
+
+        $emission->save();
+
+        return json_encode(["emission" => $emission->titre, "fichier" => $emission->fichier, "fichier_old" => $tmp]);
+
+    }
+
+
+    private function setDossierDeTravail($titre){
+        //vérification de l'existence du dossier
+        if(is_dir()){
+
+            return true;
+        }else{
+            //Création du dossier
+
+            return true;
+        }
+        return false;
+    }
 }
+

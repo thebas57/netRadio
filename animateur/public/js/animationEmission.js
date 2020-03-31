@@ -8,19 +8,20 @@ $(document).ready(() => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// initialisation ///////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+                let onAir = false;
+                let recordDisable = false;
+                let stopDisable = true;
+                let storage = localStorage;
+                let stockageEnregistrements = [];
                 let recorder = new MediaRecorder(stream);
+                let musiques = [];
                 $("#finEmission").hide();
 
-                // let musiques = [];
-                let onAir = false;
-                let pistesEmission = [new Blob([], {'type': "audio/ogg; codecs=opus"})];
-                let enregistrementEmission = new Blob([], {'type': "audio/ogg; codecs=opus"});
-                let dataRecord = [];
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////// Fonctions //////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
                 function afficherMusiques(musiques) {
                     $("#musiquesList").html("");
@@ -60,50 +61,34 @@ $(document).ready(() => {
                     });
                 }
 
-                function lancerRecordMicro() {
-                    $("#onAir h3").addClass("red");
-                    recorder.start();
-                }
+                ///fin musiques ///
 
                 function arreterEnregistrement() {
+                    onAir = false;
                     $("#onAir h3").removeClass("red");
-                    //on stoppe l'enregistrement
-                    recorder.stop();
-
-                    // changerDureeEmission(pisteEmission);
                 }
-
-                function concatenerBlobs(arrayBlob) {
-                    let tmp = new Blob(arrayBlob, {
-                        "type": "audio/*"
-                    });
-                    tmp = new Blob([tmp],{
-                        "type": "audio/ogg; codecs=opus"
-                    });
-
-                    return tmp;
-                }
-
-                // function changerDureeEmission(pisteEmission){
-                //     let audio = document.createElement("audio");
-                //     audio.setAttribute("src", pisteEmission);
-                //
-                //     let duration = audio.duration;
-                //
-                //     let min = Math.floor(((duration / 60)));
-                //     let sec = Math.floor(((duration % 60)));
-                //     let heure = Math.floor(((min / 60)));
-                //     min = Math.floor(((min % 60)));
-                //
-                //     $("#footer").html(" Temps total de l'émission : " + heure + " h " + min + " min " + sec + " sec");
-                // }
-                //
-
+                let dataRecord = [];
                 //enregistrement de l'audio
                 recorder.ondataavailable = function (element){
-                    pistesEmission.push(element.data);
-                    enregistrementEmission = concatenerBlobs([enregistrementEmission, element.data]);
-                    return element.data
+                    dataRecord.push(element.data);
+
+                    let emission_id = $("#emission_id").val();
+                    let datas = new FormData();
+                    datas.append("emission_id", emission_id);
+                    datas.append("audio", element.data);
+                    let route = $("#route").val();
+
+                    fetch(route + "/emission/receiveAudio", {
+                        method: "POST",
+                        body: datas
+                    }).then((res) => {
+                            res.json().then((res) => {
+                                console.log(res);
+                            })
+                            // window.location.href = route + "/animateur";
+
+                        })
+
                 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -111,53 +96,87 @@ $(document).ready(() => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-                // $("#songs").change(() => {
-                //     let fichier = document.querySelector("#songs");
-                //
-                //     for(let i = 0; i < fichier.files.length; i++){
-                //         musiques.push(fichier.files[i]);
-                //     }
-                //
-                //     afficherMusiques(musiques);
-                // });
+                $("#songs").change(() => {
+                    let fichier = document.querySelector("#songs");
 
-                $("#lancerEnregistrement").click(() => {
+                    for(let i = 0; i < fichier.files.length; i++){
+                        musiques.push(fichier.files[i]);
+                    }
+
+                    afficherMusiques(musiques);
+                });
+
+                $("#musiquesList").on("click", ".musique", (evenement) => {
+                    // $("#finEmission").prop("disabled", true);
+                    let id = evenement.currentTarget.getAttribute("data-id");
+
+                    let audios = document.getElementsByClassName("musique");
+                    for(let i = 0; i < audios.length; i++){
+                        let id_audio = audios[i].getAttribute("data-id");
+                        let tmp = document.getElementById("audio" + id_audio);
+                        tmp.muted = true;
+                    }
+
+                    let lecteur = document.getElementById("audio" + id);
+                    lecteur.muted = false;
+                    lecteur.play();
+                    $("#timer").html(lecteur.duration);
+                    $("#onAir h3").removeClass("red");
+                    pistesEmission.push(musiques[id]);
+
+                    lecteur.addEventListener("timeupdate", (event) => {
+                        let time = ((Math.floor(lecteur.duration) - Math.floor(lecteur.currentTime)));
+
+                        let min = ((Math.floor(time / 60)));
+                        let sec = ((time % 60));
+
+                        $("#timer").html(min + " min " + sec);
+                    });
+
+                    lecteur.onended = function () {
+                        $("#onAir h3").addClass("red");
+                        recorder = lancerRecordMicro(recorder);
+                        $("#finEmission").prop("disabled", false);
+                    };
+
+                    let retour = arreterEnregistrement(pistesEmission, recorder, dataRecord);
+                    pistesEmission = retour.pisteEmission;
+                    dataRecord = retour.dataRecord;
+                    recorder = retour.recorder;
+                    changerDureeEmission(pistesEmission);
+
+                    $("#finEmission").prop("disabled", true);
+                });
+
+                $("#musiquesList").on("click", ".suppMusique", (evenement) => {
+                    let id = evenement.currentTarget.getAttribute("data-id");
+
+                    musiques.splice(id, 1);
+
+                    afficherMusiques(musiques);
+                });
+
+                $("#lancerEnregistrement").click((e) => {
+                    e.preventDefault();
+
+                    recorder.start();
+
+                    $("#onAir h3").addClass("red");
                     $("#finEmission").show();
                     $("#lancerEnregistrement").hide();
-                    lancerRecordMicro();
-                    onAir = true;
                 });
 
                 $("#finEmission").click(() => {
+                    $("#onAir h3").removeClass("red");
+
+                    //on stoppe l'enregistrement
+                    recorder.stop();
+                    arreterEnregistrement();
+
                     $("#finEmission").hide();
                     $("#lancerEnregistrement").show();
 
-                    arreterEnregistrement();
-
-                    console.log("piste ", pistesEmission)
-
-                    let pistes = pistesEmission;
-
-                    let emission = enregistrementEmission;
-
-
-                    console.log("emission", emission);
-                    // pistesEmission = concatenerBlobs(pistesEmission);
-
-                    //envoi en bdd
-                    let emission_id = $("#emission_id").val();
-                    let datas = new FormData();
-                    datas.append("emission_id", emission_id);
-                    datas.append("song", pistesEmission);
-                    let route = $("#route").val();
-
-                    // $("#testEcoute").prop("src",window.URL.createObjectURL(pistesEmission));
-                    $("#testEcoute").prop("src",window.URL.createObjectURL(emission));
-
                 });
-
-
-
 
             }).catch(function(err) {
             $.notify(err, "error");

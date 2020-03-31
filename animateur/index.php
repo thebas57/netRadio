@@ -102,6 +102,8 @@ $app->get("/animateur", "\\animateur\\controllers\\AnimateurController:accueil")
 $app->get("/animateur/animerProgramme/{id}", "\\animateur\\controllers\\AnimateurController:emissionsAAnimer");
 $app->get("/animateur/animerEmission/{id}", "\\animateur\\controllers\\AnimateurController:animerEmission");
 
+$app->post("/emission/receiveAudio", "\\animateur\\controllers\\AnimateurController:receiveAudio");
+
 // Ajouter une émssion
 $app->get('/addEmission','\\animateur\\controllers\\Controller:afficherAddEmission')->setName('addEmission');
 $app->post('/addEmission','\\animateur\\controllers\\Controller:addEmission');
