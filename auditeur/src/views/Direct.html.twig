@@ -46,7 +46,7 @@
             Emission en direct : {{creneauMtn}}
         {% endif %}
         </br>
-        Le Programme d'aujourd'hui : 
+        Les prochaines émissions d'aujourd'hui : 
         {% for creneauAjd in creneauAvenir %}
             {{ creneauAjd}}
         {% endfor %}
@@ -54,7 +54,7 @@
             Il n'y a aucune émission programmée
         {% endif %}
         </br>
-        {% if creneauTest is null %}
+        {% if creneauPasse is null %}
             Vous avez raté aucune émission
         {% else %}
             Les émissions que vous avez ratées : 
