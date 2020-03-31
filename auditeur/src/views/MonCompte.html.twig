@@ -21,7 +21,7 @@
 
             <div class="form-group btn-gestion col-12">
                 <button class="btn btn-changeLogin mr-2 mb-2 mt-2" data-toggle="modal" data-target="#modalNewLogin" type="button"><i class="fas fa-user-cog"></i> Changer mon login</button>
-                <button class="btn btn-changeMdp mb-3" role="button" href=" "><i class="fas fa-key"></i> Changer mon mot de passe</button>
+                <button class="btn btn-changeMdp mb-3" data-toggle="modal" data-target="#modalNewLogin" role="button" href=" "><i class="fas fa-key"></i> Changer mon mot de passe</button>
             </div>
         </div>
     </div>
@@ -42,13 +42,45 @@
 
                     <div class="divLoginModif">
                         <label class="lblNewLogin">Veuillez entrer votre nouvel identifiant :</label>
-                        <input type="text" class="form-control newLogin" id="newLogin" name="newLogin" placeholder="Ex : Allan42">
+                        <input type="text" class="form-control newLogin" id="newLogin" placeholder="Ex : Allan42">
 
                     </div>
                 </div>
 
                 <div class="modal-footer col-sm-10 mx-auto">
                     <div class="btn-newLogin col-12">
+                        <button class="btn btn-confirm btn-success mb-2 mt-2" data-id="{{ session.user.id }}"><i class="fas fa-check"></i> Confirmer</button>
+                        <button class="btn btn-close btn-secondary mb-2 mt-2" data-dismiss="modal"><i class="fas fa-check"></i> Annuler</button>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    <div>
+
+     <div role="dialog" class="modal-login modal fade" id="modalNewPass" aria-hidden="true" tabindex="-1">
+        <div id="editPass" class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+                <div class="col-sm-10 mx-auto modal-header">
+                    <h2 class="titre mb-3 mt-3"><i class="far fa-user"></i> Modification de mon mot de passe</h1>
+                </div>
+                <div class="divModal container-fluid col-sm-8 col-lg-8 modal-body">
+                    
+                    <div class="divPassModif">
+                        <label class="lblNewPass1">Veuillez entrer votre nouveau mot de passe :</label>
+                        <input type="password" class="form-control newPass" id="newPass1">
+                    </div>
+
+                     <div class="divPassModif">
+                        <label class="lblNewPass2">Veuillez confirmer votre nouveau mot de passe :</label>
+                        <input type="password" class="form-control newPass" id="newPass2">
+                    </div>
+                </div>
+
+                <div class="modal-footer col-sm-10 mx-auto">
+                    <div class="btn-newPass col-12">
                         <button class="btn btn-confirm btn-success mb-2 mt-2" data-id="{{ session.user.id }}"><i class="fas fa-check"></i> Confirmer</button>
                         <button class="btn btn-close btn-secondary mb-2 mt-2" data-dismiss="modal"><i class="fas fa-check"></i> Annuler</button>
 
