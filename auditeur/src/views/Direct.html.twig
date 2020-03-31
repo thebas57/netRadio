@@ -36,8 +36,35 @@
             <div id="progressBarControl">
                 <div id="progressBar">Pas de lecture</div>
             </div>
-        </div>
+        </div> 
 
+    </div>
+    <div style="color:white;">
+        {% if creneauMtn is null %}
+            Pas d'émission actuellement. La prochaine émission arrive dans {{hAvenir}}min
+        {% else %}
+            Emission en direct : {{creneauMtn}}
+        {% endif %}
+        </br>
+        Les prochaines émissions d'aujourd'hui : 
+        {% for creneauAjd in creneauAvenir %}
+            {{ creneauAjd}}
+        {% endfor %}
+        {% if creneauAvenir is empty %}
+            Il n'y a aucune émission programmée
+        {% endif %}
+        </br>
+        {% if creneauPasse is null %}
+            Vous avez raté aucune émission
+        {% else %}
+            Les émissions que vous avez ratées : 
+            {% for creneauTest in creneauPasse %}
+                {{ creneauTest}}
+            {% endfor %}
+        {% endif %}
+        
+            
+        
     </div>
 <script>
 
@@ -46,7 +73,7 @@ function play(idPlayer, control) {
     let datCren = new Date();
     let datActu = new Date();
     // Début créneau
-    let debutCren = datCren.setHours(18, 56, 00, 00);
+    let debutCren = datCren.setHours(15, 45, 00, 00);
     // Obtention de l'heure actuel en milliseconds
     let actuHour = datActu.getTime();
     // Différence entre l'heure actuelle et le début du créneau converti en seconds
