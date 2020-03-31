@@ -126,14 +126,19 @@ class Controller extends BaseController
         date_default_timezone_set('Europe/Paris');
 
         $creneauMtn = null;
+        $emissionMtn = null;
         $creneauAvenir = [];
+        $emissionsAvenir = [];
         $creneauPasse = [];
+        $emissionsPassees = [];
         $hActuelle = date("H:i:s");
         $dateActuelle = date("Y-m-d");
         $hAvenir = "";
 
         $creneaux = Creneau::where('date_creneau', $dateActuelle)->orderBy('heure_debut')->get();
+        $emissions = Emission::all();
 
+        // Parcourir tous les créneaux pour obtenir celui actuel
         foreach ($creneaux as $creneau) {
             if ($creneau->heure_debut < $hActuelle && $hActuelle < $creneau->heure_fin) {
                 $creneauMtn = $creneau;
@@ -144,15 +149,40 @@ class Controller extends BaseController
             }
         }
 
-        if (empty($creneauAvenir)) {
-        } else {
+        // Parcours des émissions afin d'obtenir le nom, description... de l'émission sur le créneau actuel, à venir, passé
+        foreach($emissions as $emission) {
+            // Pour obtention des propriétés de l'émission au créneau actuel
+            if($creneauMtn != null) {
+                if($creneauMtn->emission_id == $emission->emission_id) {
+                    $emissionMtn=$emission;
+                }
+            }
+            if(!empty($creneauAvenir)) {
+                // Pour obtention des propriétés des émissions à venir
+                foreach ($creneauAvenir as $prochainCreneau) {
+                    if($prochainCreneau->emission_id == $emission->emission_id) {
+                        array_push($emissionsAvenir, $emission);
+                    }
+                }
+            }
+            if(!empty($creneauPasse)) {
+                // Pour obtention des propriétés des émissions passées
+                foreach ($creneauPasse as $creneauxPass) {
+                    if($creneauxPass->emission_id == $emission->emission_id) {
+                        array_push($emissionsPassees, $emission);
+                    }
+                }
+            }
+        }
+
+        if (!empty($creneauAvenir)){
             $hAvenir = $creneauAvenir[0]->heure_debut;
             $h1 = strtotime($creneauAvenir[0]->heure_debut);
             $h2 = strtotime($hActuelle);
             $hAvenir = gmdate("H:i", $h1 - $h2);
         }
 
-        return $this->render($response, 'Direct.html.twig', ['creneaux' => $creneaux, 'creneauMtn' => $creneauMtn, 'creneauAvenir' => $creneauAvenir, 'creneauPasse' => $creneauPasse, 'hAvenir' => $hAvenir]);
+        return $this->render($response, 'Direct.html.twig', ['emissionMtn' => $emissionMtn, 'emissionsAvenir' => $emissionsAvenir, 'emissionsPassees' => $emissionsPassees, 'creneaux' => $creneaux, 'creneauMtn' => $creneauMtn, 'creneauAvenir' => $creneauAvenir, 'creneauPasse' => $creneauPasse, 'hAvenir' => $hAvenir]);
     } //End of function ecouterDirect
 
 
