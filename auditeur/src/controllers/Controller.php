@@ -123,6 +123,8 @@ class Controller extends BaseController
 
     public function ecouterDirect($request, $response)
     {
+        date_default_timezone_set('Europe/Paris');
+
         $creneauMtn = null;
         $creneauAvenir = [];
         $creneauPasse = [];
