@@ -137,7 +137,7 @@ class Controller extends BaseController
         } catch (\Exception $e) {
             return $this->render($response, 'Inscription.html.twig', ['erreur' => $e->getMessage()]);
         }
-    }//End of function gererInscription
+    } //End of function gererInscription
 
     /**
      * @param $request
@@ -167,10 +167,10 @@ class Controller extends BaseController
 
             $_SESSION['user'] = ['id' => $user->utilisateur_id, 'droit' => $user->droit];
 
-            return $this->redirect($response, 'Accueil');
+            return $this->redirect($response,'Accueil');
 
         } catch (\Exception $e) {
-            return $this->render($response, 'Connexion.html.twig', ['erreur' => $e->getMessage()]);
+            return $this->render($response,'Connexion.html.twig', [ 'erreur' =>$e->getMessage() ] );
         }
     }//End of function gererConnexion
 
@@ -186,49 +186,11 @@ class Controller extends BaseController
             unset($_SESSION['user']);
         }
 
-        return $this->redirect($response, 'Accueil');
+        return $this->redirect($response,'Accueil');
     }//End of function deconnexion
     
 
-    /**
-     * @param $request
-     * @param $response
-     * @param $args
-     * Permet de modifier le login de l'utilisateur
-     */
-        public function updateLogin($request, $response, $args)
-    {
-
-        $newlog = $_POST['login'];
-        $postId = intval($_POST['id']);
-        // $existLogin = Utilisateur::where('identifiant', 'like',$newlog)
-        //   ->first();
-
-
-
-        // test si le login existe
-        $login = Utilisateur::find($postId);
-
-        // return json_encode($_POST['id']);
-
-        //   if($login->identifiant != $_POST['newLogin'])
-        //   {
-        //     if ($existLogin)
-        //     {
-        //         echo "<script>alert(\"icciiii\")</script>";
-        //     }
-        //   }
-
-        //   echo "<script>alert(\"laaaaa\")</script>";
-
-
-        $login->identifiant   = $newlog;
-
-        $login->save();
-        return json_encode($login);
-    }
-
-        public function ecouterDirect($request, $response)
+    public function ecouterDirect($request, $response)
     {
         date_default_timezone_set('Europe/Paris');
 
@@ -261,5 +223,43 @@ class Controller extends BaseController
 
         return $this->render($response, 'Direct.html.twig', ['creneaux' => $creneaux, 'creneauMtn' => $creneauMtn, 'creneauAvenir' => $creneauAvenir, 'creneauPasse' => $creneauPasse, 'hAvenir' => $hAvenir]);
     } //End of function ecouterDirect
+
+    /**
+         * @param $request
+         * @param $response
+         * @param $args
+         * Permet de modifier le login de l'utilisateur
+         */
+    public function updateLogin($request,$response, $args){
+        
+        $newlog = $_POST['login'];
+        $postId = intval($_POST['id']);
+        // $existLogin = Utilisateur::where('identifiant', 'like',$newlog)
+            //   ->first();
+
+        
+          
+      // test si le login existe
+      $login = Utilisateur::find($postId);
+      
+        // return json_encode($_POST['id']);
+
+    //   if($login->identifiant != $_POST['newLogin'])
+    //   {
+    //     if ($existLogin) 
+    //     {
+    //         echo "<script>alert(\"icciiii\")</script>";
+    //     }
+    //   }
+
+    //   echo "<script>alert(\"laaaaa\")</script>";
+      
+
+        $login->identifiant   = $newlog;
+
+        $login->save();
+         return json_encode($login);
+
+    }
 }
 
