@@ -167,12 +167,11 @@ class Controller extends BaseController
 
             $_SESSION['user'] = ['id' => $user->utilisateur_id, 'droit' => $user->droit];
 
-            return $this->redirect($response,'Accueil');
-
+            return $this->redirect($response, 'Accueil');
         } catch (\Exception $e) {
-            return $this->render($response,'Connexion.html.twig', [ 'erreur' =>$e->getMessage() ] );
+            return $this->render($response, 'Connexion.html.twig', ['erreur' => $e->getMessage()]);
         }
-    }//End of function gererConnexion
+    } //End of function gererConnexion
 
     /**
      * @param $request
@@ -186,23 +185,28 @@ class Controller extends BaseController
             unset($_SESSION['user']);
         }
 
-        return $this->redirect($response,'Accueil');
-    }//End of function deconnexion
-    
+        return $this->redirect($response, 'Accueil');
+    } //End of function deconnexion
+
 
     public function ecouterDirect($request, $response)
     {
         date_default_timezone_set('Europe/Paris');
 
         $creneauMtn = null;
+        $emissionMtn = null;
         $creneauAvenir = [];
+        $emissionsAvenir = [];
         $creneauPasse = [];
+        $emissionsPassees = [];
         $hActuelle = date("H:i:s");
         $dateActuelle = date("Y-m-d");
         $hAvenir = "";
 
         $creneaux = Creneau::where('date_creneau', $dateActuelle)->orderBy('heure_debut')->get();
+        $emissions = Emission::all();
 
+        // Parcourir tous les créneaux pour obtenir celui actuel
         foreach ($creneaux as $creneau) {
             if ($creneau->heure_debut < $hActuelle && $hActuelle < $creneau->heure_fin) {
                 $creneauMtn = $creneau;
@@ -213,53 +217,77 @@ class Controller extends BaseController
             }
         }
 
-        if (empty($creneauAvenir)) {
-        } else {
+        // Parcours des émissions afin d'obtenir le nom, description... de l'émission sur le créneau actuel, à venir, passé
+        foreach($emissions as $emission) {
+            // Pour obtention des propriétés de l'émission au créneau actuel
+            if($creneauMtn != null) {
+                if($creneauMtn->emission_id == $emission->emission_id) {
+                    $emissionMtn=$emission;
+                }
+            }
+            if(!empty($creneauAvenir)) {
+                // Pour obtention des propriétés des émissions à venir
+                foreach ($creneauAvenir as $prochainCreneau) {
+                    if($prochainCreneau->emission_id == $emission->emission_id) {
+                        array_push($emissionsAvenir, $emission);
+                    }
+                }
+            }
+            if(!empty($creneauPasse)) {
+                // Pour obtention des propriétés des émissions passées
+                foreach ($creneauPasse as $creneauxPass) {
+                    if($creneauxPass->emission_id == $emission->emission_id) {
+                        array_push($emissionsPassees, $emission);
+                    }
+                }
+            }
+        }
+
+        if (!empty($creneauAvenir)){
             $hAvenir = $creneauAvenir[0]->heure_debut;
             $h1 = strtotime($creneauAvenir[0]->heure_debut);
             $h2 = strtotime($hActuelle);
             $hAvenir = gmdate("H:i", $h1 - $h2);
         }
 
-        return $this->render($response, 'Direct.html.twig', ['creneaux' => $creneaux, 'creneauMtn' => $creneauMtn, 'creneauAvenir' => $creneauAvenir, 'creneauPasse' => $creneauPasse, 'hAvenir' => $hAvenir]);
+        return $this->render($response, 'Direct.html.twig', ['emissionMtn' => $emissionMtn, 'emissionsAvenir' => $emissionsAvenir, 'emissionsPassees' => $emissionsPassees, 'creneaux' => $creneaux, 'creneauMtn' => $creneauMtn, 'creneauAvenir' => $creneauAvenir, 'creneauPasse' => $creneauPasse, 'hAvenir' => $hAvenir]);
     } //End of function ecouterDirect
 
-    /**
+        /**
          * @param $request
          * @param $response
          * @param $args
          * Permet de modifier le login de l'utilisateur
          */
-    public function updateLogin($request,$response, $args){
-        
+    public function updateLogin($request, $response, $args)
+    {
+
         $newlog = $_POST['login'];
         $postId = intval($_POST['id']);
         // $existLogin = Utilisateur::where('identifiant', 'like',$newlog)
-            //   ->first();
+        //   ->first();
 
-        
-          
-      // test si le login existe
-      $login = Utilisateur::find($postId);
-      
+
+
+        // test si le login existe
+        $login = Utilisateur::find($postId);
+
         // return json_encode($_POST['id']);
 
-    //   if($login->identifiant != $_POST['newLogin'])
-    //   {
-    //     if ($existLogin) 
-    //     {
-    //         echo "<script>alert(\"icciiii\")</script>";
-    //     }
-    //   }
+        //   if($login->identifiant != $_POST['newLogin'])
+        //   {
+        //     if ($existLogin) 
+        //     {
+        //         echo "<script>alert(\"icciiii\")</script>";
+        //     }
+        //   }
 
-    //   echo "<script>alert(\"laaaaa\")</script>";
-      
+        //   echo "<script>alert(\"laaaaa\")</script>";
+
 
         $login->identifiant   = $newlog;
 
         $login->save();
-         return json_encode($login);
-
+        return json_encode($login);
     }
 }
-

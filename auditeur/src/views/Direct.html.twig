@@ -40,26 +40,26 @@
 
     </div>
     <div style="color:white;">
-        {% if creneauMtn is null %}
-            Pas d'émission actuellement. La prochaine émission arrive dans {{hAvenir}}min
+        {% if emissionMtn is null %}
+            Pas d'émission actuellement. La prochaine émission arrive dans {{hAvenir}}min 
         {% else %}
-            Emission en direct : {{creneauMtn}}
+            Emission en direct : {{emissionMtn.titre}}
         {% endif %}
         </br>
         Les prochaines émissions d'aujourd'hui : 
-        {% for creneauAjd in creneauAvenir %}
-            {{ creneauAjd}}
+        {% for emissionsAjd in emissionsAvenir %}
+            {{ emissionsAjd.titre}} // 
         {% endfor %}
-        {% if creneauAvenir is empty %}
+        {% if emissionsAvenir is empty %}
             Il n'y a aucune émission programmée
         {% endif %}
         </br>
-        {% if creneauPasse is null %}
-            Vous avez raté aucune émission
+        {% if emissionsPassees is null %}
+            Vous n'avez raté aucune émission
         {% else %}
             Les émissions que vous avez ratées : 
-            {% for creneauTest in creneauPasse %}
-                {{ creneauTest}}
+            {% for emissionsPass in emissionsPassees %}
+                {{ emissionsPass.titre}} // 
             {% endfor %}
         {% endif %}
         
