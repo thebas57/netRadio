@@ -115,6 +115,10 @@ $app->get('/supprEmission/{id}','\\animateur\\controllers\\Controller:supprEmiss
 $app->get('/modifCreneau{id}', "\\animateur\\controllers\\Controller:afficherModifCreneau")->setName('modifCreneau');
 $app->post('/modifCreneau{id}', "\\animateur\\controllers\\Controller:modifCreneau");
 
+
+//Page de test
+$app->get("/test","\\animateur\\controllers\\AnimateurController:createWorkingDir");
+
 /////////////
 // RUN     //
 /////////////

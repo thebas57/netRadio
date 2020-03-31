@@ -126,14 +126,24 @@ class AnimateurController extends BaseController
     }
 
 
-    private function setDossierDeTravail($titre){
+    public function createWorkingDir(){
+        $titre = "test";
         //vérification de l'existence du dossier
-        if(is_dir()){
-
+        if(file_exists("emissions/".$titre) && is_dir("../emissions/".$titre)){
+            print_r("Existe déjà !");
+            exit;
             return true;
         }else{
             //Création du dossier
-
+            print_r("On crée !");
+            $old = umask(0);
+            if (mkdir("emissions/".$titre,0777,true)){
+                print_r("On a réussi !");
+            } else {
+                print_r("J'ai pas réussi !");
+            }
+            umask($old);
+            exit;
             return true;
         }
         return false;
