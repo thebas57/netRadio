@@ -50,11 +50,20 @@
         {% for creneauAjd in creneauAvenir %}
             {{ creneauAjd}}
         {% endfor %}
+        {% if creneauAvenir is empty %}
+            Il n'y a aucune émission programmée
+        {% endif %}
         </br>
-        Les émissions que vous avez ratées : 
-        {% for creneauTest in creneauPasse %}
-            {{ creneauTest}}
-        {% endfor %}
+        {% if creneauTest is null %}
+            Vous avez raté aucune émission
+        {% else %}
+            Les émissions que vous avez ratées : 
+            {% for creneauTest in creneauPasse %}
+                {{ creneauTest}}
+            {% endfor %}
+        {% endif %}
+        
+            
         
     </div>
 <script>
