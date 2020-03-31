@@ -1,4 +1,4 @@
-{% extends 'Template.html.twig' %}
+{% extends "Template.html.twig" %}
 {% set root = base_url() %}
 
 {% block css %}
@@ -7,63 +7,68 @@
 
 {% block body %}
 	{{ parent() }}
-	<style>
-		body {
-			background-color: lightgrey;
-		}
-	</style>
+	<link rel="stylesheet" href="{{ root }}/public/style/css/AjoutStaff.css">
 
-	<div class="titre">
-		<h1>Ajouter un créneau</h1>
-	</div>
-
-	<div class="formulaire divForm container-fluid">
-		<form action="{{ base_url() }}/addCreneau" method="post" class="myForm" id="xxxx">
-
-			<div class="form-group">
-				<label for="emission">Emission :</label>
-				<select class="custom-select" id="emission" name="emission">
-					{% for emission in emissions %}
-						<option value="{{ emission.emission_id }}">
-							{{emission.titre}}
-						</option>
-					{% endfor %}
-				</select>
-			</div>
-
-			<div class="form-group">
-				<label for="date">Date :</label>
-				<input class="form-control" type="date" id="date" name="date">
-			</div>
-
-			<div class="form-row">
-				<div class="form-group col-md-6 col-xs-12">
-					<label for="hdd">Heure de début :</label>
-					<input class="form-control" type="time" id="hdd" name="hdd" step="60">
-				</div>
-
-				<div class="form-group col-md-6 col-xs-12">
-					<label for="hdf">Heure de fin :</label>
-					<input class="form-control" type="time" id="hdf" name="hdf">
+	<div class="container">
+		<div class="row main">
+			<div class="panel-heading col-6 mx-auto">
+				<div class="panel-title text-center">
+					<h1 class="title">Ajouter un créneau</h1>
 				</div>
 			</div>
+			<div class="main-register main-center col-6">
+				<form action="{{ root }}/addCreneau" method="post" class="row">
 
-<!--
-			<div class="form-group">
-				<label for="repeat">Répéter</label>
-				<select class="custom-select mr-sm-2">
-					<option value="jamais">
-						Jamais
-					</option>
-					<option value="semaine">
-						Toutes les semaines
-					</option>
-				</select>
+					<div class="form-group">
+						<i class="fas fa-broadcast-tower"></i>
+						<label for="emission" class="cols-sm-2 control-label">Emission</label>
+						<div class="cols-sm-10">
+							<div class="input-group">
+								<select class="custom-select" id="emission" name="emission">
+									{% for emission in emissions %}
+										<option value="{{ emission.emission_id }}">
+											{{emission.titre}}
+										</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<i class="fas fa-calendar-day"></i>
+						<label for="password" class="cols-sm-2 control-label">Date</label>
+						<div class="cols-sm-10">
+							<div class="input-group">
+								<input class="form-control" type="date" id="date" name="date">
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<i class="fas fa-hourglass-start"></i>
+						<label for="droit">Heure de début</label>
+						<div class="cols-sm-10">
+							<div class="input-group">
+								<input class="form-control" type="time" id="hdd" name="hdd" step="60">
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<i class="fas fa-hourglass-end"></i>
+						<label for="droit">Heure de fin</label>
+						<div class="cols-sm-10">
+							<div class="input-group">
+								<input class="form-control" type="time" id="hdf" name="hdf">
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group ">
+						<button type="submit" class="btn btn-primary btn-lg btn-block login-button">Ajouter</button>
+					</div>
+				</form>
 			</div>
-			-->
-			<button class="btn btn-primary" type="submit">Ajouter</button>
 		</div>
-
-	</form>
-
+	</div>
 {% endblock %}
