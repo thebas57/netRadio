@@ -13,20 +13,21 @@ use Psr\Http\Message\ResponseInterface;
 
 class AnimateurController extends BaseController
 {
-    public function accueil($request, $response){
+    public function accueil($request, $response)
+    {
         $programmes = Programme::all();
 
-        $_SESSION["user"] = ["id"=>1, "droit" => 1];
+        $_SESSION["user"] = ["id" => 1, "droit" => 1];
 
         $lesProgrammes = [];
 
-        foreach ($programmes as $programme){
+        foreach ($programmes as $programme) {
             $emissions = Emission::where("programme_id", "=", $programme->programme_id)->get();
-            foreach ($emissions as $emission){
+            foreach ($emissions as $emission) {
                 $animateur = Utilisateur::find($emission->animateur);
-                if($animateur){
+                if ($animateur) {
                     $id_session = $_SESSION["user"]["id"];
-                    if($animateur->utilisateur_id == $id_session){
+                    if ($animateur->utilisateur_id == $id_session) {
                         $lesProgrammes[] = $programme;
                         break;
                     }
@@ -37,12 +38,13 @@ class AnimateurController extends BaseController
         return $this->render($response, "AccueilAnimateur.html.twig", ["programmes" => $lesProgrammes]);
     }
 
-    public function emissionsAAnimer($request, $response, $args){
+    public function emissionsAAnimer($request, $response, $args)
+    {
         $idProgramme = $args["id"];
         $idUser = $_SESSION["user"]["id"];
         $emissions = Emission::where("programme_id", "=", $idProgramme)->where("animateur", "=", $idUser)->get();
         $lesEmissions = [];
-        foreach ($emissions as $emission){
+        foreach ($emissions as $emission) {
             $creneau = Creneau::where("emission_id", "=", $emission->emission_id)->first();
 
 
@@ -69,7 +71,8 @@ class AnimateurController extends BaseController
         return $this->render($response, "EmissionsAnimateur.html.twig", ["emissions" => $lesEmissions, "programmeNom" => $programme->nom]);
     }
 
-    public function animerEmission($request, $response, $args){
+    public function animerEmission($request, $response, $args)
+    {
         $emission_id = $args["id"];
         $emission = Emission::find($emission_id);
         $creneau = Creneau::where("emission_id", "=", $emission_id)->first();
@@ -90,30 +93,31 @@ class AnimateurController extends BaseController
                 "debut" => $heureDebut,
                 "fin" => $heureFin
             ],
-             "programmeNom" => $programme->nom,
-             "emission_id" => $emission_id
+                "programmeNom" => $programme->nom,
+                "emission_id" => $emission_id
             ]);
     }
 
-    public function receiveAudio($request, $response){
+    public function receiveAudio($request, $response)
+    {
         $emission_id = (isset($_POST["emission_id"])) ? $_POST["emission_id"] : null;
         $audio = (isset($_FILES["audio"])) ? $_FILES["audio"] : null;
 
-        if(!isset($emission_id) || !isset($audio)){
+        if (!isset($emission_id) || !isset($audio)) {
             return json_encode(["error" => "un champ requis n'a pas été rempli", "code" => 500]);
         }
 
         $emission = Emission::find($emission_id);
 
-        if(!isset($emission) || empty($emission)){
+        if (!isset($emission) || empty($emission)) {
             return json_encode(["error" => "Emission non trouvée", "code" => 404]);
         }
 
         $tmp = $emission->fichier;
 
-        if(!isset($emission->fichier)){
+        if (!isset($emission->fichier)) {
             $emission->fichier = $audio;
-        }else{
+        } else {
             setDossierDeTravail($emission->titre);
             //concaténation :p
             $emission->fichier = DB::raw("concatenate(", $emission->fichier, ",", $audio, ")");
@@ -126,27 +130,38 @@ class AnimateurController extends BaseController
     }
 
 
-    public function createWorkingDir(){
-        $titre = "test";
+    public function createWorkingDir($titre)
+    {
         //vérification de l'existence du dossier
-        if(file_exists("emissions/".$titre) && is_dir("../emissions/".$titre)){
-            print_r("Existe déjà !");
-            exit;
+        if (file_exists("emissions/" . $titre) && is_dir("/emissions/" . $titre)) {
             return true;
-        }else{
+        } else {
             //Création du dossier
-            print_r("On crée !");
             $old = umask(0);
-            if (mkdir("emissions/".$titre,0777,true)){
-                print_r("On a réussi !");
+            if (mkdir("emissions/" . $titre, 0777, true)) {
+                umask($old);
+                return true;
             } else {
-                print_r("J'ai pas réussi !");
+                //Problèmes à la création
+                umask($old);
+                return false;
             }
-            umask($old);
-            exit;
+        }
+    }
+
+    public function deleteWorkingDir($titre)
+    {
+//        Vérification de l'existence du dossier
+        if (file_exists("emissions/" . $titre) && is_dir("emissions/" . $titre)) {
+            if (rmdir("emissions/".$titre)){
+                return true;
+            } else {
+                // Problème à la suppression du dossier (Dossier non vide, etc ...)
+                return false;
+            }
+        } else {
             return true;
         }
-        return false;
     }
 }
 

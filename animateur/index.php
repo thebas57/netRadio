@@ -116,8 +116,6 @@ $app->get('/modifCreneau{id}', "\\animateur\\controllers\\Controller:afficherMod
 $app->post('/modifCreneau{id}', "\\animateur\\controllers\\Controller:modifCreneau");
 
 
-//Page de test
-$app->get("/test","\\animateur\\controllers\\AnimateurController:createWorkingDir");
 
 /////////////
 // RUN     //
