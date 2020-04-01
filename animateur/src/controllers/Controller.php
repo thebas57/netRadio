@@ -137,6 +137,26 @@ class Controller extends BaseController
             $date = filter_var($date, FILTER_SANITIZE_STRING);
             $emission = filter_var($emission, FILTER_SANITIZE_STRING);
 
+            //Verif si heure ok
+            if ($hdd > $hdf) {
+                throw new \Exception("L'heure de début ne peut pas être supérieur à celle de fin voyons...");
+            }
+
+            // Verif si un creneau est déjà occupé
+            $dateActuelle = date("Y-m-d");
+
+            $creneaux = Creneau::where('date_creneau', $dateActuelle)->orderBy('heure_debut')->get();
+
+            foreach ($creneaux as $creneau) {
+                if (
+                    $creneau->heure_debut <= $hdd && $creneau->heure_fin <= $hdd ||
+                    $creneau->heure_debut >= $hdf && $creneau->heure_fin >= $hdf
+                ) {
+                } else {
+                    throw new \Exception("Il existe déjà un créneau dans cette tranche d'horaire");
+                }
+            }
+
             //on les insère en bdd
             $creneau = new Creneau();
             $creneau->heure_debut = $hdd;
@@ -159,7 +179,7 @@ class Controller extends BaseController
         }
     } //end of function addCreneau
 
-    
+
 
     /**
      * Fonction permettant d'ajouter des programmes.
@@ -204,7 +224,7 @@ class Controller extends BaseController
      * @param $response
      * @return mixed
      */
-    public function modifCreneau($request, $response,$args)
+    public function modifCreneau($request, $response, $args)
     {
 
         $creneau = Creneau::find(intVal($args['id']));
@@ -241,7 +261,7 @@ class Controller extends BaseController
      * @param $response
      * @return mixed
      */
-    public function modifEmission($request, $response,$args)
+    public function modifEmission($request, $response, $args)
     {
 
         $emission = Emission::find(intVal($args['id']));
@@ -277,7 +297,7 @@ class Controller extends BaseController
      * @param $response
      * @return mixed
      */
-    public function modifProgramme($request, $response,$args)
+    public function modifProgramme($request, $response, $args)
     {
 
         $programme = Programme::find(intVal($args['id']));
@@ -290,7 +310,7 @@ class Controller extends BaseController
         //redirection
         $programme = Programme::all();
         return $this->redirect($response, 'programme');
-    } //end of function addCreneau
+    } //end of function modifProgramme
 
     /**
      * Fonction permettant l'ajout d'un programme en BDD
@@ -340,7 +360,7 @@ class Controller extends BaseController
     public function afficherAddEmission($request, $response, $args)
     {
         $prog = Programme::all();
-        $anim = Utilisateur::where('droit',2)->get();
+        $anim = Utilisateur::where('droit', 2)->get();
         return $this->render($response, 'AddEmission.html.twig', ['programmes' => $prog, 'utilisateurs' => $anim]);
     } //End of function addEmission
 
@@ -365,8 +385,8 @@ class Controller extends BaseController
      */
     public function supprProgramme($request, $response, $args)
     {
-        
-/*
+
+        /*
         $emissions = DB::table('emission') 
             ->join('emission','emission.programme_id','=',$id)->get();
 
@@ -381,8 +401,8 @@ class Controller extends BaseController
 
         $programme = Programme::find(intVal($id));
         $programme->delete();
-        
-        $emissions = Emission::where('programme_id',intval($id))->get();
+
+        $emissions = Emission::where('programme_id', intval($id))->get();
         foreach ($emissions as $key => $emission) {
             $emission->delete();
         }
@@ -394,8 +414,6 @@ class Controller extends BaseController
             $emission->delete();
         }
         */
-
-
     } //End of function supprCreneau
 
     /**
@@ -408,16 +426,13 @@ class Controller extends BaseController
     {
         $id = $args['id'];
         $emission = Emission::find(intVal($id));
-        $creneaux = Creneau::where('emission_id',intval($id))->get();
-        if (count($creneaux)>0) {
+        $creneaux = Creneau::where('emission_id', intval($id))->get();
+        if (count($creneaux) > 0) {
             throw new \Exception("Impossible, cette émission est attribuée à un créneau");
-        }
-        else {   
+        } else {
             $emission->delete();
             return $this->redirect($response, 'emission');
         }
-
-
     } //End of function supprEmission
 
     /**
@@ -517,21 +532,23 @@ class Controller extends BaseController
         return $this->redirect($response, 'accueil');
     } //End of function deconnexion
 
-    public function afficherAjoutStaff($request,$response){
-        return $this->render($response,'AjoutStaff.html.twig');
-    }//End of function afficherAjoutStaff
+    public function afficherAjoutStaff($request, $response)
+    {
+        return $this->render($response, 'AjoutStaff.html.twig');
+    } //End of function afficherAjoutStaff
 
-    public function ajoutStaff($request,$response){
+    public function ajoutStaff($request, $response)
+    {
         $email = (isset($_POST['email'])) ? $_POST['email'] : null;
         $login = (isset($_POST['identifiant'])) ? $_POST['identifiant'] : null;
         $password = (isset($_POST['password'])) ? $_POST['password'] : null;
-        $droit = (isset($_POST['droit'])) ? $_POST['droit'] : null ;
+        $droit = (isset($_POST['droit'])) ? $_POST['droit'] : null;
 
         $login = filter_var($login, FILTER_SANITIZE_STRING);
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
         $droit = filter_var($droit, FILTER_SANITIZE_NUMBER_INT);
 
-        $password = password_hash($password,PASSWORD_DEFAULT);
+        $password = password_hash($password, PASSWORD_DEFAULT);
 
         $user = new Utilisateur();
         $user->identifiant = $login;
@@ -540,27 +557,27 @@ class Controller extends BaseController
         $user->email = $email;
         $user->save();
 
-        return $this->redirect($response,'accueil');
+        return $this->redirect($response, 'accueil');
+    } //End of function ajoutStaff
 
-    }//End of function ajoutStaff
-
-    public function afficherListeUsers($request,$response){
+    public function afficherListeUsers($request, $response)
+    {
 
         $users = Utilisateur::all();
 
-        return $this->render($response,'VoirUsers.html.twig',['users' => $users]);
+        return $this->render($response, 'VoirUsers.html.twig', ['users' => $users]);
+    } //End of function afficherListeUsers
 
-    }//End of function afficherListeUsers
-
-    public function supprUser($request,$response,$args){
+    public function supprUser($request, $response, $args)
+    {
         $id = $args['id'];
 
-        if (is_numeric($id)){
+        if (is_numeric($id)) {
             $user = Utilisateur::find(intval($id));
-            if (isset($user)){
+            if (isset($user)) {
                 $user->delete();
             }
         }
-    }//End of function supprUser
+    } //End of function supprUser
 
 }
