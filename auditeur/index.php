@@ -56,12 +56,14 @@ $app->get('/','\\auditeur\\controllers\\Controller:afficherAccueil')->setName("A
 $app->get('/inscription','\\auditeur\\controllers\\Controller:afficherInscription');
 $app->get('/connexion','\\auditeur\\controllers\\Controller:afficherConnexion');
 $app->get('/monCompte/{id}','\\auditeur\\controllers\\Controller:afficherCompte');
+$app->get('/MonComptePass/{id}','\\auditeur\\controllers\\Controller:afficherComptePass');
 $app->get('/direct','\\auditeur\\controllers\\Controller:ecouterDirect')->setName("direct");
 
 
 $app->get('/deconnexion','\\auditeur\\controllers\\Controller:deconnexion');
 
 $app->post('/inscription','\\auditeur\\controllers\\Controller:gererInscription');
+$app->post('/MonComptePass/{id}','\\auditeur\\controllers\\Controller:updateMdp');
 $app->post('/connexion','\\auditeur\\controllers\\Controller:gererConnexion');
 $app->post('/monCompte/{id}','\\auditeur\\controllers\\Controller:updateLogin');
 

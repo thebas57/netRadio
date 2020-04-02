@@ -1,9 +1,14 @@
-.titre, .divForm, .btn-newLogin, .divModal, .titre-compte  {
+.titre, .divForm, .btn-newLogin, .divModal, .titre-compte, .btn-newPass  {
     text-align: center;
   }
 
-.titre-compte, .email {
+.titre-compte, .email, a {
     color: white;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #212529;
 }
 
 body {
@@ -23,7 +28,7 @@ body {
     }
 }
 
-.manageAcc, .modal-login {
+.manageAcc, .modal-login, .modal-password {
     min-width: 290px;
 }
 
