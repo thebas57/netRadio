@@ -118,9 +118,21 @@ class AnimateurController extends BaseController
         if (!isset($emission->fichier)) {
             $emission->fichier = $audio;
         } else {
-            setDossierDeTravail($emission->titre);
-            //concaténation :p
-            $emission->fichier = DB::raw("concatenate(", $emission->fichier, ",", $audio, ")");
+            if ($this->createWorkingDir($emission->titre)) {
+
+
+                //On déplace l'audio )
+                $truc = json_decode($emission->fichier);
+                return json_encode(['fichier' => $truc->tmp_name]);
+                if (rename(fopen($truc->tmp_name), "emissions/" . $emission->titre . "/1.mp3")
+                    && move_uploaded_file($audio["tmp_name"], "./emissions/" . $emission->titre . "/2.mp3")) {
+                    return json_encode(["value" => "JE SUIS DANS lE IF"]);
+                    //On a réussi à mettre les deux sur le serveur
+//                   $emission->fichier = $this->concatAudio($emission->titre);
+//                   $this->deleteWorkingDir($emission->titre);
+                   exit;
+                }
+            }
         }
 
         $emission->save();
@@ -130,10 +142,20 @@ class AnimateurController extends BaseController
     }
 
 
-    public function createWorkingDir($titre)
+    private function concatAudio($titre){
+//        On vérifie que les fichiers existent
+        if (file_exists("emissions/" . $titre . "/1.mp3") && file_exists("emissions/" . $titre . "/2.mp3")) {
+           //On concat
+            exec("ffmpeg -i concat:'emissions/'.$titre.'/1.mp3|emissions/'.$titre.'/2.mp3' -c copy /emissions/'.$titre.'/out.mp3");
+            return (fopen("emissions/".$titre."/out.mp3"));
+        }
+
+    }
+
+    private function createWorkingDir($titre)
     {
         //vérification de l'existence du dossier
-        if (file_exists("emissions/" . $titre) && is_dir("/emissions/" . $titre)) {
+        if (is_dir("emissions/" . $titre)) {
             return true;
         } else {
             //Création du dossier
@@ -149,11 +171,11 @@ class AnimateurController extends BaseController
         }
     }
 
-    public function deleteWorkingDir($titre)
+    private function deleteWorkingDir($titre)
     {
 //        Vérification de l'existence du dossier
         if (file_exists("emissions/" . $titre) && is_dir("emissions/" . $titre)) {
-            if (rmdir("emissions/".$titre)){
+            if (rmdir("emissions/" . $titre)) {
                 return true;
             } else {
                 // Problème à la suppression du dossier (Dossier non vide, etc ...)

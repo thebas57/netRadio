@@ -66,22 +66,20 @@ $(document).ready(() => {
                 function arreterEnregistrement() {
                     onAir = false;
                     $("#onAir h3").removeClass("red");
-                }
-                let dataRecord = [];
-                //enregistrement de l'audio
-                recorder.ondataavailable = function (element){
-                    dataRecord.push(element.data);
+                    let dataRecord = [];
+                    //enregistrement de l'audio
+                    recorder.ondataavailable = function (element){
+                        dataRecord.push(element.data);
 
-                    let emission_id = $("#emission_id").val();
-                    let datas = new FormData();
-                    datas.append("emission_id", emission_id);
-                    datas.append("audio", element.data);
-                    let route = $("#route").val();
-
-                    fetch(route + "/emission/receiveAudio", {
-                        method: "POST",
-                        body: datas
-                    }).then((res) => {
+                        let emission_id = $("#emission_id").val();
+                        let datas = new FormData();
+                        datas.append("emission_id", emission_id);
+                        datas.append("audio", element.data);
+                        let route = $("#route").val();
+                        fetch(route + "/emission/receiveAudio", {
+                            method: "POST",
+                            body: datas
+                        }).then((res) => {
                             res.json().then((res) => {
                                 console.log(res);
                             })
@@ -89,7 +87,9 @@ $(document).ready(() => {
 
                         })
 
-                };
+                    };
+                }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// fin des fonctions ///////////////////////////////////////////////////////////////
@@ -106,55 +106,55 @@ $(document).ready(() => {
                     afficherMusiques(musiques);
                 });
 
-                $("#musiquesList").on("click", ".musique", (evenement) => {
-                    // $("#finEmission").prop("disabled", true);
-                    let id = evenement.currentTarget.getAttribute("data-id");
-
-                    let audios = document.getElementsByClassName("musique");
-                    for(let i = 0; i < audios.length; i++){
-                        let id_audio = audios[i].getAttribute("data-id");
-                        let tmp = document.getElementById("audio" + id_audio);
-                        tmp.muted = true;
-                    }
-
-                    let lecteur = document.getElementById("audio" + id);
-                    lecteur.muted = false;
-                    lecteur.play();
-                    $("#timer").html(lecteur.duration);
-                    $("#onAir h3").removeClass("red");
-                    pistesEmission.push(musiques[id]);
-
-                    lecteur.addEventListener("timeupdate", (event) => {
-                        let time = ((Math.floor(lecteur.duration) - Math.floor(lecteur.currentTime)));
-
-                        let min = ((Math.floor(time / 60)));
-                        let sec = ((time % 60));
-
-                        $("#timer").html(min + " min " + sec);
-                    });
-
-                    lecteur.onended = function () {
-                        $("#onAir h3").addClass("red");
-                        recorder = lancerRecordMicro(recorder);
-                        $("#finEmission").prop("disabled", false);
-                    };
-
-                    let retour = arreterEnregistrement(pistesEmission, recorder, dataRecord);
-                    pistesEmission = retour.pisteEmission;
-                    dataRecord = retour.dataRecord;
-                    recorder = retour.recorder;
-                    changerDureeEmission(pistesEmission);
-
-                    $("#finEmission").prop("disabled", true);
-                });
-
-                $("#musiquesList").on("click", ".suppMusique", (evenement) => {
-                    let id = evenement.currentTarget.getAttribute("data-id");
-
-                    musiques.splice(id, 1);
-
-                    afficherMusiques(musiques);
-                });
+                // $("#musiquesList").on("click", ".musique", (evenement) => {
+                //     // $("#finEmission").prop("disabled", true);
+                //     let id = evenement.currentTarget.getAttribute("data-id");
+                //
+                //     let audios = document.getElementsByClassName("musique");
+                //     for(let i = 0; i < audios.length; i++){
+                //         let id_audio = audios[i].getAttribute("data-id");
+                //         let tmp = document.getElementById("audio" + id_audio);
+                //         tmp.muted = true;
+                //     }
+                //
+                //     let lecteur = document.getElementById("audio" + id);
+                //     lecteur.muted = false;
+                //     lecteur.play();
+                //     $("#timer").html(lecteur.duration);
+                //     $("#onAir h3").removeClass("red");
+                //     // pistesEmission.push(musiques[id]);
+                //
+                //     lecteur.addEventListener("timeupdate", (event) => {
+                //         let time = ((Math.floor(lecteur.duration) - Math.floor(lecteur.currentTime)));
+                //
+                //         let min = ((Math.floor(time / 60)));
+                //         let sec = ((time % 60));
+                //
+                //         $("#timer").html(min + " min " + sec);
+                //     });
+                //
+                //     lecteur.onended = function () {
+                //         $("#onAir h3").addClass("red");
+                //         recorder = lancerRecordMicro(recorder);
+                //         $("#finEmission").prop("disabled", false);
+                //     };
+                //
+                //     let retour = arreterEnregistrement(pistesEmission, recorder, dataRecord);
+                //     pistesEmission = retour.pisteEmission;
+                //     dataRecord = retour.dataRecord;
+                //     recorder = retour.recorder;
+                //     // changerDureeEmission(pistesEmission);
+                //
+                //     $("#finEmission").prop("disabled", true);
+                // });
+                //
+                // $("#musiquesList").on("click", ".suppMusique", (evenement) => {
+                //     let id = evenement.currentTarget.getAttribute("data-id");
+                //
+                //     musiques.splice(id, 1);
+                //
+                //     afficherMusiques(musiques);
+                // });
 
                 $("#lancerEnregistrement").click((e) => {
                     e.preventDefault();
