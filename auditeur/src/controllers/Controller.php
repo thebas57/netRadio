@@ -96,6 +96,13 @@ class Controller extends BaseController
         return $this->render($response, 'MonCompte.html.twig', ['utilisateur' => $user]);
     } //End of function afficherConnexion
 
+    public function afficherComptePass($request, $response, $args)
+    {
+
+        $user = Utilisateur::find($args['id']);
+        return $this->render($response, 'MonComptePass.html.twig', ['utilisateur' => $user]);
+    } //End of function afficherConnexion
+
 
     /**
      * @param $request
@@ -173,6 +180,39 @@ class Controller extends BaseController
         }
     } //End of function gererConnexion
 
+    public function updateMdp($request, $response, $args)
+    {
+        //recuperation des donnees du post
+        $password1 = (isset($_POST['newPass1'])) ? $_POST['newPass1'] : null;
+        $password2 = (isset($_POST['newPass2'])) ? $_POST['newPass2'] : null;
+
+        try {
+            if (!isset($password1) || !isset($password2)) {
+                throw new \Exception("Tous les champs doivent être complétés");
+            }
+            if ($password1 != $password2) {
+                throw new \Exception("Les mots de passe ne correspondent pas");
+            }
+
+            $user = Utilisateur::find($args['id']);
+
+            $password1 = password_hash($password1, PASSWORD_DEFAULT);
+            $user->identifiant = $user->identifiant;
+            $user->password = $password1;
+            $user->email = $user->email;
+            $user->droit = 0;
+
+            $user->save();
+            unset($password1);
+            unset($password2);
+
+
+            return $this->redirect($response, 'Accueil');
+        } catch (\Exception $e) {
+            return $this->render($response, 'MonComptePass.html.twig', ['erreur' => $e->getMessage()]);
+        }
+    } //End of function updateMdP
+
     /**
      * @param $request
      * @param $response
@@ -201,7 +241,10 @@ class Controller extends BaseController
         $emissionsPassees = [];
         $hActuelle = date("H:i:s");
         $dateActuelle = date("Y-m-d");
-        $hAvenir = "";
+        $tempsAvantEmis = "";
+        $heureProchaineEmission = "";
+        $titreProchaineEmission = "";
+        $idProchaineEmission = "";
 
         $creneaux = Creneau::where('date_creneau', $dateActuelle)->orderBy('heure_debut')->get();
         $emissions = Emission::all();
@@ -244,13 +287,20 @@ class Controller extends BaseController
         }
 
         if (!empty($creneauAvenir)){
-            $hAvenir = $creneauAvenir[0]->heure_debut;
+            $heureProchaineEmission = $creneauAvenir[0]->heure_debut;
             $h1 = strtotime($creneauAvenir[0]->heure_debut);
             $h2 = strtotime($hActuelle);
-            $hAvenir = gmdate("H:i", $h1 - $h2);
+            $tempsAvantEmis = gmdate("H:i", $h1 - $h2);
+            $idProchaineEmission = $creneauAvenir[0]->emission_id;
+            foreach ($emissions as $uneEmission) {
+                if($uneEmission->emission_id == $idProchaineEmission) {
+
+                    $titreProchaineEmission = $uneEmission->titre;
+                }
+            }
         }
 
-        return $this->render($response, 'Direct.html.twig', ['emissionMtn' => $emissionMtn, 'emissionsAvenir' => $emissionsAvenir, 'emissionsPassees' => $emissionsPassees, 'creneaux' => $creneaux, 'creneauMtn' => $creneauMtn, 'creneauAvenir' => $creneauAvenir, 'creneauPasse' => $creneauPasse, 'hAvenir' => $hAvenir]);
+        return $this->render($response, 'Direct.html.twig', ['emissionMtn' => $emissionMtn, 'emissionsAvenir' => $emissionsAvenir, 'emissionsPassees' => $emissionsPassees, 'creneaux' => $creneaux, 'creneauMtn' => $creneauMtn, 'creneauAvenir' => $creneauAvenir, 'creneauPasse' => $creneauPasse, 'tempsAvantEmis' => $tempsAvantEmis, 'heureProchEmiss' => $heureProchaineEmission, 'titreProchaineEmis' => $titreProchaineEmission]);
     } //End of function ecouterDirect
 
         /**

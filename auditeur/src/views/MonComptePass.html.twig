@@ -1,0 +1,48 @@
+{% extends 'Template.html.twig' %}
+{% set root = base_url() %}
+
+{% block head %}
+<!--  block head qui hérite de son parent, template.html.twig. On y ajoute le css désiré -->
+{{ parent() }}
+<link rel="stylesheet" href="{{ root }}/public/style/css/Compte.css"> 
+{% endblock %}
+
+{% block body %}
+{{ parent() }}
+
+     <div class="" id="modalNewPass" tabindex="-1"> 
+     <form action="{{ root }}/MonComptePass/{{ session.user.id }}" method="post">
+        <div id="editPass" class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+                <div class="col-sm-10 mx-auto modal-header">
+                    <h2 class="titre mb-3 mt-3"><i class="fas fa-key"></i> Modification de mon mot de passe</h1>
+                </div>
+                <div class="divModal container-fluid col-sm-8 col-lg-8 modal-body">
+                    
+                    <div class="divPassModif">
+                        <label class="lblNewPass1">Veuillez entrer votre nouveau mot de passe :</label>
+                        <input type="password" class="form-control newPass" id="newPass1">
+                    </div>
+
+                     <div class="divPassModif mt-2">
+                        <label class="lblNewPass2">Veuillez confirmer votre nouveau mot de passe :</label>
+                        <input type="password" class="form-control newPass" id="newPass2">
+                    </div>
+                </div>
+
+                <div class="modal-footer col-sm-10 mx-auto">
+                    <div class="btn-newPass col-12">
+                        <button class="btn btn-confirm-pass btn-success mb-2 mt-2"type="submit" data-id="{{ session.user.id }}"><i class="fas fa-check"></i> Confirmer</button>
+                        <a href="{{ root }}/monCompte/{{session.user.id}}" class="btn btn-close btn-secondary mb-2 mt-2"><i class="fas fa-check"></i> Annuler</a>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+    <div>
+
+
+{% endblock %}

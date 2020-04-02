@@ -1,6 +1,6 @@
 $(document).ready(() => {
 
-    $(document).on('click', '.btn-confirm', function() {
+    $(document).on('click', '.btn-confirm-login', function() {
         let val = $('#newLogin').val();
         let myId = $(this).data("id");
         
@@ -25,14 +25,11 @@ $(document).ready(() => {
                 body: datas,
             })
             .then(           
-                 function(res){
+                function(){
                      $.notify("Le login a été mis à jour", "success");
                     document.location.href=myId;
 
-                    res.json().then((res) => {
-                        console.log(res);
-                        
-                    })
+                    
                     
                     }
             )
@@ -41,6 +38,6 @@ $(document).ready(() => {
                 )
             
         }
-    })
+    });
 
 });
