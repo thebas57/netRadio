@@ -123,8 +123,8 @@ class AnimateurController extends BaseController
 
                 //On déplace l'audio )
                 $truc = json_decode($emission->fichier);
-                return json_encode(['fichier' => $truc->tmp_name]);
-                if (rename(fopen($truc->tmp_name), "emissions/" . $emission->titre . "/1.mp3")
+//                return json_encode(['fichier' => $truc->tmp_name]);
+                if (copy(fopen($truc->tmp_name), "emissions/" . $emission->titre . "/1.mp3")
                     && move_uploaded_file($audio["tmp_name"], "./emissions/" . $emission->titre . "/2.mp3")) {
                     return json_encode(["value" => "JE SUIS DANS lE IF"]);
                     //On a réussi à mettre les deux sur le serveur
