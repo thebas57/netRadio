@@ -62,6 +62,8 @@ body {
     // https://mb.cision.com/Public/13765/2085545/98c43535772ead27_org.jpg
     background-repeat: no-repeat;
     background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
 }
 
 @media all and (min-width: 1315px) {

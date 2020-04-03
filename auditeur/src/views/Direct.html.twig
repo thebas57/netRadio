@@ -10,11 +10,9 @@
 {% block body %}
     {{ parent() }}
     <div class="col-lg-6 mx-auto my-5 col-sm-8 col-10 leDirect py-3">
-        
-        {# <i class="fa fa-spinner fa-pulse fa-4x ico-btn"></i> #}
-        {# <i class="fas fa-pause-circle fa-4x pl-2 ico-btn"></i>
-        <i class="fas fa-play-circle fa-4x ico-btn pl-2"></i> #}
-        <audio id="audioPlayer" ontimeupdate="update(this)">
+
+    <div class="fonctionsDirect text-center">
+        <audio id="audioPlayer">
             <source src="{{root}}/public/Madcon.mp3" type="audio/ogg" />
             <source src="{{root}}/public/Madcon.mp3" type="audio/mp3" />
             Votre navigateur ne supporte pas la balise AUDIO.
@@ -23,24 +21,66 @@
         <a type="button" class="btn-floating deep-orange waves-effect waves-light control" onclick="play('audioPlayer', this, {{creneauMtn}})"><i class="fas fa-play" id="iconeAudio"></i></a>
         <a type="button" class="btn-floating deep-orange waves-effect waves-light control" onclick="resume('audioPlayer')"><i class="fas fa-stop" aria-hidden="true"></i></a>
 
-        {# <button class="control" onclick="play('audioPlayer', this)">Play</button>
-        <button class="control" onclick="resume('audioPlayer')">Stop</button> #}
-    
-        <span class="volume">
-            <a class="stick1" id="stick1" onclick="volume('audioPlayer', 0)"></a>
-            <a class="stick2" id="stick2" onclick="volume('audioPlayer', 0.3)"></a>
-            <a class="stick3" id="stick3" onclick="volume('audioPlayer', 0.5)"></a>
-            <a class="stick4" id="stick4" onclick="volume('audioPlayer', 0.7)"></a>
-            <a class="stick5" id="stick5" onclick="volume('audioPlayer', 1)"></a>
-        </span>
+        <div class="volumeicone">
+            <div class="slidecontainer">
+                <input type="range" min="1" max="100" value="50" class="volume" id="volume">
+            </div>
+            <i class='fas fa-volume-up'></i>
+        </div>
+    </div>
 
-        <div>
+        {# <div>
             <div id="progressBarControl">
                 <div id="progressBar">Pas de lecture</div>
             </div>
+        </div>  #}
+
+    <div class="text-center onair">
+        <img src="http://en.sopah.com/files/12/on_air.gif">
+    </div>
+
+    </div>
+
+    <div class="mx-auto mb-3 infosEmission col-lg-5 col-sm-8 col-8 mt-5 p-2">
+        <h3 class="titrePasEmis text-center">Vous écoutez <b>{{titreEmissionMtn}}</b>.</h3> 
+        <div class="lds-facebook mx-auto">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+        <div class="text-center">
+            <p>'{{ descriptionMtn }}'</p>
+        </div>
+
+        <div class="infoDirect text-center">
+            <p>Fin de l'émission à : <b>{{ creneauMtn.heure_fin }}</b></p>
         </div> 
-
-
+        <hr>
+        
+        {% if emissionsAvenir is empty %}
+            <p class="text-center">Il n'y a pas d'émissions prévues aujourd'hui</p>
+        {% else %}
+            <p class="text-center">La prochaine émission, <b>{{titreProchaineEmis}}</b> arrive dans : <b>{{tempsAvantEmis}}</b> minute(s) à <b>{{heureProchEmiss}}</b></p>
+            <p class="text-center">Les émissions d'aujourd'hui :</p>
+            <ul class="text-center">
+            {% for emissionsAjd in emissionsAvenir %}
+                <li><b>{{ emissionsAjd.titre}}</b></li>
+            {% endfor %}
+            </ul>            
+        {% endif %}
+        {% if emissionsPassees is empty %}
+            <p class="text-center">Vous n'avez raté aucune émission aujourd'hui</p>
+        {% else %}
+            <p class="text-center">Plus tôt dans la journée : </p>
+            <ul class="text-center">
+            {% for emissionsPass in emissionsPassees %}
+                <li><b>{{ emissionsPass.titre}}</b></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
     </div>
 
     <div class="mx-auto pasEmission col-lg-5 col-sm-8 col-8 mt-5 p-2">
@@ -59,7 +99,7 @@
         {% if emissionsPassees is empty %}
             <p class="text-center">Vous n'avez raté aucune émission aujourd'hui</p>
         {% else %}
-            <p class="text-center">Les émissions que vous avez ratées aujourd'hui : </p>
+            <p class="text-center">Plus tôt dans la journée : </p>
             <ul class="text-center">
             {% for emissionsPass in emissionsPassees %}
                 <li><b>{{ emissionsPass.titre}}</b></li>
@@ -68,38 +108,23 @@
         {% endif %}
     </div>
 
-    <div style="color:white;">
-        {% if emissionMtn is null %}
-            Pas d'émission actuellement. La prochaine émission arrive dans {{hAvenir}}min 
-        {% else %}
-            Emission en direct : {{emissionMtn.titre}}
-        {% endif %}
-        </br>
-        Les prochaines émissions d'aujourd'hui : 
-        {% for emissionsAjd in emissionsAvenir %}
-            {{ emissionsAjd.titre}} // 
-        {% endfor %}
-        {% if emissionsAvenir is empty %}
-            Il n'y a aucune émission programmée
-        {% endif %}
-        </br>
-        {% if emissionsPassees is null %}
-            Vous n'avez raté aucune émission
-        {% else %}
-            Les émissions que vous avez ratées : 
-            {% for emissionsPass in emissionsPassees %}
-                {{ emissionsPass.titre}} // 
-            {% endfor %}
-        {% endif %}
-        
-    </div>
 <script>
+
+// Gestion du volume récupérant le valeur du slider divisée par 100 pour le format audio
+let slider = document.getElementById("volume");
+
+
+slider.oninput = function() {
+    volume('audioPlayer', this.value/100)
+}
 
 function play(idPlayer, control, crenMtn) {
     let player = document.querySelector('#' + idPlayer);
     let btnPlPau = document.querySelector('.btn-floating');
     let leDirect = document.querySelector('.leDirect');
     let msgPasEmission = document.querySelector('.pasEmission');
+    let msgEmissionMtn = document.querySelector('.infosEmission');
+    let onair = document.querySelector('.onair');
     let icone = document.querySelector('#iconeAudio');
     let datCren = new Date();
     let datActu = new Date();
@@ -108,6 +133,9 @@ function play(idPlayer, control, crenMtn) {
     // Test si on est actuellement dans un créneau
     if (crenMtn)
     {
+        msgEmissionMtn.style.display = "block";
+        
+
         // On split l'heure de début pour pouvoir utiliser setHours
         let heureCrenConvert = crenMtn.heure_debut.split(":");
         //On a donc l'heure du début du créneau
@@ -127,7 +155,7 @@ function play(idPlayer, control, crenMtn) {
             // Départ du direct au nombre de secondes écoulées depuis le début du créneau
             player.currentTime = diffDirect;
             player.play();
-
+            onair.style.display = "block";
             icone.classList.remove("fa-play");
             icone.classList.add("fa-pause");
             
@@ -139,8 +167,6 @@ function play(idPlayer, control, crenMtn) {
     }
     else
     {
-        // On enlève l'affichage des options du direct afin d'éviter tout problèmes. Ils sont inutiles de toute façon. Et on affiche un message
-        leDirect.style.display = "none";
         msgPasEmission.style.display = "block";
         return;
     }
