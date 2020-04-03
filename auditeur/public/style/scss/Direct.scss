@@ -1,5 +1,10 @@
 .leDirect {
-    border: 1px solid white;
+    background-image: url('https://media2.giphy.com/media/17mRAZbp32pKU/giphy.gif?cid=ecf05e470d90fb838393d83e51a0a4d1a620cbe5d51f1a60&rid=giphy.gif');
+    background-repeat: no-repeat;
+    background-size: cover;
+    // background-position: center;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 8px 8px 15px blanchedalmond;
 }
 
 .ico-btn {
@@ -96,4 +101,116 @@
     background-color: #ecb670e0;
     display: none;
     border-radius: 5px;
+}
+
+.infosEmission {
+    display: none;
+    border-radius: 5px;
+    background-color: #ecb670e0;
+}
+
+hr {
+    border-top: 2px solid rgba(0,0,0,.1);
+    width: 80%;
+}
+
+// Partie spinner
+.lds-facebook {
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  .lds-facebook div {
+    display: inline-block;
+    position: absolute;
+    left: 8px;
+    width: 8px;
+    background: #2d2d2d;
+    animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+  }
+  .lds-facebook div:nth-child(1) {
+    left: 8px;
+    animation-delay: -0.3s;
+  }
+  .lds-facebook div:nth-child(2) {
+    left: 22px;
+    animation-delay: -0.1s;
+  }
+  .lds-facebook div:nth-child(3) {
+    left: 36px;
+    animation-delay: 0;
+  }
+  .lds-facebook div:nth-child(4) {
+    left: 50px;
+    animation-delay: -0.1s;
+  }
+  .lds-facebook div:nth-child(5) {
+    left: 64px;
+    animation-delay: -0.3s;
+  }
+  @keyframes lds-facebook {
+    0% {
+      top: 2px;
+      height: 74px;
+    }
+    50%, 100% {
+      top: 24px;
+      height: 22px;
+    }
+  }
+
+// Partie gestion du volume
+.volumeicone {
+    width: 50%;
+    display: inline-block;
+}
+
+.slidecontainer {
+    width: 80%;
+    display: inline-block;
+    vertical-align: super;
+  }
+  
+  .volume {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    border-radius: 5px;
+    background: #ffffff;
+    outline: none;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    vertical-align: middle;
+  }
+  
+  .volume:hover {
+    opacity: 1;
+  }
+  
+  .volume::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: rgb(0, 0, 0);
+    cursor: pointer;
+  }
+  
+  .volume::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: rgb(0, 0, 0);
+    cursor: pointer;
+  }
+  
+.onair {
+    display: none;
+}
+
+.fa-volume-up {
+    color: white;
+    margin-left: 5px;
+    font-size: 1.5rem;
 }

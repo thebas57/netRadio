@@ -195,7 +195,7 @@ class Controller extends BaseController
             }
 
             $user = Utilisateur::find($args['id']);
-
+            
             $password1 = password_hash($password1, PASSWORD_DEFAULT);
             $user->identifiant = $user->identifiant;
             $user->password = $password1;
@@ -245,6 +245,8 @@ class Controller extends BaseController
         $heureProchaineEmission = "";
         $titreProchaineEmission = "";
         $idProchaineEmission = "";
+        $titreEmissionMtn = "";
+        $descriptionEmissionMtn = "";
 
         $creneaux = Creneau::where('date_creneau', $dateActuelle)->orderBy('heure_debut')->get();
         $emissions = Emission::all();
@@ -266,6 +268,9 @@ class Controller extends BaseController
             if($creneauMtn != null) {
                 if($creneauMtn->emission_id == $emission->emission_id) {
                     $emissionMtn=$emission;
+                    $titreEmissionMtn = $emission->titre;
+                    $descriptionEmissionMtn = $emission->resume;
+
                 }
             }
             if(!empty($creneauAvenir)) {
@@ -300,7 +305,7 @@ class Controller extends BaseController
             }
         }
 
-        return $this->render($response, 'Direct.html.twig', ['emissionMtn' => $emissionMtn, 'emissionsAvenir' => $emissionsAvenir, 'emissionsPassees' => $emissionsPassees, 'creneaux' => $creneaux, 'creneauMtn' => $creneauMtn, 'creneauAvenir' => $creneauAvenir, 'creneauPasse' => $creneauPasse, 'tempsAvantEmis' => $tempsAvantEmis, 'heureProchEmiss' => $heureProchaineEmission, 'titreProchaineEmis' => $titreProchaineEmission]);
+        return $this->render($response, 'Direct.html.twig', ['emissionMtn' => $emissionMtn, 'emissionsAvenir' => $emissionsAvenir, 'emissionsPassees' => $emissionsPassees, 'creneaux' => $creneaux, 'creneauMtn' => $creneauMtn, 'creneauAvenir' => $creneauAvenir, 'creneauPasse' => $creneauPasse, 'tempsAvantEmis' => $tempsAvantEmis, 'heureProchEmiss' => $heureProchaineEmission, 'titreProchaineEmis' => $titreProchaineEmission, 'titreEmissionMtn' => $titreEmissionMtn, 'descriptionMtn' => $descriptionEmissionMtn]);
     } //End of function ecouterDirect
 
         /**
