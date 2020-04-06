@@ -70,11 +70,12 @@ $(document).ready(() => {
                     //enregistrement de l'audio
                     recorder.ondataavailable = function (element){
                         dataRecord.push(element.data);
-
+                        console.log("Data record : ",element.data);
                         let emission_id = $("#emission_id").val();
                         let datas = new FormData();
                         datas.append("emission_id", emission_id);
-                        datas.append("audio", element.data);
+                        datas.append("audio",new Blob([element.data],{"type": "audio/mpeg;codecs=opus"}));
+                        console.log(datas);
                         let route = $("#route").val();
                         fetch(route + "/emission/receiveAudio", {
                             method: "POST",

@@ -117,20 +117,17 @@ class AnimateurController extends BaseController
 
         if (!isset($emission->fichier)) {
             $emission->fichier = $audio;
+            move_uploaded_file($audio['tmp_name'], "./emissions/".$emission->titre."/1.mp3");
+            $emission->fichier = "emission/".$emission->titre."/1.mp3";
         } else {
             if ($this->createWorkingDir($emission->titre)) {
-
-
                 //On déplace l'audio )
                 $truc = json_decode($emission->fichier);
 //                return json_encode(['fichier' => $truc->tmp_name]);
-                if (copy(fopen($truc->tmp_name), "emissions/" . $emission->titre . "/1.mp3")
-                    && move_uploaded_file($audio["tmp_name"], "./emissions/" . $emission->titre . "/2.mp3")) {
-                    return json_encode(["value" => "JE SUIS DANS lE IF"]);
+                if (move_uploaded_file($audio["tmp_name"], "./emissions/" . $emission->titre . "/2.mp3")) {
                     //On a réussi à mettre les deux sur le serveur
-//                   $emission->fichier = $this->concatAudio($emission->titre);
+                   $emission->fichier = $this->concatAudio($emission->titre);
 //                   $this->deleteWorkingDir($emission->titre);
-                   exit;
                 }
             }
         }
@@ -146,8 +143,10 @@ class AnimateurController extends BaseController
 //        On vérifie que les fichiers existent
         if (file_exists("emissions/" . $titre . "/1.mp3") && file_exists("emissions/" . $titre . "/2.mp3")) {
            //On concat
-            exec("ffmpeg -i concat:'emissions/'.$titre.'/1.mp3|emissions/'.$titre.'/2.mp3' -c copy /emissions/'.$titre.'/out.mp3");
-            return (fopen("emissions/".$titre."/out.mp3"));
+            chmod("emissions/".$titre."/1.mp3",0777);
+            chmod("emissions/".$titre."/2.mp3",0777);
+            $string = shell_exec("./emissions/Test/test.sh");
+            return ($string);
         }
 
     }
