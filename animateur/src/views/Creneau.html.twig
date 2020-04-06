@@ -16,6 +16,9 @@
 		<h1>Gestion des Créneaux</h1>
 	</div>
 
+	<button type="submit" class="searchButton" id="ajd" value="{{dateAjd}}">Aujourd'hui</button>
+	<button type="submit" class="searchButton" id="demain" value="">Demain</button>
+<!-- 
 	<div class="legend">
 		<h4>
 			Légende
@@ -31,17 +34,18 @@
 			</ul>
 		</div>
 	</div>
-
+-->
 	<div class="containerC">
 		{# En attendant le js je test en dur #}
         {% if creneaux is empty %}
 			<span style="color:white;"> Aucun créneau trouvé. </span>
         {%  endif %}
 
-        {% for key,creneau in creneaux %}
+        {% for key,creneau in creneaux|sort((a, b) => a.date_creneau <=> b.date_creneau) %}
+		
 		<div class="creneau">
             <div class="time">
-                <span class="date"> Tous les lundi</span></br></br>
+                <span class="date">{{creneau.date_creneau}}</span></br></br>
                 <span class="heure"> {{creneau.heure_debut}} - {{creneau.heure_fin}}</span>
             </div>
             <div class="logo">

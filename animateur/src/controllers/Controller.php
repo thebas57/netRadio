@@ -39,6 +39,7 @@ class Controller extends BaseController
         $emission = new Emission();
         $anim = new Utilisateur();
         $tab = [];
+        $dateActuelle = date("Y-m-d");
 
         $creneaux = Creneau::all();
 
@@ -61,8 +62,84 @@ class Controller extends BaseController
         unset($anim);
         unset($tmp);
 
-        return $this->render($response, 'Creneau.html.twig', ['creneaux' => $creneaux, 'userEmission' => $tab]);
+        return $this->render($response, 'Creneau.html.twig', ['creneaux' => $creneaux, 'userEmission' => $tab, 'dateAjd' => $dateActuelle]);
     } //End of function voirCreaneau
+
+    /**
+     * Fonction permettant d'afficher les creneaux DAUJOUDRDHUI.
+     * @param $request
+     * @param $response
+     * @return mixed
+     */
+    public function voirCreneauAjd($request, $response)
+    {
+
+        $emission = new Emission();
+        $anim = new Utilisateur();
+        $tab = [];
+        $dateActuelle = date("Y-m-d");
+
+        $creneaux = Creneau::where('date_creneau', $dateActuelle)->orderBy('heure_debut')->get();
+
+        foreach ($creneaux as $key => $creneau) {
+            // modif format heure
+            $hddModif = date('G:i', strtotime($creneau->heure_debut));
+            $creneau->heure_debut = $hddModif;
+
+            $hdfModif = date('G:i', strtotime($creneau->heure_fin));
+            $creneau->heure_fin = $hdfModif;
+
+            // Pour récupérer donnée avec clé etrangere
+            $emission = Emission::find($creneau->emission_id);
+            $anim = Utilisateur::find($emission->animateur);
+            $tmp = ['user' => $anim->identifiant, 'emission' => $emission->titre];
+            array_push($tab, $tmp);
+        }
+
+        unset($emission);
+        unset($anim);
+        unset($tmp);
+
+        return $this->render($response, 'Creneau.html.twig', ['creneaux' => $creneaux, 'userEmission' => $tab, 'dateAjd' => $dateActuelle]);
+    } //End of function voirCreaneauAjd
+
+    /**
+     * Fonction permettant d'afficher les creneaux de demain.
+     * @param $request
+     * @param $response
+     * @return mixed
+     */
+    public function voirCreneauDemain($request, $response)
+    {
+
+        $emission = new Emission();
+        $anim = new Utilisateur();
+        $tab = [];
+        $dateActuelle = date("Y-m-d");
+        $dateDemain = date('Y-m-d', strtotime($dateActuelle . ' + 1 DAY'));
+        $creneaux = Creneau::where('date_creneau', $dateDemain)->orderBy('heure_debut')->get();
+
+        foreach ($creneaux as $key => $creneau) {
+            // modif format heure
+            $hddModif = date('G:i', strtotime($creneau->heure_debut));
+            $creneau->heure_debut = $hddModif;
+
+            $hdfModif = date('G:i', strtotime($creneau->heure_fin));
+            $creneau->heure_fin = $hdfModif;
+
+            // Pour récupérer donnée avec clé etrangere
+            $emission = Emission::find($creneau->emission_id);
+            $anim = Utilisateur::find($emission->animateur);
+            $tmp = ['user' => $anim->identifiant, 'emission' => $emission->titre];
+            array_push($tab, $tmp);
+        }
+
+        unset($emission);
+        unset($anim);
+        unset($tmp);
+
+        return $this->render($response, 'Creneau.html.twig', ['creneaux' => $creneaux, 'userEmission' => $tab, 'dateAjd' => $dateActuelle]);
+    } //End of function voirCreneauDemain
 
     /**
      * Fonction permettant d'afficher les programmes.
@@ -145,15 +222,18 @@ class Controller extends BaseController
             // Verif si un creneau est déjà occupé
             $dateActuelle = date("Y-m-d");
 
-            $creneaux = Creneau::where('date_creneau', $dateActuelle)->orderBy('heure_debut')->get();
+            //$creneaux = Creneau::where('date_creneau', $dateActuelle)->orderBy('heure_debut')->get();
+            $creneaux = Creneau::all();
 
             foreach ($creneaux as $creneau) {
-                if (
-                    $creneau->heure_debut <= $hdd && $creneau->heure_fin <= $hdd ||
-                    $creneau->heure_debut >= $hdf && $creneau->heure_fin >= $hdf
-                ) {
-                } else {
-                    throw new \Exception("Il existe déjà un créneau dans cette tranche d'horaire");
+                if ($creneau->date_creneau == $date) {
+                    if (
+                        $creneau->heure_debut <= $hdd && $creneau->heure_fin <= $hdd ||
+                        $creneau->heure_debut >= $hdf && $creneau->heure_fin >= $hdf
+                    ) {
+                    } else {
+                        throw new \Exception("Il existe déjà un créneau dans cette tranche d'horaire");
+                    }
                 }
             }
 

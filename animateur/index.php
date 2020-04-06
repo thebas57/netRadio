@@ -65,6 +65,12 @@ $app->get('/deconnexion','\\animateur\\controllers\\Controller:deconnexion')->se
 // Accueil Creneau
 $app->get('/creneau','\\animateur\\controllers\\Controller:voirCreneau')->setName('creneau')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()));
 
+// Voir les creneaux d'ajd
+$app->get('/aujourdhui','\\animateur\\controllers\\Controller:voirCreneauAjd')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('creneauAjd');
+// Voir les creneaux de demain
+$app->get('/demain','\\animateur\\controllers\\Controller:voirCreneauDemain')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('creneauDemain');
+
+
 // Ajouter un creneau
 $app->get('/addCreneau','\\animateur\\controllers\\Controller:afficherAddCreneau')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('addCreneau');
 $app->post('/addCreneau','\\animateur\\controllers\\Controller:addCreneau');
@@ -93,8 +99,6 @@ $app->get('/supprUser/{id}','\\animateur\\controllers\\Controller:supprUser');
 
 // Accueil Emission
 $app->get('/emission','\\animateur\\controllers\\Controller:voirEmission')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('emission');
-
-
 
 //page accueil animateur
 
