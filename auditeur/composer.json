@@ -4,8 +4,8 @@
 	"php": ">=7",
 	"slim/slim" : "3.12",
 	"slim/twig-view": "^2.5",
-		"twbs/bootstrap": "4.0.0"
-
+		"twbs/bootstrap": "4.0.0",
+  "ext-json": "*"
 },
 "autoload": {
 	"psr-4": {

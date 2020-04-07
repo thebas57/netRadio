@@ -74,7 +74,7 @@ $(document).ready(() => {
                         let emission_id = $("#emission_id").val();
                         let datas = new FormData();
                         datas.append("emission_id", emission_id);
-                        datas.append("audio",new Blob([element.data],{"type": "audio/mpeg;codecs=opus"}));
+                        datas.append("audio",new Blob([element.data],{"type": "audio/mpeg3;"}));
                         console.log(datas);
                         let route = $("#route").val();
                         fetch(route + "/emission/receiveAudio", {

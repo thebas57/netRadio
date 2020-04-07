@@ -116,17 +116,20 @@ class AnimateurController extends BaseController
         $tmp = $emission->fichier;
 
         if (!isset($emission->fichier)) {
-            $emission->fichier = $audio;
-            move_uploaded_file($audio['tmp_name'], "./emissions/".$emission->titre."/1.mp3");
-            $emission->fichier = "emission/".$emission->titre."/1.mp3";
+//            $emission->fichier = $audio;
+            if ($this->createWorkingDir($emission->titre)) {
+                move_uploaded_file($audio['tmp_name'], "./emissions/" . $this->escapeSpace($emission->titre) . "/1.mp3");
+                $emission->fichier = "emission/" . $this->escapeSpace($emission->titre) . "/1.mp3";
+            }
+
         } else {
             if ($this->createWorkingDir($emission->titre)) {
                 //On déplace l'audio )
                 $truc = json_decode($emission->fichier);
-//                return json_encode(['fichier' => $truc->tmp_name]);
-                if (move_uploaded_file($audio["tmp_name"], "./emissions/" . $emission->titre . "/2.mp3")) {
+                if (move_uploaded_file($audio["tmp_name"], "./emissions/" . $this->escapeSpace($emission->titre) . "/2.mp3")) {
                     //On a réussi à mettre les deux sur le serveur
-                   $emission->fichier = $this->concatAudio($emission->titre);
+//                   $emission->fichier = $this->concatAudio($emission->titre);
+                   return json_encode(["resConcat" => $this->concatAudio($emission->titre)]);
 //                   $this->deleteWorkingDir($emission->titre);
                 }
             }
@@ -140,19 +143,28 @@ class AnimateurController extends BaseController
 
 
     private function concatAudio($titre){
-//        On vérifie que les fichiers existent
+        $titre = $this->escapeSpace($titre);
+        //        On vérifie que les fichiers existent
         if (file_exists("emissions/" . $titre . "/1.mp3") && file_exists("emissions/" . $titre . "/2.mp3")) {
-           //On concat
+            //On concat
             chmod("emissions/".$titre."/1.mp3",0777);
             chmod("emissions/".$titre."/2.mp3",0777);
-            $string = shell_exec("./emissions/Test/test.sh");
-            return ($string);
+
+            exec("ffmpeg -i ./emissions/${titre}/1.mp3 -acodec libmp3lame ./emissions/${titre}/1.mp3 -y");
+            exec("ffmpeg -i ./emissions/${titre}/2.mp3 -acodec libmp3lame ./emissions/${titre}/2.mp3 -y");
+            exec("ffmpeg -i concat:'./emissions/${titre}/1.mp3|./emissions/${titre}/2.mp3' -c copy ./emissions/${titre}/out.mp3");
+
+            if(file_exists("./emissions/${titre}/out.mp3")){
+                chmod("emissions/".$titre."/out.mp3",0777);
+            }
+
         }
 
     }
 
     private function createWorkingDir($titre)
     {
+        $titre = $this->escapeSpace($titre);
         //vérification de l'existence du dossier
         if (is_dir("emissions/" . $titre)) {
             return true;
@@ -172,6 +184,7 @@ class AnimateurController extends BaseController
 
     private function deleteWorkingDir($titre)
     {
+        $titre = $this->escapeSpace($titre);
 //        Vérification de l'existence du dossier
         if (file_exists("emissions/" . $titre) && is_dir("emissions/" . $titre)) {
             if (rmdir("emissions/" . $titre)) {
@@ -183,6 +196,19 @@ class AnimateurController extends BaseController
         } else {
             return true;
         }
+    }
+
+    private function escapeSpace($str){
+        $tmp = explode(" ", $str);
+        $str = "";
+        foreach ($tmp as $k => $v){
+            if($k == count($tmp) -1){
+                $str .= $v;
+            }else{
+                $str .= $v . "_";
+            }
+        }
+        return $str;
     }
 }
 
