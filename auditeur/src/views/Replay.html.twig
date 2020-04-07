@@ -1,0 +1,73 @@
+{% extends 'Template.html.twig' %}
+{% set root = base_url() %}
+
+{% block head %}
+<!--  block head qui hérite de son parent, template.html.twig. On y ajoute le css désiré -->
+{{ parent() }}
+<link rel="stylesheet" href="{{ root }}/public/style/css/Replay.css"> 
+
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <h2 class="text-center mt-4 titleReplay">Replays Net'radio</h2>
+
+    <div class="divReplays col-10 py-3 mx-auto mt-5">
+        
+        {% if creneauPasse is empty %}
+        <h3 class="text-center">Aucun replay n'est disponible</h3>
+        {% else %}
+        {# Initialisation de variables compteur qui empechera de passer plusieurs fois dans les boucles et donc ne renverra qu'une seule fois #}
+        {% set cmptAnim = 0 %}
+        {% set cmptDate = 0 %}
+        {% set cmptProg = 0 %}
+
+        <table id="tableReplay" class="table table-striped table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Emission</th>
+                    <th>Date</th>
+                    <th>Début</th>
+                    <th>Programme</th>
+                    <th>Animé par</th>
+                </tr>
+            </thead>
+            <tbody>
+            {# Parcours des emissions passées pour afficher seulement le titre #}
+            {% for lesEmissions in emissionsPassees %}
+                <tr>
+                    <td>{{ lesEmissions.titre }}</td>
+                {# Selon l'emission passées, récupérer sa date et ses horaires provenant des créneaux passés en comparant les emissions_id de chacune des deux tables #}
+                {% for lesCreneaux in creneauPasse %}
+                    {# Donc si les emissions_id des deux tables correspondent, on affiche la date #}
+                    {% if lesEmissions.emission_id == lesCreneaux.emission_id and cmptDate == 0 %}
+                        <td>{{lesCreneaux.date_creneau}}</td>
+                        <td>{{lesCreneaux.heure_debut}}</td>
+                        {% set cmptDate = cmptDate + 1 %}
+                        {# En parcourant tous les programmes passés... #}
+                        {% for lesProgrammes in programmes %}
+                            {# Comparer les programme_id des émissions passés avec les programme_id de tous les programmes passés pour afficher le nom du programme  #}
+                            {% if lesEmissions.programme_id == lesProgrammes.programme_id and cmptProg == 0 %}
+                                <td>{{ lesProgrammes.nom}}</td>
+                                {% set cmptProg = cmptProg + 1 %}
+                                {# Puis on parcours tous les animateurs des émissions passées... #}
+                                {% for lesAnimateurs in animateurs %}
+                                    {# Pour comparer les animateur des émissions passées avec les utilisateur_id des animateurs, et afficher leur identifiant #}
+                                    {% if lesEmissions.animateur == lesAnimateurs.utilisateur_id and cmptAnim == 0 %}
+                                        <td>{{ lesAnimateurs.identifiant }}</td>
+                                        {% set cmptAnim = cmptAnim + 1 %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% set cmptAnim = 0 %}
+                            {% endif %}
+                        {% endfor %}
+                        {% set cmptProg = 0 %}
+                    {% endif %}
+                {% endfor %}
+                {% set cmptDate = 0 %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    </div>
+{% endblock %}
