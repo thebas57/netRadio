@@ -115,40 +115,40 @@ hr {
 }
 
 // Partie spinner
-.lds-facebook {
+.lds-spin {
     position: relative;
     width: 80px;
     height: 80px;
   }
-  .lds-facebook div {
+  .lds-spin div {
     display: inline-block;
     position: absolute;
     left: 8px;
     width: 8px;
     background: #2d2d2d;
-    animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+    animation: lds-spin 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
   }
-  .lds-facebook div:nth-child(1) {
+  .lds-spin div:nth-child(1) {
     left: 8px;
     animation-delay: -0.3s;
   }
-  .lds-facebook div:nth-child(2) {
+  .lds-spin div:nth-child(2) {
     left: 22px;
     animation-delay: -0.1s;
   }
-  .lds-facebook div:nth-child(3) {
+  .lds-spin div:nth-child(3) {
     left: 36px;
     animation-delay: 0;
   }
-  .lds-facebook div:nth-child(4) {
+  .lds-spin div:nth-child(4) {
     left: 50px;
     animation-delay: -0.1s;
   }
-  .lds-facebook div:nth-child(5) {
+  .lds-spin div:nth-child(5) {
     left: 64px;
     animation-delay: -0.3s;
   }
-  @keyframes lds-facebook {
+  @keyframes lds-spin {
     0% {
       top: 2px;
       height: 74px;

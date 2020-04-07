@@ -58,6 +58,9 @@ $app->get('/connexion','\\auditeur\\controllers\\Controller:afficherConnexion');
 $app->get('/monCompte/{id}','\\auditeur\\controllers\\Controller:afficherCompte');
 $app->get('/MonComptePass/{id}','\\auditeur\\controllers\\Controller:afficherComptePass');
 $app->get('/direct','\\auditeur\\controllers\\Controller:ecouterDirect')->setName("direct");
+$app->get('/planning','\\auditeur\\controllers\\Controller:afficherPlanning');
+
+
 
 
 $app->get('/deconnexion','\\auditeur\\controllers\\Controller:deconnexion');

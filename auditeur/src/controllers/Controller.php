@@ -37,6 +37,66 @@ class Controller extends BaseController
         return $this->render($response, 'Connexion.html.twig');
     } //End of function afficherConnexion
 
+    public function afficherPlanning($request, $response)
+    {
+        date_default_timezone_set('Europe/Paris');
+
+        $creneauMtn = null;
+        $emissionMtn = null;
+        $creneauAvenir = [];
+        $emissionsAvenir = [];
+        $creneauPasse = [];
+        $emissionsPassees = [];
+        $hActuelle = date("H:i:s");
+        $dateActuelle = date("Y-m-d");
+        $tempsAvantEmis = "";
+        $heureProchaineEmission = "";
+        $titreProchaineEmission = "";
+        $idProchaineEmission = "";
+        $titreEmissionMtn = "";
+        $descriptionEmissionMtn = "";
+        $animateurs = [];
+        $prog = [];
+
+        $creneaux = Creneau::orderBy('heure_debut')->get();
+        $emissions = Emission::all();
+        $utilisateurs = Utilisateur::all();
+        $programmes = Programme::all();
+
+        // Parcourir tous les créneaux pour obtenir ceux à venir de la journée ou dans les jours qui viennent
+        foreach ($creneaux as $creneau) {
+           if (($creneau->heure_debut > $hActuelle && $creneau->date_creneau >= $dateActuelle) || $creneau->date_creneau > $dateActuelle) {
+                // Tableau des créneaux à venir de la journée et des jours à venir
+                array_push($creneauAvenir, $creneau);
+            }
+        }
+
+        // Parcours des émissions afin d'obtenir le nom, description... des émissions à venir
+        foreach($emissions as $emission) {
+            // Si il y a des créneau à venir
+            if(!empty($creneauAvenir)) {
+                // Pour obtention des propriétés des émissions à venir
+                foreach ($creneauAvenir as $prochainCreneau) {
+                    if($prochainCreneau->emission_id == $emission->emission_id) {
+                        // Tableau des propriétés des émissions à venir
+                        array_push($emissionsAvenir, $emission);
+                        foreach($utilisateurs as $anim) {
+                            if($emission->animateur == $anim->utilisateur_id) {
+                                array_push($animateurs, $anim);
+                            } 
+                        }
+                        foreach($programmes as $prgm) {
+                            if($emission->programme_id == $prgm->programme_id) {
+                                array_push($prog, $prgm);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $this->render($response, 'Planning.html.twig', ['emissionsAvenir' => $emissionsAvenir, 'creneaux' => $creneaux, 'creneauAvenir' => $creneauAvenir, 'animateurs' => $animateurs, 'programmes' => $prog]);
+    } //End of function afficherPlanning
 
 
     public function afficherCompte($request, $response, $args)
@@ -120,35 +180,43 @@ class Controller extends BaseController
 
     public function updateMdp($request, $response, $args)
     {
+        
         //recuperation des donnees du post
         $password1 = (isset($_POST['newPass1'])) ? $_POST['newPass1'] : null;
         $password2 = (isset($_POST['newPass2'])) ? $_POST['newPass2'] : null;
+        $mdpUpdated = '';
+
 
         try {
-            if (!isset($password1) || !isset($password2)) {
+            if (!isset($password1) || !isset($password2) || empty($password1) || empty($password2)) {
                 throw new \Exception("Tous les champs doivent être complétés");
             }
             if ($password1 != $password2) {
                 throw new \Exception("Les mots de passe ne correspondent pas");
             }
 
+
             $user = Utilisateur::find($args['id']);
             
+            if(!isset($user) || empty($user)) {
+                throw new \Exception("Utilisateur inconnu");
+            }
+
             $password1 = password_hash($password1, PASSWORD_DEFAULT);
-            $user->identifiant = $user->identifiant;
             $user->password = $password1;
-            $user->email = $user->email;
-            $user->droit = 0;
+
 
             $user->save();
             unset($password1);
             unset($password2);
+            $mdpUpdated = 'ok';
 
-
-            return $this->redirect($response, 'Accueil');
         } catch (\Exception $e) {
             return $this->render($response, 'MonComptePass.html.twig', ['erreur' => $e->getMessage()]);
+
         }
+
+        return $this->render($response, 'MonCompte.html.twig', ['utilisateur' => $user, 'updateMdp' => $mdpUpdated]);
     } //End of function updateMdP
 
     public function deconnexion($request, $response)
@@ -246,26 +314,9 @@ class Controller extends BaseController
 
         $newlog = $_POST['login'];
         $postId = intval($_POST['id']);
-        // $existLogin = Utilisateur::where('identifiant', 'like',$newlog)
-        //   ->first();
-
-
 
         // test si le login existe
         $login = Utilisateur::find($postId);
-
-        // return json_encode($_POST['id']);
-
-        //   if($login->identifiant != $_POST['newLogin'])
-        //   {
-        //     if ($existLogin) 
-        //     {
-        //         echo "<script>alert(\"icciiii\")</script>";
-        //     }
-        //   }
-
-        //   echo "<script>alert(\"laaaaa\")</script>";
-
 
         $login->identifiant   = $newlog;
 
