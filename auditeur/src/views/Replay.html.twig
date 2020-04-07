@@ -5,6 +5,8 @@
 <!--  block head qui hérite de son parent, template.html.twig. On y ajoute le css désiré -->
 {{ parent() }}
 <link rel="stylesheet" href="{{ root }}/public/style/css/Replay.css"> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
 
 {% endblock %}
 
@@ -33,14 +35,14 @@
                 </tr>
             </thead>
             <tbody>
-            {# Parcours des emissions passées pour afficher seulement le titre #}
-            {% for lesEmissions in emissionsPassees %}
+            {# Parcours des créneaux passées pour créer une ligne à chaque créneau #}
+            {% for lesCreneaux in creneauPasse %}
                 <tr>
-                    <td>{{ lesEmissions.titre }}</td>
-                {# Selon l'emission passées, récupérer sa date et ses horaires provenant des créneaux passés en comparant les emissions_id de chacune des deux tables #}
-                {% for lesCreneaux in creneauPasse %}
+                {# Selon les créneaux passées, récupérer sa date et ses horaires en comparant les emissions_id de chacune des deux tables et parcours des émissions passées pour récupérer le titre #}
+                {% for lesEmissions in emissionsPassees %}
                     {# Donc si les emissions_id des deux tables correspondent, on affiche la date #}
                     {% if lesEmissions.emission_id == lesCreneaux.emission_id and cmptDate == 0 %}
+                        <td>{{ lesEmissions.titre }}</td>
                         <td>{{lesCreneaux.date_creneau}}</td>
                         <td>{{lesCreneaux.heure_debut}}</td>
                         {% set cmptDate = cmptDate + 1 %}
@@ -70,4 +72,17 @@
         </table>
     {% endif %}
     </div>
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function () {
+$('#tableReplay').DataTable({
+    "order": [[1, "asc"]],
+    "aLengthMenu": [5,10,15],
+    "iDisplayLength": 5
+});
+$('.dataTables_length').addClass('bs-select');
+});
+</script>
 {% endblock %}

@@ -24,7 +24,6 @@
         <table id="tablePlanning" class="table table-striped table-hover table-bordered">
             <thead class="thead-dark">
                 <tr>
-                    <th>id</th>
                     <th>Emission</th>
                     <th>Date</th>
                     <th>Début</th>
@@ -34,15 +33,14 @@
                 </tr>
             </thead>
             <tbody>
-            {# Parcours des emissions à venir pour afficher seulement le titre #}
+            {# Parcours des créneaux à venir pour créer une ligne à chaque créneau #}
             {% for lesCreneaux in creneauAvenir %}
                 <tr>
-                    <td>{{lesCreneaux.creneau_id}}</td>
-                {# Selon l'emission à venir, récupérer sa date et ses horaires provenant des créneaux à venir en comparant les emissions_id de chacune des deux tables #}
+                {# Selon les créneaux à venir, récupérer sa date et ses horaires en comparant les emissions_id de chacune des deux tables et parcours des émissions à venir pour récupérer le titre #}
                 {% for lesEmissions in emissionsAvenir %}
-                    {% if lesEmissions.emission_id == lesCreneaux.emission_id and cmptDate == 0 %}
-                    <td>{{ lesEmissions.titre }}</td>
                     {# Donc si les emissions_id des deux tables correspondent, on affiche la date et l'horaire #}
+                    {% if lesEmissions.emission_id == lesCreneaux.emission_id and cmptDate == 0 %}
+                        <td>{{ lesEmissions.titre }}</td>
                         <td>{{lesCreneaux.date_creneau}}</td>
                         <td>{{lesCreneaux.heure_debut}}</td>
                         <td>{{lesCreneaux.heure_fin}}</td>
