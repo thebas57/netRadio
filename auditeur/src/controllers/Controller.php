@@ -37,28 +37,70 @@ class Controller extends BaseController
         return $this->render($response, 'Connexion.html.twig');
     } //End of function afficherConnexion
 
-    public function afficherPlanning($request, $response)
+    public function afficherReplays($request, $response)
     {
         date_default_timezone_set('Europe/Paris');
 
-        $creneauMtn = null;
-        $emissionMtn = null;
-        $creneauAvenir = [];
-        $emissionsAvenir = [];
         $creneauPasse = [];
         $emissionsPassees = [];
         $hActuelle = date("H:i:s");
         $dateActuelle = date("Y-m-d");
-        $tempsAvantEmis = "";
-        $heureProchaineEmission = "";
-        $titreProchaineEmission = "";
-        $idProchaineEmission = "";
-        $titreEmissionMtn = "";
-        $descriptionEmissionMtn = "";
+        $animateurs = [];
+        $prog = [];
+        
+
+        $creneaux = Creneau::orderBy('heure_debut')->get();
+        $emissions = Emission::all();
+        $programmes = Programme::all();
+        $utilisateurs = Utilisateur::all();
+
+        // Parcourir tous les créneaux pour obtenir ceux passés
+        foreach ($creneaux as $creneau) {
+            if ($creneau->date_creneau < $dateActuelle) {
+                array_push($creneauPasse, $creneau);
+            }
+        }
+
+        // Parcours des émissions afin d'obtenir le nom, description... des émissions passées
+        foreach($emissions as $emission) {
+            // Si il y a des créneau passées
+            if(!empty($creneauPasse)) {
+                // Pour obtention des propriétés des émissions passées
+                foreach ($creneauPasse as $replayCreneau) {
+                    if($replayCreneau->emission_id == $emission->emission_id) {
+                        // Tableau des propriétés des émissions passées
+                        array_push($emissionsPassees, $emission);
+                        foreach($utilisateurs as $anim) {
+                            if($emission->animateur == $anim->utilisateur_id) {
+                                array_push($animateurs, $anim);
+                            } 
+                        }
+                        foreach($programmes as $prgm) {
+                            if($emission->programme_id == $prgm->programme_id) {
+                                array_push($prog, $prgm);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $this->render($response, 'Replay.html.twig', ['emissionsPassees' => $emissionsPassees, 'creneaux' => $creneaux, 'creneauPasse' => $creneauPasse, 'programmes' => $prog, 'animateurs' => $animateurs]);
+
+    } //End of function afficherReplay
+
+    public function afficherPlanning($request, $response)
+    {
+        date_default_timezone_set('Europe/Paris');
+
+        $creneauAvenir = [];
+        $emissionsAvenir = [];
+        $hActuelle = date("H:i:s");
+        $dateActuelle = date("Y-m-d");
         $animateurs = [];
         $prog = [];
 
-        $creneaux = Creneau::orderBy('heure_debut')->get();
+        $creneaux = Creneau::all();
         $emissions = Emission::all();
         $utilisateurs = Utilisateur::all();
         $programmes = Programme::all();
