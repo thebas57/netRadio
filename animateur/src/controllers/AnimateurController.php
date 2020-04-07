@@ -128,9 +128,7 @@ class AnimateurController extends BaseController
                 $truc = json_decode($emission->fichier);
                 if (move_uploaded_file($audio["tmp_name"], "./emissions/" . $this->escapeSpace($emission->titre) . "/2.mp3")) {
                     //On a réussi à mettre les deux sur le serveur
-//                   $emission->fichier = $this->concatAudio($emission->titre);
-                   return json_encode(["resConcat" => $this->concatAudio($emission->titre)]);
-//                   $this->deleteWorkingDir($emission->titre);
+                   $emission->fichier = $this->concatAudio($emission->titre);
                 }
             }
         }
@@ -142,24 +140,33 @@ class AnimateurController extends BaseController
     }
 
 
-    private function concatAudio($titre){
+    private function concatAudio($titre)
+    {
         $titre = $this->escapeSpace($titre);
         //        On vérifie que les fichiers existent
-        if (file_exists("emissions/" . $titre . "/1.mp3") && file_exists("emissions/" . $titre . "/2.mp3")) {
-            //On concat
-            chmod("emissions/".$titre."/1.mp3",0777);
-            chmod("emissions/".$titre."/2.mp3",0777);
-
+        if (file_exists("emissions/" . $titre . "/1.mp3")){
+            chmod("emissions/" . $titre . "/1.mp3", 0777);
             exec("ffmpeg -i ./emissions/${titre}/1.mp3 -acodec libmp3lame ./emissions/${titre}/1.mp3 -y");
-            exec("ffmpeg -i ./emissions/${titre}/2.mp3 -acodec libmp3lame ./emissions/${titre}/2.mp3 -y");
-            exec("ffmpeg -i concat:'./emissions/${titre}/1.mp3|./emissions/${titre}/2.mp3' -c copy ./emissions/${titre}/out.mp3");
-
-            if(file_exists("./emissions/${titre}/out.mp3")){
-                chmod("emissions/".$titre."/out.mp3",0777);
-            }
-
         }
+        if (file_exists("emissions/" . $titre . "/2.mp3")){
+            chmod("emissions/" . $titre . "/2.mp3", 0777);
+            exec("ffmpeg -i ./emissions/${titre}/2.mp3 -acodec libmp3lame ./emissions/${titre}/2.mp3 -y");
+        }
+        //On concat
+            if (file_exists("emissions/${titre}/out.mp3")) {
+                exec("ffmpeg -i ./emissions/${titre}/out.mp3 -acodec libmp3lame ./emissions/${titre}/out.mp3 -y");
+                exec("ffmpeg -i concat:'./emissions/${titre}/out.mp3|./emissions/${titre}/2.mp3' -c copy ./emissions/${titre}/out.mp3 -y");
 
+            } else {
+                exec("ffmpeg -i concat:'./emissions/${titre}/1.mp3|./emissions/${titre}/2.mp3' -c copy ./emissions/${titre}/out.mp3 -y");
+
+                if (file_exists("emissions/${titre}/out.mp3")) {
+                    chmod("emissions/" . $titre . "/out.mp3", 0777);
+                    unlink("emissions/${titre}/1.mp3");
+                }
+            }
+        unlink("emissions/${titre}/2.mp3");
+        return ("emissions/${titre}/out.mp3");
     }
 
     private function createWorkingDir($titre)
@@ -198,13 +205,14 @@ class AnimateurController extends BaseController
         }
     }
 
-    private function escapeSpace($str){
+    private function escapeSpace($str)
+    {
         $tmp = explode(" ", $str);
         $str = "";
-        foreach ($tmp as $k => $v){
-            if($k == count($tmp) -1){
+        foreach ($tmp as $k => $v) {
+            if ($k == count($tmp) - 1) {
                 $str .= $v;
-            }else{
+            } else {
                 $str .= $v . "_";
             }
         }
