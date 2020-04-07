@@ -63,7 +63,7 @@ $(document).ready(() => {
 
                 ///fin musiques ///
 
-                function arreterEnregistrement() {
+                async function arreterEnregistrement() {
                     onAir = false;
                     $("#onAir h3").removeClass("red");
                     let dataRecord = [];
@@ -75,7 +75,6 @@ $(document).ready(() => {
                         let datas = new FormData();
                         datas.append("emission_id", emission_id);
                         datas.append("audio",new Blob([element.data],{"type": "audio/mpeg3;"}));
-                        console.log(datas);
                         let route = $("#route").val();
                         fetch(route + "/emission/receiveAudio", {
                             method: "POST",
@@ -90,6 +89,26 @@ $(document).ready(() => {
 
                     };
                 }
+
+                async function ajouterMusique(id) {
+                    console.log(musiques[id]);
+                    onAir = false;
+                    $("#onAir h3").removeClass("red");
+                    //enregistrement de l'audio
+                        let emission_id = $("#emission_id").val();
+                        let datas = new FormData();
+                        datas.append("emission_id", emission_id);
+                        datas.append("audio",new Blob([musiques[id]],{"type": "audio/mpeg3;"}));
+                        let route = $("#route").val();
+                        fetch(route + "/emission/receiveAudio", {
+                            method: "POST",
+                            body: datas
+                        }).then((res) => {
+                            res.json().then((res) => {
+                                console.log(res);
+                            })
+                        })
+                    }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,55 +126,56 @@ $(document).ready(() => {
                     afficherMusiques(musiques);
                 });
 
-                // $("#musiquesList").on("click", ".musique", (evenement) => {
-                //     // $("#finEmission").prop("disabled", true);
-                //     let id = evenement.currentTarget.getAttribute("data-id");
-                //
-                //     let audios = document.getElementsByClassName("musique");
-                //     for(let i = 0; i < audios.length; i++){
-                //         let id_audio = audios[i].getAttribute("data-id");
-                //         let tmp = document.getElementById("audio" + id_audio);
-                //         tmp.muted = true;
-                //     }
-                //
-                //     let lecteur = document.getElementById("audio" + id);
-                //     lecteur.muted = false;
-                //     lecteur.play();
-                //     $("#timer").html(lecteur.duration);
-                //     $("#onAir h3").removeClass("red");
-                //     // pistesEmission.push(musiques[id]);
-                //
-                //     lecteur.addEventListener("timeupdate", (event) => {
-                //         let time = ((Math.floor(lecteur.duration) - Math.floor(lecteur.currentTime)));
-                //
-                //         let min = ((Math.floor(time / 60)));
-                //         let sec = ((time % 60));
-                //
-                //         $("#timer").html(min + " min " + sec);
-                //     });
-                //
-                //     lecteur.onended = function () {
-                //         $("#onAir h3").addClass("red");
-                //         recorder = lancerRecordMicro(recorder);
-                //         $("#finEmission").prop("disabled", false);
-                //     };
-                //
-                //     let retour = arreterEnregistrement(pistesEmission, recorder, dataRecord);
-                //     pistesEmission = retour.pisteEmission;
-                //     dataRecord = retour.dataRecord;
-                //     recorder = retour.recorder;
-                //     // changerDureeEmission(pistesEmission);
-                //
-                //     $("#finEmission").prop("disabled", true);
-                // });
-                //
-                // $("#musiquesList").on("click", ".suppMusique", (evenement) => {
-                //     let id = evenement.currentTarget.getAttribute("data-id");
-                //
-                //     musiques.splice(id, 1);
-                //
-                //     afficherMusiques(musiques);
-                // });
+                $("#musiquesList").on("click", ".musique", async (evenement) => {
+                    // $("#finEmission").prop("disabled", true);
+                    let id = evenement.currentTarget.getAttribute("data-id");
+
+                    let audios = document.getElementsByClassName("musique");
+                    for(let i = 0; i < audios.length; i++){
+                        let id_audio = audios[i].getAttribute("data-id");
+                        let tmp = document.getElementById("audio" + id_audio);
+                        tmp.muted = true;
+                    }
+
+                    let lecteur = document.getElementById("audio" + id);
+                    lecteur.muted = false;
+                    $("#timer").html(lecteur.duration);
+                    $("#onAir h3").removeClass("red");
+                    recorder.stop();
+                    await arreterEnregistrement();
+                    lecteur.play();
+
+                    $("#finEmission").prop("disabled", true);
+
+                    lecteur.addEventListener("timeupdate", async (event) => {
+                        let time = ((Math.floor(lecteur.duration) - Math.floor(lecteur.currentTime)));
+
+                        let min = ((Math.floor(time / 60)));
+                        let sec = ((time % 60));
+
+                        $("#timer").html(min + " min " + sec);
+                    });
+
+                    lecteur.onended = async function () {
+                        $("#onAir h3").addClass("red");
+
+                        // recorder.start();
+                        // $("#onAir h3").addClass("red");
+                        $("#finEmission").show();
+                        $("#lancerEnregistrement").hide();
+                        $("#finEmission").prop("disabled", false);
+
+                        await ajouterMusique(id);
+                    };
+                });
+
+                $("#musiquesList").on("click", ".suppMusique", (evenement) => {
+                    let id = evenement.currentTarget.getAttribute("data-id");
+
+                    musiques.splice(id, 1);
+
+                    afficherMusiques(musiques);
+                });
 
                 $("#lancerEnregistrement").click((e) => {
                     e.preventDefault();
@@ -167,12 +187,12 @@ $(document).ready(() => {
                     $("#lancerEnregistrement").hide();
                 });
 
-                $("#finEmission").click(() => {
+                $("#finEmission").click(async () => {
                     $("#onAir h3").removeClass("red");
 
                     //on stoppe l'enregistrement
                     recorder.stop();
-                    arreterEnregistrement();
+                    await arreterEnregistrement();
 
                     $("#finEmission").hide();
                     $("#lancerEnregistrement").show();

@@ -119,6 +119,7 @@ class AnimateurController extends BaseController
 //            $emission->fichier = $audio;
             if ($this->createWorkingDir($emission->titre)) {
                 move_uploaded_file($audio['tmp_name'], "./emissions/" . $this->escapeSpace($emission->titre) . "/1.mp3");
+                chmod("emissions/" . $this->escapeSpace($emission->titre) . "/1.mp3", 0777);
                 $emission->fichier = "emission/" . $this->escapeSpace($emission->titre) . "/1.mp3";
             }
 
@@ -162,10 +163,10 @@ class AnimateurController extends BaseController
 
                 if (file_exists("emissions/${titre}/out.mp3")) {
                     chmod("emissions/" . $titre . "/out.mp3", 0777);
-                    unlink("emissions/${titre}/1.mp3");
+//                    unlink("emissions/${titre}/1.mp3");
                 }
             }
-        unlink("emissions/${titre}/2.mp3");
+//        unlink("emissions/${titre}/2.mp3");
         return ("emissions/${titre}/out.mp3");
     }
 
