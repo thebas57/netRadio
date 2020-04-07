@@ -11,10 +11,14 @@ $(document).ready(() => {
 
     $('#ajd').click(function () {
         let date = $('#ajd').val();
-        location.href="/netRadio/animateur/aujourdhui";
+        location.href = "/netRadio/animateur/aujourdhui";
     })
 
     $('#demain').click(function () {
-        location.href="/netRadio/animateur/demain";
+        location.href = "/netRadio/animateur/demain";
+    })
+
+    $('#tout').click(function () {
+        location.href = "/netRadio/animateur/creneau";
     })
 });

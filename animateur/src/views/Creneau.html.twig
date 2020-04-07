@@ -16,8 +16,11 @@
 		<h1>Gestion des Créneaux</h1>
 	</div>
 
-	<button type="submit" class="searchButton" id="ajd" value="{{dateAjd}}">Aujourd'hui</button>
-	<button type="submit" class="searchButton" id="demain" value="">Demain</button>
+	<div class="containerButton">
+		<button type="submit" class="searchButton" id="ajd" value="{{dateAjd}}">Aujourd'hui</button>
+		<button type="submit" class="searchButton" id="demain" value="">Demain</button>
+		<button type="submit" class="searchButton" id="tout" value="">Voir tout</button>
+	</div>
 <!-- 
 	<div class="legend">
 		<h4>
@@ -42,6 +45,7 @@
         {%  endif %}
 
         {% for key,creneau in creneaux|sort((a, b) => a.date_creneau <=> b.date_creneau) %}
+		{% if creneau.date_creneau >= dateAjd %}
 		
 		<div class="creneau">
             <div class="time">
@@ -59,6 +63,7 @@
                 <span class="anim"> animé par {{userEmission[key].user}}</span>
             </div>
         </div>
+		{% endif %}
 		{% endfor %}
 	</div>
 {% endblock %}
