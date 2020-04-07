@@ -1,4 +1,20 @@
 .divReplays {
-    background-color: #c8c8c8e6;
+    background-image: url('https://campetpriere.fr/wp-content/uploads/2019/02/%C3%A9mission-rcf.jpg');
+    background-size: cover;
+    background-position: initial;
+    background-repeat: no-repeat;
     border-radius: 5px;
+    box-shadow: 8px 4px 15px #282828;
+}
+
+.table {
+    color: black;
+    background-color: #d7d2d2e8 !important;
+}
+
+#tableReplay_filter > label {
+    background-color: #f9f9f9e8;
+    padding: 7px;
+    border-radius: 10px;
+    color: black;
 }
