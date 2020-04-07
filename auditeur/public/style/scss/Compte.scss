@@ -11,23 +11,6 @@ a:hover {
     color: #212529;
 }
 
-body {
-    min-width: 310px;
-    background-image: url("https://images6.alphacoders.com/478/thumb-1920-478549.jpg") !important;
-    // https://mb.cision.com/Public/13765/2085545/98c43535772ead27_org.jpg
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-@media all and (min-width: 1315px) {
-    body {
-        background-image: url("https://images6.alphacoders.com/478/thumb-1920-478549.jpg") !important;
-        // https://mb.cision.com/Public/13765/2085545/98c43535772ead27_org.jpg
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
-}
-
 .manageAcc, .modal-login, .modal-password {
     min-width: 290px;
 }
@@ -41,6 +24,6 @@ body {
 .manageAcc {
     border: 1px solid 000000e6;
     border-radius: 10px;
-    background-color: #0000001c;
-    box-shadow: black 2px 4px 15px
+    background-color: #c6842f24;
+    box-shadow: black 1px 4px 15px
 }

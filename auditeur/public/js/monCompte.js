@@ -28,8 +28,6 @@ $(document).ready(() => {
                 function(){
                      $.notify("Le login a été mis à jour", "success");
                     document.location.href=myId;
-
-                    
                     
                     }
             )
