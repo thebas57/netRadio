@@ -19,7 +19,7 @@
             
             <div class="div-img">
                 <p class="txt-img">{{emission.titre}}</p>
-                <p class="date-img">{{creneauChoisi.date_creneau}} fin {{ creneauChoisi.heure_fin}}</p>
+                <p class="date-img">{{creneauChoisi.date_creneau}}</p>
             </div>
             <a href="#!">
             <div class="mask rgba-white-slight"></div>
@@ -184,7 +184,14 @@ function update(player) {
     let fraction = debutLecture / dureeReplay;
     let percent  = Math.ceil(fraction * 100);
 
-	infoTmps.textContent = "Fin du replay dans : " + secondsToHms(dureeReplay - debutLecture);
+    if ( secondsToHms(dureeReplay - debutLecture) > secondsToHms(0))
+    {
+	    infoTmps.textContent = "Fin du replay dans : " + secondsToHms(dureeReplay - debutLecture);
+    }
+    else
+    {
+        infoTmps.textContent = "Fin du replay";
+    }
     progress.style.width = percent + '%';
     progress.textContent =  secondsToHms(debutLecture);
     sliderGestion.value = debutLecture;
