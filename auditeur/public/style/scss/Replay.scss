@@ -5,6 +5,7 @@
     background-repeat: no-repeat;
     border-radius: 5px;
     box-shadow: 8px 4px 15px #282828;
+
 }
 
 .table {
@@ -17,4 +18,23 @@
     padding: 7px;
     border-radius: 10px;
     color: black;
+}
+
+.btn-replay {
+    background-color: #d07b2b;
+    color: white;
+    padding: 6px;
+    border-radius: 12px;
+    &:hover{   
+        text-decoration: none;
+        color: rgb(80, 80, 80);
+    }
+}
+
+td {
+    text-align: center;
+}
+
+.td-replay {
+    min-width: 139px;
 }

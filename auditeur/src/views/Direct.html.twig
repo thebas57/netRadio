@@ -12,9 +12,9 @@
     <div class="col-lg-6 mx-auto my-5 col-sm-8 col-10 leDirect py-3">
 
     <div class="fonctionsDirect text-center">
-        <audio id="audioPlayer">
-            <source src="{{root}}/public/Madcon.mp3" type="audio/ogg" />
-            <source src="{{root}}/public/Madcon.mp3" type="audio/mp3" />
+        <audio id="audioPlayer" ontimeupdate="update(this)">
+            <source src="{{root}}/public/out123.ogg" type="audio/ogg" />
+            <source src="{{root}}/public/out123.ogg" type="audio/mp3" />
             Votre navigateur ne supporte pas la balise AUDIO.
         </audio>
 
@@ -35,9 +35,9 @@
             </div>
         </div>  #}
 
-    <div class="text-center onair">
-        <img src="http://en.sopah.com/files/12/on_air.gif">
-    </div>
+        <div class="text-center onair">
+            <img src="http://en.sopah.com/files/12/on_air.gif">
+        </div>
 
     </div>
 
@@ -63,7 +63,7 @@
         {% if emissionsAvenir is empty %}
             <p class="text-center">Il n'y a pas d'émissions prévues aujourd'hui</p>
         {% else %}
-            <p class="text-center">La prochaine émission, <b>{{titreProchaineEmis}}</b> arrive dans : <b>{{tempsAvantEmis}}</b> minute(s) à <b>{{heureProchEmiss}}</b></p>
+            <p class="text-center">La prochaine émission, <b>{{titreProchaineEmis}}</b> arrive à <b>{{heureProchEmiss}}</b></p>
             <p class="text-center">Les émissions d'aujourd'hui :</p>
             <ul class="text-center">
             {% for emissionsAjd in emissionsAvenir %}
@@ -88,7 +88,7 @@
         {% if emissionsAvenir is empty %}
             <p class="text-center">Il n'y a pas d'émissions prévues aujourd'hui</p>
         {% else %}
-            <p class="text-center">La prochaine émission, <b>{{titreProchaineEmis}}</b> arrive dans : <b>{{tempsAvantEmis}}</b> minute(s) à <b>{{heureProchEmiss}}</b></p>
+            <p class="text-center">La prochaine émission, <b>{{titreProchaineEmis}}</b> arrive à <b>{{heureProchEmiss}}</b></p>
             <p class="text-center">Les émissions d'aujourd'hui :</p>
             <ul class="text-center">
             {% for emissionsAjd in emissionsAvenir %}

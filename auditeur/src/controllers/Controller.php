@@ -49,6 +49,17 @@ class Controller extends BaseController
         return $this->render($response, 'Connexion.html.twig');
     } //End of function afficherConnexion
 
+    public function afficherDetailReplay($request, $response, $args)
+    {
+
+        $creneau = Creneau::find($args['id']);
+        $emission = Emission::where('emission_id', $creneau->emission_id)->first();
+        $programme = Programme::where('programme_id', $emission->programme_id)->first();
+        $utilisateur = Utilisateur::where('utilisateur_id', $emission->animateur)->first();
+
+        return $this->render($response, 'DetailEmissionReplay.html.twig', ['creneauChoisi' => $creneau, 'emission' => $emission, 'programme' => $programme, 'animateur' => $utilisateur]);
+    } //End of function afficherDetailReplay
+
     public function afficherReplays($request, $response)
     {
         date_default_timezone_set('Europe/Paris');
@@ -59,7 +70,7 @@ class Controller extends BaseController
         $dateActuelle = date("Y-m-d");
         $animateurs = [];
         $prog = [];
-
+        
 
         $creneaux = Creneau::orderBy('heure_debut')->get();
         $emissions = Emission::all();
@@ -85,7 +96,7 @@ class Controller extends BaseController
                         foreach($utilisateurs as $anim) {
                             if($emission->animateur == $anim->utilisateur_id) {
                                 array_push($animateurs, $anim);
-                            }
+                            } 
                         }
                         foreach($programmes as $prgm) {
                             if($emission->programme_id == $prgm->programme_id) {

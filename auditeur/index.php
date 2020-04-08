@@ -60,6 +60,7 @@ $app->get('/MonComptePass/{id}','\\auditeur\\controllers\\Controller:afficherCom
 $app->get('/direct','\\auditeur\\controllers\\Controller:ecouterDirect')->setName("direct");
 $app->get('/planning','\\auditeur\\controllers\\Controller:afficherPlanning');
 $app->get('/replays','\\auditeur\\controllers\\Controller:afficherReplays');
+$app->get('/replay/{id}','\\auditeur\\controllers\\Controller:afficherDetailReplay');
 
 $app->get('/programmes','\\auditeur\\controllers\\Controller:afficherProgrammes');
 $app->get('/emissions/{id}','\\auditeur\\controllers\\Controller:afficherEmissions');
