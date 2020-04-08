@@ -1,0 +1,215 @@
+.view-cascade {
+    width: 110%;
+    margin-left: -5%;
+    margin-top: -1%;
+    border-radius: 5px;
+    background-image: url('../../images/radio-replay.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.div-img {
+    text-align: center;
+    height: 70vh;
+}
+
+.txt-img {
+    font-size: 3.5em;
+    top: 35%;
+    position: relative;
+    padding: 10px;
+    background-color: #f0f0f0bf
+}
+
+.date-img {
+    font-size: 1.5em;
+    top: 35%;
+    position: relative;
+    padding: 5px;
+    background-color: #000000cf;
+    color: white;
+}
+
+.card {
+    background-color: #f0f0f0;
+}
+
+.leDirect {
+    background-image: url('https://media2.giphy.com/media/17mRAZbp32pKU/giphy.gif?cid=ecf05e470d90fb838393d83e51a0a4d1a620cbe5d51f1a60&rid=giphy.gif');
+    background-repeat: no-repeat;
+    background-size: cover;
+    // background-position: center;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 8px 8px 15px blanchedalmond;
+}
+
+
+.ico-btn {
+    color: #e19a3e;
+}
+
+.volume {
+    vertical-align: bottom;
+    display: inline-block;
+    height: 25px;
+    white-space: nowrap;
+    position: relative;
+    width: 45px;
+
+    > a {
+        display: inline-block;
+        background-color: #ebebeb;
+        width: 8px;
+        margin-left: 0px;
+        margin-right: 0px;
+        cursor: pointer;
+        border-left: 1px solid #fff;
+        position: absolute;
+        bottom: 0;
+    }
+}
+
+.deep-orange {
+    background-color: #e19a3e  !important;
+}
+
+.btn-floating i {
+    color: white;
+    font-size: 2.5rem;
+    text-align: center;
+    width: inherit;
+    line-height: 70px;
+}
+
+.btn-floating {
+    margin: 5px;
+    vertical-align: middle;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    display: inline-block;
+    transition: all .2s ease-in-out;
+}
+
+// Partie gestion du volume
+.volumeicone {
+    width: 50%;
+    display: inline-block;
+}
+
+.slidecontainer {
+    width: 80%;
+    display: inline-block;
+    vertical-align: super;
+  }
+  
+  .volume, .gestionTemps {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    border-radius: 5px;
+    background: white;
+    outline: none;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    vertical-align: middle;
+  }
+  
+  .volume:hover, .gestionTemps:hover {
+    opacity: 1;
+  }
+  
+  .volume::-webkit-slider-thumb, .gestionTemps::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: rgb(0, 0, 0);
+    cursor: pointer;
+  }
+  
+  .volume::-moz-range-thumb, .gestionTemps::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: rgb(0, 0, 0);
+    cursor: pointer;
+  }
+  
+.onair {
+    display: none;
+}
+
+.fa-volume-up {
+    color: white;
+    margin-left: 5px;
+    font-size: 1.5rem;
+}
+
+
+#progressBarControl {
+    width: 80%;
+    height: 35px !important;
+    border: 1px solid #aaa;
+    margin: 5px;
+    display: inline-block;
+}
+
+#progressBar {
+    background-color: #ee1d1d;
+    height: 35px;
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 5px;
+    color: rgb(0, 0, 0);
+    border-radius: 10px;
+}
+
+.divProgress {
+    background-color: #eae0d3;
+    border-radius: 10px;
+    height: 35px;
+}
+
+.tempsReplay {
+    padding: 3px;
+}
+
+.infoTempsReplay {
+    background-color: #dfdddbf0;
+    border-radius: 5px;
+}
+
+.chevron {
+    color: white
+}
+
+.controlTemps {
+    width: 100%;
+    display: inline-block;
+}
+
+.sliderTmps {
+    width: 100%;
+}
+
+.gestionTemps::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #e69226;
+    cursor: pointer;
+  }
+  
+.gestionTemps::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #e69226;
+    cursor: pointer;
+  }

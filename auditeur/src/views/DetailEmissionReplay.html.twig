@@ -1,0 +1,220 @@
+{% extends 'Template.html.twig' %}
+{% set root = base_url() %}
+
+{% block head %}
+<!--  block head qui hérite de son parent, template.html.twig. On y ajoute le css désiré -->
+{{ parent() }}
+<link rel="stylesheet" href="{{ root }}/public/style/css/DetailReplay.css"> 
+
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    
+    <!-- Card Wider -->
+    <div class="card card-cascade wider mt-5 mx-auto mb-4 col-8">
+
+        <!-- Card image -->
+        <div class="view view-cascade overlay">
+            
+            <div class="div-img">
+                <p class="txt-img">{{emission.titre}}</p>
+                <p class="date-img">{{creneauChoisi.date_creneau}} fin {{ creneauChoisi.heure_fin}}</p>
+            </div>
+            <a href="#!">
+            <div class="mask rgba-white-slight"></div>
+            </a>
+        </div>
+
+        <!-- Card content -->
+        <div class="card-body card-body-cascade text-center mb-1">
+
+            <!-- Title -->
+            <h3 class="card-title programme"><i><strong>{{ programme.nom }}</strong></i></h3>
+            <p>animé par :</p>
+            <!-- Subtitle -->
+            <h5 class="blue-text pb-2"><strong>{{ animateur.identifiant }}</strong></h5>
+            <hr>
+            <!-- Text -->
+            <p class="card-text">{{ emission.resume }}</p>
+        </div>
+
+        <div class="leDirect col-6 mb-4 pb-3 mx-auto">
+            <div class="fonctionsDirect text-center my-2">
+                <audio id="audioPlayer" ontimeupdate="update(this)">
+                    <source src="{{root}}/public/chillhop_relax.mp3" type="audio/ogg" />
+                    <source src="{{root}}/public/chillhop_relax.mp3" type="audio/mp3" />
+                    Votre navigateur ne supporte pas la balise AUDIO.
+                </audio>
+
+                <a type="button" class="btn-floating deep-orange waves-effect waves-light control" onclick="play('audioPlayer', this, {{ creneauChoisi }})"><i class="fas fa-play" id="iconeAudio"></i></a>
+                <a type="button" class="btn-floating deep-orange waves-effect waves-light control" onclick="resume('audioPlayer')"><i class="fas fa-stop" aria-hidden="true"></i></a>
+
+                <div class="volumeicone">
+                    <div class="slidecontainer">
+                        <input type="range" min="1" max="100" value="50" class="volume" id="volume">
+                    </div>
+                    <i class='fas fa-volume-up'></i>
+                </div>
+            </div>
+
+            <div class="infoTempsReplay">
+                <b><p class="tempsReplay text-center"></p></b>
+            </div>
+
+            <div class="controlTemps mb-2">
+                <div class="slidecontainer sliderTmps">
+                    <input type="range" min="0" max="100" value="0" class="gestionTemps" id="gestionTemps">
+                </div>
+            </div>
+
+            <div class="divProgress mb-3">
+                <div id="progressBarControl mx-auto">
+                    <div id="progressBar">Vous pouvez lancer le replay</div>
+                </div>
+            </div> 
+
+            <div class="text-center onair">
+                <img src="http://en.sopah.com/files/12/on_air.gif">
+            </div>
+        
+        </div>
+
+
+    </div>
+<!-- Card Wider -->
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+
+// Gestion du volume récupérant le valeur du slider divisée par 100 pour le format audio
+let slider = document.getElementById("volume");
+
+slider.oninput = function() {
+    volume('audioPlayer', this.value/100)
+}
+
+let sliderTemps = document.getElementById("gestionTemps");
+
+sliderTemps.oninput = function() {
+    gererReplay('audioPlayer', this.value)
+}
+
+function play(idPlayer, control, crenMtn) {
+    let player = document.querySelector('#' + idPlayer);
+    let btnPlPau = document.querySelector('.btn-floating');
+    let onair = document.querySelector('.onair');
+    let icone = document.querySelector('#iconeAudio');
+    let datCrenHoursFin = new Date();
+    let sliderGestion = document.querySelector('#gestionTemps');
+
+
+    let datActu = new Date();
+
+        // On split l'heure de début et fin de créneau de l'émission pour pouvoir utiliser setHours
+        let finEmissionCren = crenMtn.heure_fin.split(":");
+        let debutEmissionCren = crenMtn.heure_debut.split(":");
+
+        //On a donc l'heure du début et de fin du créneau
+        let heureFinEmission = datCrenHoursFin.setHours(finEmissionCren[0], finEmissionCren[1], finEmissionCren[2]);
+        let heureDebutEmission = datCrenHoursFin.setHours(debutEmissionCren[0], debutEmissionCren[1], debutEmissionCren[2]);
+        // Obtention de l'heure actuel en milliseconds
+        let actuHour = datActu.getTime();
+
+        // Temps dont dure l'émission
+        let tempsEmission = (heureFinEmission - heureDebutEmission) / 1000;
+
+        // Initialisation d'une première class pour l'icone
+        icone.classList.add("fas");
+        
+        
+        sliderGestion.max = player.duration;
+        // Si direct est mis en pause :
+        if (player.paused) {
+
+            player.play();
+            onair.style.display = "block";
+            icone.classList.remove("fa-play");
+            icone.classList.add("fa-pause");
+            
+        } else {
+            player.pause();	
+            icone.classList.remove("fa-pause");
+            icone.classList.add("fa-play");
+        }
+
+	
+}
+
+function resume(idPlayer) {
+    let icone = document.querySelector('#iconeAudio');
+
+    let player = document.querySelector('#' + idPlayer);
+	
+    player.currentTime = 0;
+    icone.classList.remove("fa-pause");
+    icone.classList.add("fa-play");
+    player.pause();
+}
+
+function volume(idPlayer, vol) {
+    let player = document.querySelector('#' + idPlayer);
+    player.volume = vol;	
+}
+
+function gererReplay(idPlayer, temps) {
+    let player = document.querySelector('#' + idPlayer);
+    player.currentTime = temps;	
+}
+
+
+function update(player) {
+    let dateLecture = new Date();
+    let dureeReplay = player.duration;
+    let debutLecture = player.currentTime;
+    let icone = document.querySelector('#iconeAudio');
+    let onair = document.querySelector('.onair');
+    let infoTmps = document.querySelector('.tempsReplay');
+    let progress = document.querySelector('#progressBar');
+    let sliderGestion = document.querySelector('#gestionTemps');
+
+    let fraction = debutLecture / dureeReplay;
+    let percent  = Math.ceil(fraction * 100);
+
+	infoTmps.textContent = "Fin du replay dans : " + secondsToHms(dureeReplay - debutLecture);
+    progress.style.width = percent + '%';
+    progress.textContent =  secondsToHms(debutLecture);
+    sliderGestion.value = debutLecture;
+    
+
+    if(percent == 100) {
+        progress.textContent = "L'émission est terminée";
+        icone.classList.remove("fa-pause");
+        icone.classList.add("fa-play");
+        onair.style.display = "block";
+
+    }
+}
+
+function secondsToHms(d) {
+d = Number(d);
+var h = Math.floor(d / 3600);
+var m = Math.floor(d % 3600 / 60);
+var s = Math.floor(d % 3600 % 60);
+var hDisplay = h > 0 ? h + (h == 1 ? " heure, " : " heures, ") : "";
+var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
+var sDisplay = s > 0 ? s + (s == 1 ? " seconde" : " secondes") : "";
+return hDisplay + mDisplay + sDisplay; 
+}
+
+function escapeSpace(str)
+{
+    let strChanged = str.replace(" ", "_");
+    return strChanged;
+}
+
+</script>
+{% endblock %}

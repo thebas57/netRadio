@@ -12,12 +12,12 @@
 
 {% block body %}
     {{ parent() }}
-    <h2 class="text-center mt-4 titleReplay">Replays Net'radio</h2>
+    <h2 class="text-center mt-4 titleReplay text-white">Replays Net'radio</h2>
 
-    <div class="divReplays col-10 py-3 mx-auto mt-5">
+    <div class="divReplays col-10 py-3 mx-auto mt-5 table-responsive">
         
         {% if creneauPasse is empty %}
-        <h3 class="text-center">Aucun replay n'est disponible</h3>
+        <h3 class="text-center text-white">Aucun replay n'est disponible</h3>
         {% else %}
         {# Initialisation de variables compteur qui empechera de passer plusieurs fois dans les boucles et donc ne renverra qu'une seule fois #}
         {% set cmptAnim = 0 %}
@@ -32,6 +32,7 @@
                     <th>Début</th>
                     <th>Programme</th>
                     <th>Animé par</th>
+                    <th>Replay</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,6 +58,7 @@
                                     {# Pour comparer les animateur des émissions passées avec les utilisateur_id des animateurs, et afficher leur identifiant #}
                                     {% if lesEmissions.animateur == lesAnimateurs.utilisateur_id and cmptAnim == 0 %}
                                         <td>{{ lesAnimateurs.identifiant }}</td>
+                                        <td class="td-replay"><a href="{{root}}/replay/{{lesCreneaux.creneau_id}}" type="button" class="btn-replay">Accès replay <i class="fas fa-chevron-right"></i></a></td>
                                         {% set cmptAnim = cmptAnim + 1 %}
                                     {% endif %}
                                 {% endfor %}
