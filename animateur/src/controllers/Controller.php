@@ -52,10 +52,16 @@ class Controller extends BaseController
             $creneau->heure_fin = $hdfModif;
 
             // Pour récupérer donnée avec clé etrangere
-            $emission = Emission::find($creneau->emission_id);
-            $anim = Utilisateur::find($emission->animateur);
-            $tmp = ['user' => $anim->identifiant, 'emission' => $emission->titre];
-            array_push($tab, $tmp);
+            if ($creneau->emission_id != null) {
+                $emission = Emission::find($creneau->emission_id);
+                if ($emission != null) {
+                    $anim = Utilisateur::find($emission->animateur);
+                }
+            }
+            if ($emission != null && $anim != null) {
+                $tmp = ['user' => $anim->identifiant, 'emission' => $emission->titre];
+                array_push($tab, $tmp);
+            }
         }
 
         unset($emission);
