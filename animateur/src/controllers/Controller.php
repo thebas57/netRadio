@@ -155,17 +155,6 @@ class Controller extends BaseController
     } //End of function voirProgramme
 
     /**
-     * Fonction permettant d'afficher les actualités.
-     * @param $request
-     * @param $response
-     * @return mixed
-     */
-    public function voirActualite($request, $response)
-    {
-        return $this->render($response, 'Actualite.html.twig');
-    } //End of function voirActualite
-
-    /**
      * Fonction permettant d'afficher les emissions.
      * @param $request
      * @param $response

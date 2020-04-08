@@ -88,9 +88,6 @@ $app->post('/addProgramme','\\animateur\\controllers\\Controller:addProgramme');
 // Supprimer un pprogramme
 $app->get('/supprProgramme/{id}','\\animateur\\controllers\\Controller:supprProgramme');
 
-// Accueil Actualité
-$app->get('/actualite','\\animateur\\controllers\\Controller:voirActualite')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('actualite');
-
 $app->get('/ajoutStaff','\\animateur\\controllers\\Controller:afficherAjoutStaff')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()));
 $app->post('/ajoutStaff','\\animateur\\controllers\\Controller:ajoutStaff');
 
