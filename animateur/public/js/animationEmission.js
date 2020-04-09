@@ -2,7 +2,7 @@ $(document).ready(() => {
     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
         navigator.mediaDevices.getUserMedia (
             // constraints - only audio needed
-            {audio: true})
+            {audio: true, video: false})
             .then(function(stream) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,50 +64,57 @@ $(document).ready(() => {
                 ///fin musiques ///
 
                 async function arreterEnregistrement() {
-                    onAir = false;
-                    $("#onAir h3").removeClass("red");
-                    let dataRecord = [];
-                    //enregistrement de l'audio
-                    recorder.ondataavailable = function (element){
-                        dataRecord.push(element.data);
-                        console.log("Data record : ",element.data);
-                        let emission_id = $("#emission_id").val();
-                        let datas = new FormData();
-                        datas.append("emission_id", emission_id);
-                        datas.append("audio",new Blob([element.data],{"type": "audio/mpeg3;"}));
-                        let route = $("#route").val();
-                        fetch(route + "/emission/receiveAudio", {
-                            method: "POST",
-                            body: datas
-                        }).then((res) => {
-                            res.json().then((res) => {
-                                console.log(res);
-                            })
-                            // window.location.href = route + "/animateur";
+                    return new Promise(((resolve, reject) => {
+                        onAir = false;
+                        $("#onAir h3").removeClass("red");
+                        let dataRecord = [];
+                        //enregistrement de l'audio
+                        recorder.ondataavailable = function (element){
+                            dataRecord.push(element.data);
+                            console.log("Data record : ",element.data);
+                            let emission_id = $("#emission_id").val();
+                            let datas = new FormData();
+                            datas.append("emission_id", emission_id);
+                            datas.append("audio",element.data);
+                            datas.append("type", "enregistrement");
+                            let route = $("#route").val();
+                            fetch(route + "/emission/receiveAudio", {
+                                method: "POST",
+                                body: datas
+                            }).then((res) => {
+                                res.json().then((res) => {
+                                    resolve(res);
+                                })
+                                // window.location.href = route + "/animateur";
+                            }).catch((err) => reject(err))
 
-                        })
+                        };
+                    }));
 
-                    };
                 }
 
                 async function ajouterMusique(id) {
-                    console.log(musiques[id]);
-                    onAir = false;
-                    $("#onAir h3").removeClass("red");
-                    //enregistrement de l'audio
+                    console.log(musiques);
+                    return new Promise((resolve, reject) => {
+                        onAir = false;
+                        $("#onAir h3").removeClass("red");
+                        //enregistrement de l'audio
                         let emission_id = $("#emission_id").val();
                         let datas = new FormData();
                         datas.append("emission_id", emission_id);
-                        datas.append("audio",new Blob([musiques[id]],{"type": "audio/mpeg3;"}));
+                        datas.append("audio",new Blob([musiques[id]],{"type": "audio/mpeg; codecs=opus"}));
+                        datas.append("type", "musique");
                         let route = $("#route").val();
                         fetch(route + "/emission/receiveAudio", {
                             method: "POST",
                             body: datas
                         }).then((res) => {
                             res.json().then((res) => {
-                                console.log(res);
+                               resolve(res);
                             })
-                        })
+                        }).catch((err) => reject(err))
+                    });
+
                     }
 
 
@@ -142,7 +149,8 @@ $(document).ready(() => {
                     $("#timer").html(lecteur.duration);
                     $("#onAir h3").removeClass("red");
                     recorder.stop();
-                    await arreterEnregistrement();
+                    let tmp_res = await arreterEnregistrement();
+                    console.log("res ", tmp_res);
                     lecteur.play();
 
                     $("#finEmission").prop("disabled", true);
@@ -157,15 +165,16 @@ $(document).ready(() => {
                     });
 
                     lecteur.onended = async function () {
-                        $("#onAir h3").addClass("red");
-
+                        let res = await ajouterMusique(id);
+                        // $("#onAir h3").addClass("red");
+                        console.log("envoyé : ", res);
                         // recorder.start();
                         // $("#onAir h3").addClass("red");
                         $("#finEmission").show();
                         $("#lancerEnregistrement").hide();
                         $("#finEmission").prop("disabled", false);
 
-                        await ajouterMusique(id);
+
                     };
                 });
 

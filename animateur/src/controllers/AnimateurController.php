@@ -101,6 +101,7 @@ class AnimateurController extends BaseController
     public function receiveAudio($request, $response)
     {
         $emission_id = (isset($_POST["emission_id"])) ? $_POST["emission_id"] : null;
+        $type = (isset($_POST["type"])) ? $_POST["type"] : null;
         $audio = (isset($_FILES["audio"])) ? $_FILES["audio"] : null;
 
         if (!isset($emission_id) || !isset($audio)) {
@@ -114,22 +115,42 @@ class AnimateurController extends BaseController
         }
 
         $tmp = $emission->fichier;
+        $titre = $this->escapeSpace($emission->titre);
 
         if (!isset($emission->fichier)) {
 //            $emission->fichier = $audio;
             if ($this->createWorkingDir($emission->titre)) {
-                move_uploaded_file($audio['tmp_name'], "./emissions/" . $this->escapeSpace($emission->titre) . "/1.mp3");
-                chmod("emissions/" . $this->escapeSpace($emission->titre) . "/1.mp3", 0777);
-                $emission->fichier = "emission/" . $this->escapeSpace($emission->titre) . "/1.mp3";
+                move_uploaded_file($audio['tmp_name'], "./emissions/" . $this->escapeSpace($emission->titre) . "/1.ogg");
+                chmod("emissions/" . $this->escapeSpace($emission->titre) . "/1.ogg", 0777);
+                $emission->fichier = "emission/" . $this->escapeSpace($emission->titre) . "/1.ogg";
             }
 
         } else {
             if ($this->createWorkingDir($emission->titre)) {
                 //On déplace l'audio )
                 $truc = json_decode($emission->fichier);
-                if (move_uploaded_file($audio["tmp_name"], "./emissions/" . $this->escapeSpace($emission->titre) . "/2.mp3")) {
-                    //On a réussi à mettre les deux sur le serveur
-                   $emission->fichier = $this->concatAudio($emission->titre);
+                if($type == "musique") {
+                    if (move_uploaded_file($audio["tmp_name"], "./emissions/" . $titre . "/2.mp3")) {
+                        chmod("emissions/" . $titre . "/2.mp3", 0777);
+                        //on convertit en ogg
+                        exec("ffmpeg -y -i ./emissions/${titre}/2.mp3 -c:a libopus -b:a 19.1k -ac 1 -r 16k ./emissions/${titre}/2.ogg");
+                        chmod("emissions/" . $titre . "/2.ogg", 0777);
+                        exec("ffmpeg -y -i ./emissions/${titre}/2.ogg -vn -acodec libopus ./emissions/${titre}/2.ogg");
+                        chmod("emissions/" . $titre . "/2.ogg", 0777);
+                        chmod("emissions/" . $titre . "/2.ogg", 0777);
+                        unlink("emissions/${titre}/2.ogg");
+
+                        //On a réussi à mettre les deux sur le serveur
+                        $emission->fichier = $this->concatAudio($emission->titre);
+                    }
+                }else{
+                    if (move_uploaded_file($audio["tmp_name"], "./emissions/" . $this->escapeSpace($emission->titre) . "/2.ogg")) {
+                        chmod("emissions/" . $titre . "/2.ogg", 0777);
+                        chmod("emissions/" . $titre . "/2.ogg", 0777);
+
+                        //On a réussi à mettre les deux sur le serveur
+                        $emission->fichier = $this->concatAudio($emission->titre);
+                    }
                 }
             }
         }
@@ -144,30 +165,25 @@ class AnimateurController extends BaseController
     private function concatAudio($titre)
     {
         $titre = $this->escapeSpace($titre);
-        //        On vérifie que les fichiers existent
-        if (file_exists("emissions/" . $titre . "/1.mp3")){
-            chmod("emissions/" . $titre . "/1.mp3", 0777);
-            exec("ffmpeg -i ./emissions/${titre}/1.mp3 -acodec libmp3lame ./emissions/${titre}/1.mp3 -y");
-        }
-        if (file_exists("emissions/" . $titre . "/2.mp3")){
-            chmod("emissions/" . $titre . "/2.mp3", 0777);
-            exec("ffmpeg -i ./emissions/${titre}/2.mp3 -acodec libmp3lame ./emissions/${titre}/2.mp3 -y");
-        }
+
         //On concat
-            if (file_exists("emissions/${titre}/out.mp3")) {
-                exec("ffmpeg -i ./emissions/${titre}/out.mp3 -acodec libmp3lame ./emissions/${titre}/out.mp3 -y");
-                exec("ffmpeg -i concat:'./emissions/${titre}/out.mp3|./emissions/${titre}/2.mp3' -c copy ./emissions/${titre}/out.mp3 -y");
+            if (file_exists("emissions/${titre}/out.ogg")) {
+                exec("ffmpeg -i concat:'./emissions/${titre}/out.ogg|./emissions/${titre}/2.ogg' -c copy ./emissions/${titre}/out.ogg -y");
+                chmod("emissions/" . $titre . "/out.ogg", 0777);
+                chmod("emissions/" . $titre . "/out.ogg", 0777);
 
             } else {
-                exec("ffmpeg -i concat:'./emissions/${titre}/1.mp3|./emissions/${titre}/2.mp3' -c copy ./emissions/${titre}/out.mp3 -y");
+                exec("ffmpeg -i concat:'./emissions/${titre}/1.ogg|./emissions/${titre}/2.ogg' -c copy ./emissions/${titre}/out.ogg -y");
 
-                if (file_exists("emissions/${titre}/out.mp3")) {
-                    chmod("emissions/" . $titre . "/out.mp3", 0777);
-//                    unlink("emissions/${titre}/1.mp3");
+                if (file_exists("emissions/${titre}/out.ogg")) {
+                    chmod("emissions/" . $titre . "/out.ogg", 0777);
+                    chmod("emissions/" . $titre . "/out.ogg", 0777);
+
+                    unlink("emissions/${titre}/1.ogg");
                 }
             }
-//        unlink("emissions/${titre}/2.mp3");
-        return ("emissions/${titre}/out.mp3");
+        unlink("emissions/${titre}/2.ogg");
+        return ("emissions/${titre}/out.ogg");
     }
 
     private function createWorkingDir($titre)
