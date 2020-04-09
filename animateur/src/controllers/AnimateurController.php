@@ -138,7 +138,7 @@ class AnimateurController extends BaseController
                         exec("ffmpeg -y -i ./emissions/${titre}/2.ogg -vn -acodec libopus ./emissions/${titre}/2.ogg");
                         chmod("emissions/" . $titre . "/2.ogg", 0777);
                         chmod("emissions/" . $titre . "/2.ogg", 0777);
-                        unlink("emissions/${titre}/2.ogg");
+                        unlink("emissions/${titre}/2.mp3");
 
                         //On a réussi à mettre les deux sur le serveur
                         $emission->fichier = $this->concatAudio($emission->titre);
@@ -169,7 +169,6 @@ class AnimateurController extends BaseController
         //On concat
             if (file_exists("emissions/${titre}/out.ogg")) {
                 exec("ffmpeg -i concat:'./emissions/${titre}/out.ogg|./emissions/${titre}/2.ogg' -c copy ./emissions/${titre}/out.ogg -y");
-                chmod("emissions/" . $titre . "/out.ogg", 0777);
                 chmod("emissions/" . $titre . "/out.ogg", 0777);
 
             } else {
@@ -234,6 +233,55 @@ class AnimateurController extends BaseController
             }
         }
         return $str;
+    }
+
+    /**
+     * @param $request
+     * @param $response
+     * @return ResponseInterface
+     * fonction qui sert à importer une émission pré-enregistrée
+     */
+    public function importerEmission($request, $response){
+       try{
+           $emission_id = (isset($_POST["id"])) ? $_POST["id"] : null;
+           $audio = (isset($_FILES["emissionAudacity"])) ? $_FILES["emissionAudacity"] : null;
+
+           if (!isset($emission_id) || !isset($audio)) {
+               throw new \Error("champ manquant");
+           }
+
+           //vérification du type
+           if(strcmp($audio["type"], "video/ogg") != 0){
+               var_dump(strcmp($audio["type"], "video/ogg"));echo "<br><br>";
+               var_dump($audio["type"]);exit;
+               throw new \Error("fichier au mauvais format");
+           }
+
+           //récupération de l'émission
+           $emission = Emission::find($emission_id);
+           if(!isset($emission) || empty($emission)){
+               throw new \Error("emission inconnue");
+           }
+
+           $titre = $this->escapeSpace($emission->titre);
+
+           if($this->createWorkingDir($titre)){
+               if(file_exists("emission/${titre}/out.ogg")){
+                   unlink("emission/${titre}/out.ogg");
+               }
+               if((move_uploaded_file($audio["tmp_name"], "./emissions/" . $titre . "/out.ogg"))){
+                   chmod("emissions/" . $titre . "/out.ogg", 0777);
+                   $emission->titre = "emissions/" . $titre . "/out.ogg";
+                }
+           }else{
+               throw new \Exception("Erreur création working dir");
+           }
+
+       }catch(\Exception $e){
+           die($e->getMessage());
+       }
+
+       return $this->redirect($response, "AccueilAnimateur");
     }
 }
 
