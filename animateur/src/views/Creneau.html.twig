@@ -41,11 +41,11 @@
 	<div class="containerC">
 		{# En attendant le js je test en dur #}
         {% if creneaux is empty %}
-			<span style="color:white;"> Aucun programme a été trouvé. </span>
+			<span style="color:white;"> Aucun créneau planifié. </span>
         {%  endif %}
 
         {% for key,creneau in creneaux|sort((a, b) => a.date_creneau <=> b.date_creneau) %}
-		{% if creneau.date_creneau >= dateAjd %}
+		{% if creneau.date_creneau >= dateAjd and userEmission[key].emission != null %}
 		
 		<div class="creneau">
             <div class="time">
