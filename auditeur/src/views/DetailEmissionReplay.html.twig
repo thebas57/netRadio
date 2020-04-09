@@ -42,8 +42,8 @@
         <div class="leDirect col-6 mb-4 pb-3 mx-auto">
             <div class="fonctionsDirect text-center my-2">
                 <audio id="audioPlayer" ontimeupdate="update(this)">
-                    <source src="{{root}}/public/chillhop_relax.mp3" type="audio/ogg" />
-                    <source src="{{root}}/public/chillhop_relax.mp3" type="audio/mp3" />
+                    <source src="{{base_url()}}/../animateur/{{emission.fichier}}" type="audio/ogg" />
+                    <source src="{{base_url()}}/../animateur/{{emission.fichier}}" type="audio/mp3" />
                     Votre navigateur ne supporte pas la balise AUDIO.
                 </audio>
 
