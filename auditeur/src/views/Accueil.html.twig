@@ -1,8 +1,131 @@
 {% extends 'Template.html.twig' %}
 {% set root = base_url() %}
 
+{% block head %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ root }}/public/style/css/Accueil.css">
+
+{% endblock %}
+
 {% block body %}
     {{ parent() }}
+    <div class="div-carousel">
+        <!--Carousel Wrapper-->
+        <div id="carousel-example-2" class="carousel slide carousel-fade" data-interval="5000" data-ride="carousel">
+            <!--Indicators-->
+            <ol class="carousel-indicators">
+                <li data-target="#carousel-example-2" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-example-2" data-slide-to="1"></li>
+                <li data-target="#carousel-example-2" data-slide-to="2"></li>
+            </ol>
+            <!--/.Indicators-->
+            <!--Slides-->
+            <div class="carousel-inner" role="listbox">
+                <div class="carousel-item active">
+                <div class="view">
+                    <a href="{{root}}/replay/{{creneauRap.creneau_id}}"><img class="d-block w-100" src="{{root}}/public/images/carousel-radio.jpg"
+                    alt="First slide"></a>
+                    <div class="mask rgba-black-light"></div>
+                </div>
+                <div class="carousel-caption carousel-description-rap">
+                    <p class="text-carousel-rap">Venez écouter ou ré-écouter le replay de l'émissions de débat sur le rap avec nos invités JUL et Gradur !!</p>
+                    <img class="img-rap" src="https://cdn.radiofrance.fr/s3/cruiser-production/2018/08/4f02e3b5-3683-4341-af52-778a9ba2b8a7/400x400_jul_-_credit_believe_records_.jpg">
+                    <img class="img-rap" src="https://www.rapghetto.com/wp-content/uploads/2019/06/Capture-d%E2%80%99e%CC%81cran-2019-06-24-a%CC%80-18.59.32.png-220x220.jpg">
+                </div>
+                <div class="carousel-caption">
+                    <h3 class="h3-responsive titre-emission">{{emissionRap.titre}}</h3>
+                    <p class="prog-txt">{{programmeRap.nom}} du {{creneauRap.date_creneau}}</p>
+                </div>
+                </div>
+                <div class="carousel-item">
+                <!--Mask color-->
+                <div class="view">
+                    <a href="{{root}}/replay/{{creneauInfo.creneau_id}}"><img class="d-block w-100" src="{{root}}/public/images/carousel-radio22.jpg"
+                    alt="Second slide"></a>
+                    <div class="mask rgba-black-strong"></div>
+                </div>
+                <div class="carousel-caption carousel-description-info">
+                    <p class="text-carousel-info">Toute les informations sur le Covid-19 de l'émission du {{crneauInfo.date_creneau}} est disponible en replay.</p>
+                </div>
+                <div class="carousel-caption">
+                    <h3 class="h3-responsive titre-info">{{emissionInfo.titre}}</h3>
+                    <p class="prog-txt">{{programmeInfo.nom}} du {{creneauInfo.date_creneau}}</p>
+                </div>
+                </div>
+                <div class="carousel-item">
+                <!--Mask color-->
+                <div class="view">
+                    <a href="{{root}}/replay/{{creneauCuisine.creneau_id}}"><img class="d-block w-100" src="{{root}}/public/images/carousel-radio33.jpg"
+                    alt="Third slide"></a>
+                    <div class="mask rgba-black-slight"></div>
+                </div>
+                <div class="carousel-caption carousel-description-info">
+                    <p class="text-carousel-cuisine">Tous ce que vous avez besoin pour rendre votre cuisine encore plus succulente est ici !</p>
+                </div>
+                <div class="carousel-caption">
+                    <h3 class="h3-responsive titre-cuisine">{{emissionCuisine.titre}}</h3>
+                    <p class="prog-txt">{{programmeCuisine.nom}} du {{creneauCuisine.date_creneau}}</p>
+                </div>
+                </div>
+            </div>
+            <!--/.Slides-->
+            <!--Controls-->
+            <a class="carousel-control-prev" href="#carousel-example-2" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carousel-example-2" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+            <!--/.Controls-->
+        </div>
+        <!--/.Carousel Wrapper-->
+    </div>
+
+    <div class="lesProgrammes">
+        <p class="txt-programmes">Naviguez à travers nos programmes mis en avant pour vous !</p>
+    </div>
+
+    <a href="{{root}}/emissions/{{programmeBeaute.programme_id}}">
+    <div class="image-makeup">
+        <div class="text-image">
+            <div class="centre-text">
+                <p class="p-text-makeup"><i>{{programmeBeaute.nom}}</i></p>
+                <div class="div-soustext-makeup">
+                    <p class="p-soustext-makeup"><i>{{programmeBeaute.description}}</i></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </a>
+
+    <a href="{{root}}/emissions/{{programmeJt.programme_id}}">
+    <div class="image-jt">
+        <div class="text-image">
+            <div class="centre-text">
+                <p class="p-text-jt">{{programmeJt.nom}}</p>
+                <div class="div-soustext-jt">
+                    <p class="p-soustext-jt">{{programmeJt.description}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </a>
+
+    <a href="{{root}}/emissions/{{programmeRap.programme_id}}">
+    <div class="image-rap">
+        <div class="text-image">
+            <div class="centre-text">
+                <p class="p-text-rap">{{programmeRap.nom}}</p>
+                <div class="div-soustext-rap">
+                    <p class="p-soustext-rap">{{programmeRap.description}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </a>
+
 
 
 {% endblock %}

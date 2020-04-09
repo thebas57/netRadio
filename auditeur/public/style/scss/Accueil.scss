@@ -1,0 +1,213 @@
+.carousel-description-rap {
+    top: 10%;
+    left: 15%;
+    bottom: 26%;
+    right: 0;
+    width: 35%;
+    background-color: #000000e3;
+    border-radius: 3px;
+    color: white;
+    box-shadow: 3px 3px 15px white;
+}
+
+.div-carousel {
+    box-shadow: 5px 5px 15px white;
+}
+
+.carousel-description-info {
+    top: 10%;
+    left: 15%;
+    bottom: 65%;
+    right: 0;
+    width: 35%;
+}
+
+.carousel-description-cuisine {
+    top: 10%;
+    left: 15%;
+    bottom: 65%;
+    right: 0;
+    width: 35%;
+}
+
+.titre-emission, .titre-info, .titre-cuisine {
+    background-color: #c9d9e8e6;
+    color: #201f1f;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.prog-txt {
+    background-color: #662e0ceb;
+    font-size: 1.2em;
+}
+
+.img-rap {
+    width: 40%;
+    border-radius: 5px;
+    box-shadow: 5px 5px 15px black;
+    margin: 5px;
+}
+
+.text-carousel-info {
+    background-color: #000000bf;
+    border-radius: 3px;
+    color: white;
+    box-shadow: 3px 3px 15px white;
+    padding: 8px;
+}
+
+.text-carousel-cuisine {
+    background-color: #000000bf;
+    border-radius: 3px;
+    color: white;
+    box-shadow: 3px 3px 15px white;
+    padding: 8px;
+}
+
+.text-carousel-rap, .text-carousel-info, .text-carousel-cuisine {
+    margin: 18px;
+}
+
+@media screen and (max-width: 1305px) {
+    .text-carousel-rap, .img-rap, .carousel-description-rap {
+        display: none;
+    } 
+
+}
+
+@media screen and (max-width: 850px) {
+
+    .text-carousel-info, .text-carousel-cuisine {
+        display: none;
+    }
+}
+
+.image-makeup {
+    background-image: url('../../images/makeup.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-top: 30px;
+    box-shadow: 5px 5px 15px white;
+}
+
+.image-jt {
+    background-image: url('../../images/jt.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-top: 30px;
+    box-shadow: 5px 5px 15px white;
+}
+
+.image-rap {
+    background-image: url('../../images/rap.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-top: 30px;
+    box-shadow: 5px 5px 15px white;
+}
+
+.text-image {
+    height: 45vh;
+    display: flex;
+}
+
+.centre-text {
+    margin: auto;
+}
+.p-text-makeup {
+    background-color: #cca2a0de;
+    font-size: 3.5em;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+    text-align: center;
+    color: black;
+}
+
+.p-soustext-makeup {
+    margin: auto;
+    background-color: #9d130ce3;
+    font-size: 1.1em;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+    color: white;
+}
+
+.div-soustext-makeup {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+.p-text-jt {
+    background-color: #1646d7e6;
+    font-size: 3.5em;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+}
+
+.p-soustext-jt {
+    margin: auto;
+    background-color: #554f54e0;
+    font-size: 1.1em;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+    color: white;
+}
+
+.div-soustext-jt {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+.p-text-rap {
+    background-color: #fffffff2;
+    font-size: 3.5em;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+    color: #641919;
+    font-family: "Eras ITC";
+}
+
+.p-soustext-rap {
+    margin: auto;
+    background-color: #126680e0;
+    font-size: 1.1em;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+    color: white;
+    font-family: "Eras ITC";
+}
+
+.div-soustext-rap {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+.txt-programmes {
+    font-size: 3em;
+    text-align: center;
+    padding: 8px;
+}
+
+.lesProgrammes {
+    margin-top: 30px;
+    background-color: #f0f8ffc9;
+}
+
+a:hover {
+    text-decoration: none;
+}

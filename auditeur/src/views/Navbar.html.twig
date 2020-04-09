@@ -29,27 +29,12 @@
                 <button class="btn my-2 my-sm-0 btn-submenu dropdown-toggle" type="button" data-toggle="dropdown">Plus
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu multi-level mr-2" role="menu" aria-labelledby="dropdownMenu">
-                <li class="ml-2 mb-1"><a class="txt-drop" href="#">Emissions</a></li>
-                <li class="ml-2 mb-1"><a class="txt-drop" href="{{ root }}/planning">Planning</a></li>
-                <li class="ml-2 mb-1"><a class="txt-drop" href="{{ root }}/replays">Replays</a></li>
-                <li class="dropdown-submenu ml-2 mb-1">
-                    <a class="txt-drop prog" tabindex="-1">Programmes</a>
-                    <ul class="dropdown-menu ml-0">
-                    <li class="ml-2 mb-1"><a class="txt-drop" tabindex="-1" href="#">Best-of</a></li>
-                    <li class="ml-2 mb-1"><a class="txt-drop" href="#">Summer 2020</a></li>
-                    <li class="ml-2 mb-1"><a class="txt-drop" href="#">Guests</a></li>
-                    {% if session.user %}
-                    <li class="ml-2 mb-1"><a class="txt-drop" href="#">Mes Favoris</a></li>
-                    {% endif %}
-                    </ul>
-                </li>
+                    <li class="ml-2 mb-1"><a class="txt-drop" href="{{ root }}/planning">Planning</a></li>
+                    <li class="ml-2 mb-1"><a class="txt-drop" href="{{ root }}/replays">Replays</a></li>
                 </ul>
             </div>
 
-        <form class="form-inline my-2 my-lg-0 mx-auto">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success btn-search my-2 my-sm-0" type="submit">Search<i class="fas fa-search ml-2"></i></button>
-        </form>
+        
         {% if not session.user %}
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item"><a href="connexion" class="nav-link">Connexion<i class="fas fa-sign-in-alt ml-1"></i></a></li>
