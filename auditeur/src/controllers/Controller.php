@@ -25,17 +25,17 @@ class Controller extends BaseController
     public function afficherAccueil($request, $response)
     {
         
-        $emissionRap = Emission::where('emission_id', 1)->first();
+        $emissionRap = Emission::where('emission_id', 5)->first();
         $programmeRap = Programme::where('programme_id', 3)->first();
-        $creneauRap = Creneau::where('creneau_id', 3)->first();
+        $creneauRap = Creneau::where('creneau_id', 21)->first();
 
         $emissionInfo = Emission::where('emission_id', 2)->first();
         $programmeInfo = Programme::where('programme_id', 2)->first();
-        $creneauInfo = Creneau::where('creneau_id', 1)->first();
+        $creneauInfo = Creneau::where('creneau_id', 18)->first();
         
         $emissionCuisine = Emission::where('emission_id', 3)->first();
         $programmeCuisine = Programme::where('programme_id', 1)->first();
-        $creneauCuisine = Creneau::where('creneau_id', 13)->first();
+        $creneauCuisine = Creneau::where('creneau_id', 19)->first();
 
         $programmeBeauté = Programme::where('programme_id', 4)->first();
 
