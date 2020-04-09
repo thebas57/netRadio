@@ -41,11 +41,13 @@
     </div>
 
     <footer id="#footer">
-        Temps total de l'émission : 00 h 00 min 00 s
-
-        <div id="testAudio">
-            <audio id="testEcoute" src="" controls>
-            </audio>
+        <div id="importAudacity">
+            <h5>Importer une émission (format ogg)</h5>
+            <form enctype="multipart/form-data" action="{{ base_url() }}/animateur/importerEmission" method="post">
+                <input type="hidden" name="id" id="id" value="{{ emission_id }}">
+                <input type="file" name="emissionAudacity" id="emissionAudacity" accept="audio/ogg">
+                <input type="submit" value="Importer" id="validerImport" disabled>
+            </form>
         </div>
 
     </footer>

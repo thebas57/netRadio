@@ -159,6 +159,7 @@ class Controller extends BaseController
         }
     } //end of function addCreneau
 
+    
 
     /**
      * Fonction permettant d'ajouter des programmes.
@@ -331,6 +332,7 @@ class Controller extends BaseController
      * @param $request
      * @param $response
      * @return mixed
+     * @throws \Exception
      */
     public function supprEmission($request, $response, $args)
     {
@@ -401,7 +403,7 @@ class Controller extends BaseController
      * @param $request
      * @param $response
      * @return mixed
-     * Affiche la page de connexion
+     * Fonction qui permet d'afficher la page de connexion
      */
     public function afficherConnexion($request, $response)
     {
@@ -412,7 +414,7 @@ class Controller extends BaseController
      * @param $request
      * @param $response
      * @return ResponseInterface
-     * Permet de gérer la connexion (lors de l'envoi du formulaire)
+     * Fonction qui permet de se connecter, avec des données reçues en POST
      */
     public function gererConnexion($request, $response)
     {
@@ -420,7 +422,7 @@ class Controller extends BaseController
         $password = (isset($_POST['password'])) ? $_POST['password'] : null;
 
         try {
-            if (!isset($login) || !isset($password)) {
+            if (!isset($login) || !isset($password) || empty($login) || empty($password)) {
                 throw new \Exception("Il manque un champ !");
             }
 
@@ -452,7 +454,7 @@ class Controller extends BaseController
      * @param $request
      * @param $response
      * @return ResponseInterface
-     * Permet de déconnecter l'utilisateur
+     * Fonction qui permet de se déconnecter
      */
     public function deconnexion($request, $response)
     {
@@ -466,21 +468,19 @@ class Controller extends BaseController
      * @param $request
      * @param $response
      * @return mixed
-     * Affiche la page permettant d'ajouter des membres du staff
+     * Fonction qui permet d'afficher la page d'ajout de staff, le formulaire
      */
-    public function afficherAjoutStaff($request, $response)
-    {
-        return $this->render($response, 'AjoutStaff.html.twig');
+    public function afficherAjoutStaff($request,$response){
+        return $this->render($response,'AjoutStaff.html.twig');
     }//End of function afficherAjoutStaff
 
     /**
      * @param $request
      * @param $response
      * @return ResponseInterface
-     * Gère l'ajout de staff en BDD
+     * Fonction qui permet d'ajouter un membre du staff, par données recçues en POST
      */
-    public function ajoutStaff($request, $response)
-    {
+    public function ajoutStaff($request,$response){
         $email = (isset($_POST['email'])) ? $_POST['email'] : null;
         $login = (isset($_POST['identifiant'])) ? $_POST['identifiant'] : null;
         $password = (isset($_POST['password'])) ? $_POST['password'] : null;
@@ -503,8 +503,13 @@ class Controller extends BaseController
 
     }//End of function ajoutStaff
 
-    public function afficherListeUsers($request, $response)
-    {
+    /**
+     * @param $request
+     * @param $response
+     * @return mixed
+     * Fonction qui permet de rechercher tous les utilisateurs, pour ensuite les envoyer à une page, pour les afficher
+     */
+    public function afficherListeUsers($request,$response){
 
         $users = Utilisateur::all();
 
@@ -515,11 +520,10 @@ class Controller extends BaseController
     /**
      * @param $request
      * @param $response
-     * @param $args
-     * Supprime un utilisateur
+     * @param $args : l'id passé en paramètre dans l'url
+     * Fonction qui permet de supprimer un utilisateur avec son ID
      */
-    public function supprUser($request, $response, $args)
-    {
+    public function supprUser($request,$response,$args){
         $id = $args['id'];
 
         if (is_numeric($id)) {
