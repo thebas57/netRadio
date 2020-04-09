@@ -1,0 +1,59 @@
+{% extends 'Template.html.twig' %}
+{% set root = base_url() %}
+
+{% block head %}
+<!--  block head qui hérite de son parent, template.html.twig. On y ajoute le css désiré -->
+{{ parent() }}
+<link rel="stylesheet" href="{{ root }}/public/style/css/Emissions.css"> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <h2 class="text-center mt-4 titleReplay text-white">Les émissions de <b>{{programme.nom}}</b></h2>
+
+    <div class="divEmissions col-7 py-3 mx-auto mt-5 table-responsive">
+        
+        {% if emissions is empty %}
+            <h3 class="text-center text-white">Il n'y a aucune émission pour ce programme</h3>
+        {% else %}
+        {# Initialisation de variables compteur qui empechera de passer plusieurs fois dans les boucles et donc ne renverra qu'une seule fois #}
+        {% set cmptAnim = 0 %}
+        {% set cmptDate = 0 %}
+        {% set cmptProg = 0 %}
+
+        <table id="tableEmissions" class="table table-striped table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Emission</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+            {# Parcours des créneaux passées pour créer une ligne à chaque créneau #}
+            {% for lesEmissions in emissions %}
+                <tr>
+                    <td>{{lesEmissions.titre}}</td>
+                    <td>{{lesEmissions.resume}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function () {
+$('#tableEmissions').DataTable({
+    "order": [[1, "asc"]],
+    "aLengthMenu": [5,10,15],
+    "iDisplayLength": 5
+});
+$('.dataTables_length').addClass('bs-select');
+});
+</script>
+{% endblock %}

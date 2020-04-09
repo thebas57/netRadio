@@ -61,6 +61,7 @@ $app->get('/direct','\\auditeur\\controllers\\Controller:ecouterDirect')->setNam
 $app->get('/planning','\\auditeur\\controllers\\Controller:afficherPlanning');
 $app->get('/replays','\\auditeur\\controllers\\Controller:afficherReplays');
 $app->get('/replay/{id}','\\auditeur\\controllers\\Controller:afficherDetailReplay');
+$app->get('/emissions/{id}','\\auditeur\\controllers\\Controller:afficherEmissions');
 
 $app->get('/deconnexion','\\auditeur\\controllers\\Controller:deconnexion');
 

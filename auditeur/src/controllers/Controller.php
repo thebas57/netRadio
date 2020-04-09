@@ -24,8 +24,34 @@ class Controller extends BaseController
      */
     public function afficherAccueil($request, $response)
     {
-        return $this->render($response, 'Accueil.html.twig');
+        
+        $emissionRap = Emission::where('emission_id', 1)->first();
+        $programmeRap = Programme::where('programme_id', 3)->first();
+        $creneauRap = Creneau::where('creneau_id', 3)->first();
+
+        $emissionInfo = Emission::where('emission_id', 2)->first();
+        $programmeInfo = Programme::where('programme_id', 2)->first();
+        $creneauInfo = Creneau::where('creneau_id', 1)->first();
+        
+        $emissionCuisine = Emission::where('emission_id', 3)->first();
+        $programmeCuisine = Programme::where('programme_id', 1)->first();
+        $creneauCuisine = Creneau::where('creneau_id', 13)->first();
+
+        $programmeBeauté = Programme::where('programme_id', 4)->first();
+
+        $programmeJt = Programme::where('programme_id', 2)->first();
+        
+
+        return $this->render($response, 'Accueil.html.twig', ['emissionRap' => $emissionRap, 'programmeRap' => $programmeRap, 'creneauRap' => $creneauRap, 'emissionInfo' => $emissionInfo, 'programmeInfo' => $programmeInfo, 'creneauInfo' => $creneauInfo, 'emissionCuisine' => $emissionCuisine, 'programmeCuisine' => $programmeCuisine, 'creneauCuisine' => $creneauCuisine, 'programmeBeaute' => $programmeBeauté, 'programmeJt' => $programmeJt]);
     } //End of function afficherAccueil
+
+    public function afficherEmissions($request, $response, $args)
+    {
+        $emissions = Emission::where('programme_id', $args['id'])->get();
+        $programme = Programme::find($args['id']);
+
+        return $this->render($response, 'Emissions.html.twig', ['emissions' => $emissions, 'programme' => $programme]);
+    } //End of function afficherEmissions
 
     public function afficherInscription($request, $response)
     {
