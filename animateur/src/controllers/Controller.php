@@ -410,7 +410,7 @@ class Controller extends BaseController
         $password = (isset($_POST['password'])) ? $_POST['password'] : null;
 
         try {
-            if (!isset($login) || !isset($password)) {
+            if (!isset($login) || !isset($password) || empty($login) || empty($password)) {
                 throw new \Exception("Il manque un champ !");
             }
 
