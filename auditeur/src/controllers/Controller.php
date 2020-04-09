@@ -207,6 +207,9 @@ class Controller extends BaseController
             if (!empty(Utilisateur::where("identifiant", $login)->orWhere("email", $email)->first())) {
                 throw new \Exception("Un compte existe déjà avec ces informations !");
             }
+            if ($_POST['password'] != $_POST['password2']) {
+                throw new \Exception("Les mots de passe ne correspondent pas");
+            }
             $email = filter_var($email, FILTER_SANITIZE_EMAIL);
             $login = filter_var($login, FILTER_SANITIZE_STRING);
 
@@ -223,7 +226,7 @@ class Controller extends BaseController
             unset($email);
             unset($user);
 
-            return $this->redirect($response, 'Accueil');
+            return $this->render($response, 'Connexion.html.twig');
         } catch (\Exception $e) {
             return $this->render($response, 'Inscription.html.twig', ['erreur' => $e->getMessage()]);
         }
