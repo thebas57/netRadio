@@ -53,23 +53,11 @@ class Controller extends BaseController
         return $this->render($response, 'Emissions.html.twig', ['emissions' => $emissions, 'programme' => $programme]);
     } //End of function afficherEmissions
 
-    /**
-     * @param $request
-     * @param $response
-     * @return mixed
-     * Affiche la page d'inscription
-     */
     public function afficherInscription($request, $response)
     {
         return $this->render($response, 'Inscription.html.twig');
     } //End of function afficherInscription
 
-    /**
-     * @param $request
-     * @param $response
-     * @return mixed
-     * Affiche la page de connexion
-     */
     public function afficherConnexion($request, $response)
     {
         return $this->render($response, 'Connexion.html.twig');
@@ -188,46 +176,8 @@ class Controller extends BaseController
 
         return $this->render($response, 'Planning.html.twig', ['emissionsAvenir' => $emissionsAvenir, 'creneaux' => $creneaux, 'creneauAvenir' => $creneauAvenir, 'animateurs' => $animateurs, 'programmes' => $prog]);
     } //End of function afficherPlanning
-    /**
-     * @param $request
-     * @param $response
-     * @return mixed
-     * Affiche la page avec tous les programmes
-     */
-    public function afficherProgrammes($request, $response)
-    {
-
-        $programmes = Programme::where("deleted_at",null)->get();
 
 
-    /**
-     * @param $request
-     * @param $response
-     * @param $args
-     * @return mixed
-     * Permet d'afficher les émissions selon le programme choisi
-     */
-    public function afficherEmissions($request, $response, $args){
-        $id = intval($args['id']);
-
-        $emissions = DB::table("EMISSION")
-            ->leftJoin('CRENEAU','CRENEAU.creneau_id','=','EMISSION.emission_id')
-            ->where("EMISSION.programme_id","=",$id)
-            ->where("EMISSION.deleted_at",null)
-            ->where("CRENEAU.deleted_at",null)
-            ->get();
-
-        return $this->render($response, 'Emissions.html.twig', ['emissions' => $emissions]);
-
-    }//End of function afficherEmissions
-
-    /**
-     * @param $request
-     * @param $response
-     * @param $args
-     * @return mixed
-     * Affiche le compte de l'utilisateur
-     */
     public function afficherCompte($request, $response, $args)
     {
 
@@ -243,12 +193,6 @@ class Controller extends BaseController
     } //End of function afficherConnexion
 
 
-    /**
-     * @param $request
-     * @param $response
-     * @return ResponseInterface
-     * Gère l'inscription de l'utilisateur
-     */
     public function gererInscription($request, $response)
     {
         //recuperation des donnees du post
@@ -288,12 +232,6 @@ class Controller extends BaseController
         }
     } //End of function gererInscription
 
-    /**
-     * @param $request
-     * @param $response
-     * @return ResponseInterface
-     * Gère la connexion après envoi du formulaire
-     */
     public function gererConnexion($request, $response)
     {
         $login = (isset($_POST['login'])) ? $_POST['login'] : null;
@@ -363,12 +301,6 @@ class Controller extends BaseController
         return $this->render($response, 'MonCompte.html.twig', ['utilisateur' => $user, 'updateMdp' => $mdpUpdated]);
     } //End of function updateMdP
 
-    /**
-     * @param $request
-     * @param $response
-     * @return ResponseInterface
-     * Déconnexion de l'utilisateur
-     */
     public function deconnexion($request, $response)
     {
         if (isset($_SESSION['user'])) {
@@ -458,12 +390,7 @@ class Controller extends BaseController
         return $this->render($response, 'Direct.html.twig', ['emissionMtn' => $emissionMtn, 'emissionsAvenir' => $emissionsAvenir, 'emissionsPassees' => $emissionsPassees, 'creneaux' => $creneaux, 'creneauMtn' => $creneauMtn, 'creneauAvenir' => $creneauAvenir, 'creneauPasse' => $creneauPasse, 'tempsAvantEmis' => $tempsAvantEmis, 'heureProchEmiss' => $heureProchaineEmission, 'titreProchaineEmis' => $titreProchaineEmission, 'titreEmissionMtn' => $titreEmissionMtn, 'descriptionMtn' => $descriptionEmissionMtn]);
     } //End of function ecouterDirect
 
-        /**
-         * @param $request
-         * @param $response
-         * @param $args
-         * Permet de modifier le login de l'utilisateur
-         */
+
     public function updateLogin($request, $response, $args)
     {
 

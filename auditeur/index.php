@@ -63,9 +63,6 @@ $app->get('/replays','\\auditeur\\controllers\\Controller:afficherReplays');
 $app->get('/replay/{id}','\\auditeur\\controllers\\Controller:afficherDetailReplay');
 $app->get('/emissions/{id}','\\auditeur\\controllers\\Controller:afficherEmissions');
 
-$app->get('/programmes','\\auditeur\\controllers\\Controller:afficherProgrammes');
-$app->get('/emissions/{id}','\\auditeur\\controllers\\Controller:afficherEmissions');
-
 $app->get('/deconnexion','\\auditeur\\controllers\\Controller:deconnexion');
 
 $app->post('/inscription','\\auditeur\\controllers\\Controller:gererInscription');
