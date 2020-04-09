@@ -1,4 +1,14 @@
 $(document).ready(() => {
+
+    $("#emissionAudacity").change(() => {
+        if($("#emissionAudacity").get(0).files.length > 0)
+            $("#validerImport").prop("disabled", false);
+        else
+            $("#validerImport").prop("disabled", true);
+    });
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
         navigator.mediaDevices.getUserMedia (
             // constraints - only audio needed

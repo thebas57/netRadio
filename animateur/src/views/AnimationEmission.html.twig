@@ -46,7 +46,7 @@
             <form enctype="multipart/form-data" action="{{ base_url() }}/animateur/importerEmission" method="post">
                 <input type="hidden" name="id" id="id" value="{{ emission_id }}">
                 <input type="file" name="emissionAudacity" id="emissionAudacity" accept="audio/ogg">
-                <input type="submit" value="Importer">
+                <input type="submit" value="Importer" id="validerImport" disabled>
             </form>
         </div>
 

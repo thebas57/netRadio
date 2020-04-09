@@ -251,31 +251,32 @@ class AnimateurController extends BaseController
            }
 
            //vérification du type
-           if(strcmp($audio["type"], "video/ogg") != 0){
-               var_dump(strcmp($audio["type"], "video/ogg"));echo "<br><br>";
-               var_dump($audio["type"]);exit;
+           if(strcmp($audio["type"], "video/ogg") == 0 xor strcmp($audio["type"], "audio/ogg") == 0){
+
+               //récupération de l'émission
+               $emission = Emission::find($emission_id);
+               if(!isset($emission) || empty($emission)){
+                   throw new \Error("emission inconnue");
+               }
+
+               $titre = $this->escapeSpace($emission->titre);
+
+               if($this->createWorkingDir($titre)){
+                   if(file_exists("emission/${titre}/out.ogg")){
+                       unlink("emission/${titre}/out.ogg");
+                   }
+                   if((move_uploaded_file($audio["tmp_name"], "./emissions/" . $titre . "/out.ogg"))){
+                       chmod("emissions/" . $titre . "/out.ogg", 0777);
+                       $emission->titre = "emissions/" . $titre . "/out.ogg";
+                   }
+               }else{
+                   throw new \Exception("Erreur création working dir");
+               }
+           }else{
                throw new \Error("fichier au mauvais format");
            }
 
-           //récupération de l'émission
-           $emission = Emission::find($emission_id);
-           if(!isset($emission) || empty($emission)){
-               throw new \Error("emission inconnue");
-           }
 
-           $titre = $this->escapeSpace($emission->titre);
-
-           if($this->createWorkingDir($titre)){
-               if(file_exists("emission/${titre}/out.ogg")){
-                   unlink("emission/${titre}/out.ogg");
-               }
-               if((move_uploaded_file($audio["tmp_name"], "./emissions/" . $titre . "/out.ogg"))){
-                   chmod("emissions/" . $titre . "/out.ogg", 0777);
-                   $emission->titre = "emissions/" . $titre . "/out.ogg";
-                }
-           }else{
-               throw new \Exception("Erreur création working dir");
-           }
 
        }catch(\Exception $e){
            die($e->getMessage());
