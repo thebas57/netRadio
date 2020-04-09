@@ -13,8 +13,8 @@
 
     <div class="fonctionsDirect text-center">
         <audio id="audioPlayer" ontimeupdate="update(this)">
-            <source src="{{root}}/public/out123.ogg" type="audio/ogg" />
-            <source src="{{root}}/public/out123.ogg" type="audio/mp3" />
+            <source src="{{base_url()}}/../animateur/{{emissionMtn.fichier}}" type="audio/ogg" />
+            <source src="{{base_url()}}/../animateur/{{emissionMtn.fichier}}" type="audio/mp3" />
             Votre navigateur ne supporte pas la balise AUDIO.
         </audio>
 
@@ -29,11 +29,6 @@
         </div>
     </div>
 
-        {# <div>
-            <div id="progressBarControl">
-                <div id="progressBar">Pas de lecture</div>
-            </div>
-        </div>  #}
 
         <div class="text-center onair">
             <img src="http://en.sopah.com/files/12/on_air.gif">
