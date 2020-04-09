@@ -27,6 +27,8 @@ class EstConnectAnimateur extends BaseController
             if ($user['droit'] == 1) {
                 $response = $next($request, $response);
                 return $response;
+            } else {
+                return $this->redirect($response, 'accueil');
             }
         } else {
             return $this->redirect($response, 'deconnexion');

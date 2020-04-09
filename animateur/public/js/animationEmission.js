@@ -1,18 +1,137 @@
 $(document).ready(() => {
+
+    $("#emissionAudacity").change(() => {
+        if($("#emissionAudacity").get(0).files.length > 0)
+            $("#validerImport").prop("disabled", false);
+        else
+            $("#validerImport").prop("disabled", true);
+    });
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
         navigator.mediaDevices.getUserMedia (
             // constraints - only audio needed
-            {audio: true})
+            {audio: true, video: false})
             .then(function(stream) {
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////// initialisation ///////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                let onAir = false;
+                let recordDisable = false;
+                let stopDisable = true;
+                let storage = localStorage;
+                let stockageEnregistrements = [];
                 let recorder = new MediaRecorder(stream);
+                let musiques = [];
                 $("#finEmission").hide();
 
-                let musiques = [];
-                let onAir = false;
-                let pisteEmission = new Blob([],{
-                    'type' : 'audio/mpeg; codecs=opus',
-                });
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////// Fonctions //////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+                function afficherMusiques(musiques) {
+                    $("#musiquesList").html("");
+
+                    musiques.forEach((element, index) => {
+
+                        let enregistrement = document.createElement("article");
+                        let labelEnregistrement = document.createElement("a");
+                        let deleteEnregistrement = document.createElement("a");
+                        let audio = document.createElement("audio");
+
+                        labelEnregistrement.setAttribute("href", "#");
+                        deleteEnregistrement.setAttribute("href", "#");
+
+                        audio.setAttribute("controls", true);
+                        audio.setAttribute("id", "audio" + index);
+                        audio.setAttribute("hidden", true);
+
+                        labelEnregistrement.innerHTML = element.name;
+                        deleteEnregistrement.innerHTML = "X";
+
+                        labelEnregistrement.setAttribute("data-id", index);
+                        deleteEnregistrement.setAttribute("data-id", index);
+
+                        labelEnregistrement.classList.add("musique");
+                        deleteEnregistrement.classList.add("suppMusique");
+
+                        enregistrement.appendChild(labelEnregistrement);
+                        enregistrement.appendChild(deleteEnregistrement);
+                        enregistrement.appendChild(audio);
+                        audio.src = window.URL.createObjectURL(element);
+
+                        let li = document.createElement("li");
+                        li.appendChild(enregistrement);
+
+                        document.getElementById("musiquesList").appendChild(li)
+                    });
+                }
+
+                ///fin musiques ///
+
+                async function arreterEnregistrement() {
+                    return new Promise(((resolve, reject) => {
+                        onAir = false;
+                        $("#onAir h3").removeClass("red");
+                        let dataRecord = [];
+                        //enregistrement de l'audio
+                        recorder.ondataavailable = function (element){
+                            dataRecord.push(element.data);
+                            console.log("Data record : ",element.data);
+                            let emission_id = $("#emission_id").val();
+                            let datas = new FormData();
+                            datas.append("emission_id", emission_id);
+                            datas.append("audio",element.data);
+                            datas.append("type", "enregistrement");
+                            let route = $("#route").val();
+                            fetch(route + "/emission/receiveAudio", {
+                                method: "POST",
+                                body: datas
+                            }).then((res) => {
+                                res.json().then((res) => {
+                                    resolve(res);
+                                })
+                                // window.location.href = route + "/animateur";
+                            }).catch((err) => reject(err))
+
+                        };
+                    }));
+
+                }
+
+                async function ajouterMusique(id) {
+                    console.log(musiques);
+                    return new Promise((resolve, reject) => {
+                        onAir = false;
+                        $("#onAir h3").removeClass("red");
+                        //enregistrement de l'audio
+                        let emission_id = $("#emission_id").val();
+                        let datas = new FormData();
+                        datas.append("emission_id", emission_id);
+                        datas.append("audio",new Blob([musiques[id]],{"type": "audio/mpeg; codecs=opus"}));
+                        datas.append("type", "musique");
+                        let route = $("#route").val();
+                        fetch(route + "/emission/receiveAudio", {
+                            method: "POST",
+                            body: datas
+                        }).then((res) => {
+                            res.json().then((res) => {
+                               resolve(res);
+                            })
+                        }).catch((err) => reject(err))
+                    });
+
+                    }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////// fin des fonctions ///////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
                 $("#songs").change(() => {
                     let fichier = document.querySelector("#songs");
@@ -24,7 +143,7 @@ $(document).ready(() => {
                     afficherMusiques(musiques);
                 });
 
-                $("#musiquesList").on("click", ".musique", (evenement) => {
+                $("#musiquesList").on("click", ".musique", async (evenement) => {
                     let id = evenement.currentTarget.getAttribute("data-id");
 
                     let audios = document.getElementsByClassName("musique");
@@ -34,15 +153,18 @@ $(document).ready(() => {
                         tmp.muted = true;
                     }
 
-                    let musique = document.getElementById("audio" + id);
-                    musique.muted = false;
                     let lecteur = document.getElementById("audio" + id);
-                    recorder.pause();
-                    lecteur.play();
+                    lecteur.muted = false;
                     $("#timer").html(lecteur.duration);
                     $("#onAir h3").removeClass("red");
+                    recorder.stop();
+                    let tmp_res = await arreterEnregistrement();
+                    console.log("res ", tmp_res);
+                    lecteur.play();
 
-                    lecteur.addEventListener("timeupdate", (event) => {
+                    $("#finEmission").prop("disabled", true);
+
+                    lecteur.addEventListener("timeupdate", async (event) => {
                         let time = ((Math.floor(lecteur.duration) - Math.floor(lecteur.currentTime)));
 
                         let min = ((Math.floor(time / 60)));
@@ -51,20 +173,15 @@ $(document).ready(() => {
                         $("#timer").html(min + " min " + sec);
                     });
 
-                    lecteur.onended = function () {
+                    lecteur.onended = async function () {
+                        let res = await ajouterMusique(id);
+                        console.log("envoyé : ", res);
+                        recorder.start();
                         $("#onAir h3").addClass("red");
-                        recorder = lancerRecordMicro(recorder);
+                        $("#finEmission").show();
+                        $("#lancerEnregistrement").hide();
                         $("#finEmission").prop("disabled", false);
                     };
-
-                    let retour = arreterEnregistrement(pisteEmission, recorder, dataRecord);
-                    pisteEmission = retour.pisteEmission;
-                    dataRecord = retour.dataRecord;
-                    recorder = retour.recorder;
-                    pisteEmission = concatener2Blobs(pisteEmission, musiques[id]);
-                    changerDureeEmission(pisteEmission);
-
-                    $("#finEmission").prop("disabled", true);
                 });
 
                 $("#musiquesList").on("click", ".suppMusique", (evenement) => {
@@ -75,49 +192,29 @@ $(document).ready(() => {
                     afficherMusiques(musiques);
                 });
 
-                $("#lancerEnregistrement").click(() => {
+                $("#lancerEnregistrement").click((e) => {
+                    e.preventDefault();
+
+                    recorder.start();
+
+                    $("#onAir h3").addClass("red");
                     $("#finEmission").show();
                     $("#lancerEnregistrement").hide();
-                    recorder = lancerRecordMicro(recorder);
                 });
 
-                $("#finEmission").click(() => {
+                $("#finEmission").click(async () => {
+                    $("#onAir h3").removeClass("red");
+
+                    //on stoppe l'enregistrement
+                    recorder.stop();
+                    await arreterEnregistrement();
+
                     $("#finEmission").hide();
                     $("#lancerEnregistrement").show();
-                    let retour = arreterEnregistrement(pisteEmission, recorder, dataRecord);
-                    pisteEmission = retour.pisteEmission;
-                    dataRecord = retour.dataRecord;
-                    recorder = retour.recorder;
 
-                    //envoi en bdd
-                    let emission_id = $("#emission_id").val();
-                    let datas = new FormData();
-                    datas.append("emission_id", emission_id);
-                    datas.append("song", pisteEmission);
-                    console.log(pisteEmission);
-                    let route = $("#route").val();
+                    console.log("fin emission");
 
-                    $("#testEcoute").prop("src",window.URL.createObjectURL(pisteEmission));
-
-                    // fetch(route + "/addSongEmission", {
-                    //     method: "POST",
-                    //     body: datas
-                    // }).then(
-                    //     (res) => {
-                    //         res.json().then((res) => {
-                    //             console.log(res);
-                    //         })
-                    //         // window.location.href = route + "/animateur";
-                    //     }
-                    // )
                 });
-
-                //enregistrement de l'audio
-                let dataRecord = [];
-                recorder.ondataavailable = function (element){
-                    dataRecord.push(element.data);
-                };
-
 
             }).catch(function(err) {
             $.notify(err, "error");
@@ -127,91 +224,4 @@ $(document).ready(() => {
     }
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////// Fonctions //////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    function afficherMusiques(musiques) {
-        $("#musiquesList").html("");
-
-        musiques.forEach((element, index) => {
-
-            let enregistrement = document.createElement("article");
-            let labelEnregistrement = document.createElement("a");
-            let deleteEnregistrement = document.createElement("a");
-            let audio = document.createElement("audio");
-
-            labelEnregistrement.setAttribute("href", "#");
-            deleteEnregistrement.setAttribute("href", "#");
-
-            audio.setAttribute("controls", true);
-            audio.setAttribute("id", "audio" + index);
-            audio.setAttribute("hidden", true);
-
-            labelEnregistrement.innerHTML = element.name;
-            deleteEnregistrement.innerHTML = "X";
-
-            labelEnregistrement.setAttribute("data-id", index);
-            deleteEnregistrement.setAttribute("data-id", index);
-
-            labelEnregistrement.classList.add("musique");
-            deleteEnregistrement.classList.add("suppMusique");
-
-            enregistrement.appendChild(labelEnregistrement);
-            enregistrement.appendChild(deleteEnregistrement);
-            enregistrement.appendChild(audio);
-            audio.src = window.URL.createObjectURL(element);
-
-            let li = document.createElement("li");
-            li.appendChild(enregistrement);
-
-            document.getElementById("musiquesList").appendChild(li)
-        });
-    }
-
-    function lancerRecordMicro(recorder) {
-        $("#onAir h3").addClass("red");
-        recorder.start();
-        return recorder;
-    }
-
-    function arreterEnregistrement(pisteEmission, recorder, dataRecord) {
-        $("#onAir h3").removeClass("red");
-
-        //on stoppe l'enregistrement
-        recorder.stop();
-
-        //creation du blob pour le son
-        let blobby = new Blob(dataRecord, { 'type' : 'audio/mpeg; codecs=opus' });
-        dataRecord = []; //reinitialisation des données du record
-
-        pisteEmission = concatener2Blobs(pisteEmission, blobby);
-        changerDureeEmission(pisteEmission);
-        return {pisteEmission : pisteEmission, recorder: recorder, dataRecord: dataRecord};
-    }
-
-    function concatener2Blobs(blob1, blob2) {
-        let tmp = new Blob([blob1, blob2], {
-            type: "audio/*"
-        });
-        tmp = new Blob([tmp],{
-            'type' : 'audio/mpeg; codecs=opus',
-        });
-
-        return tmp;
-    }
-
-    function changerDureeEmission(pisteEmission){
-        let audio = document.createElement("audio");
-        audio.setAttribute("src", pisteEmission);
-
-        let duration = audio.duration;
-
-        let min = Math.floor(((duration / 60)));
-        let sec = Math.floor(((duration % 60)));
-        let heure = Math.floor(((min / 60)));
-        min = Math.floor(((min % 60)));
-
-        $("#footer").html(" Temps total de l'émission : " + heure + " h " + min + " min " + sec + " sec");
-    }
 });

@@ -119,5 +119,31 @@ footer{
   min-height: 10%;
   font-size: 3rem;
   font-family: $policeRusso;
-  margin-left: 2%
+  margin-left: 2%;
+
+  #importAudacity{
+    h5{
+      font-size: 3rem;
+      font-family: $policeRusso;
+      margin: 2% 0;
+
+    }
+    input[type=file]{
+      font-size: 1.5rem;
+      background: lightgreen;
+      padding: 0.9rem 2rem;
+      border-radius: 5px;
+    }
+    input[type=submit]{
+      font-size: 1.5rem;
+      background: lightcoral;
+      border: none;
+      border-radius: 5px;
+      padding: 1rem 2rem;
+
+      &:hover{
+        background: darken(lightcoral, 5%);
+      }
+    }
+  }
 }

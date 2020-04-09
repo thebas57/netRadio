@@ -60,8 +60,6 @@ class Controller extends BaseController
 
         $programmes = Programme::where("deleted_at",null)->get();
 
-        return $this->render($response, 'Programme.html.twig', ["programmes" => $programmes]);
-    }//End of function afficherConnexion
 
     /**
      * @param $request
@@ -190,6 +188,7 @@ class Controller extends BaseController
 
         return $this->redirect($response, 'Accueil');
     }//End of function deconnexion
+    
 
     /**
      * @param $request
@@ -200,6 +199,8 @@ class Controller extends BaseController
     public function updateLogin($request, $response, $args)
     {
 
+    public function updateLogin($request,$response, $args){
+        
         $existLogin = Utilisateur::where('identifiant', 'like', $_POST['newLogin'])
             ->first();
 
