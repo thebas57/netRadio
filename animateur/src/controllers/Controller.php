@@ -332,6 +332,7 @@ class Controller extends BaseController
      * @param $request
      * @param $response
      * @return mixed
+     * @throws \Exception
      */
     public function supprEmission($request, $response, $args)
     {
@@ -399,11 +400,23 @@ class Controller extends BaseController
         }
     } //end of function addEmission
 
+    /**
+     * @param $request
+     * @param $response
+     * @return mixed
+     * Fonction qui permet d'afficher la page de connexion
+     */
     public function afficherConnexion($request, $response)
     {
         return $this->render($response, 'Connexion.html.twig');
     } //End of function afficherConnexion
 
+    /**
+     * @param $request
+     * @param $response
+     * @return ResponseInterface
+     * Fonction qui permet de se connecter, avec des données reçues en POST
+     */
     public function gererConnexion($request, $response)
     {
         $login = (isset($_POST['login'])) ? $_POST['login'] : null;
@@ -438,6 +451,12 @@ class Controller extends BaseController
         }
     } //End of function gererConnexion
 
+    /**
+     * @param $request
+     * @param $response
+     * @return ResponseInterface
+     * Fonction qui permet de se déconnecter
+     */
     public function deconnexion($request, $response)
     {
         if (isset($_SESSION['user'])) {
@@ -446,10 +465,22 @@ class Controller extends BaseController
         return $this->redirect($response, 'accueil');
     } //End of function deconnexion
 
+    /**
+     * @param $request
+     * @param $response
+     * @return mixed
+     * Fonction qui permet d'afficher la page d'ajout de staff, le formulaire
+     */
     public function afficherAjoutStaff($request,$response){
         return $this->render($response,'AjoutStaff.html.twig');
     }//End of function afficherAjoutStaff
 
+    /**
+     * @param $request
+     * @param $response
+     * @return ResponseInterface
+     * Fonction qui permet d'ajouter un membre du staff, par données recçues en POST
+     */
     public function ajoutStaff($request,$response){
         $email = (isset($_POST['email'])) ? $_POST['email'] : null;
         $login = (isset($_POST['identifiant'])) ? $_POST['identifiant'] : null;
@@ -473,6 +504,12 @@ class Controller extends BaseController
 
     }//End of function ajoutStaff
 
+    /**
+     * @param $request
+     * @param $response
+     * @return mixed
+     * Fonction qui permet de rechercher tous les utilisateurs, pour ensuite les envoyer à une page, pour les afficher
+     */
     public function afficherListeUsers($request,$response){
 
         $users = Utilisateur::all();
@@ -481,6 +518,12 @@ class Controller extends BaseController
 
     }//End of function afficherListeUsers
 
+    /**
+     * @param $request
+     * @param $response
+     * @param $args : l'id passé en paramètre dans l'url
+     * Fonction qui permet de supprimer un utilisateur avec son ID
+     */
     public function supprUser($request,$response,$args){
         $id = $args['id'];
 

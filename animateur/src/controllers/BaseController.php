@@ -26,6 +26,7 @@ class BaseController
      * @param ResponseInterface $response
      * @param $view
      * @param array $params
+     * @return
      */
     public function render(ResponseInterface $response, $view, $params = [])
     {

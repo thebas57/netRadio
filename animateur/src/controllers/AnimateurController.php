@@ -13,11 +13,16 @@ use Psr\Http\Message\ResponseInterface;
 
 class AnimateurController extends BaseController
 {
+    /**
+     * @param $request
+     * @param $response
+     * @return mixed
+     * Cette fonction permet d'afficher l'accueil de l'animateur, avec tous les programmes, ainsi que leurs émissions
+     * respectives, qu'il doit animer.
+     */
     public function accueil($request, $response)
     {
         $programmes = Programme::all();
-
-        $_SESSION["user"] = ["id" => 1, "droit" => 1];
 
         $lesProgrammes = [];
 
@@ -38,6 +43,13 @@ class AnimateurController extends BaseController
         return $this->render($response, "AccueilAnimateur.html.twig", ["programmes" => $lesProgrammes]);
     }
 
+    /**
+     * @param $request
+     * @param $response
+     * @param $args
+     * @return mixed
+     * Cette fonction permet d'afficher toutes les émissions à animer
+     */
     public function emissionsAAnimer($request, $response, $args)
     {
         $idProgramme = $args["id"];
@@ -71,6 +83,14 @@ class AnimateurController extends BaseController
         return $this->render($response, "EmissionsAnimateur.html.twig", ["emissions" => $lesEmissions, "programmeNom" => $programme->nom]);
     }
 
+    /**
+     * @param $request
+     * @param $response
+     * @param $args
+     * @return mixed
+     * Cette fonction va chercher le créneau correspondant à l'émission passée dans l'URL, pour ensuite en afficher les
+     * informations de date, et, bien sûr, le programme correspondant, pour l'afficher sur une page.
+     */
     public function animerEmission($request, $response, $args)
     {
         $emission_id = $args["id"];
@@ -98,6 +118,12 @@ class AnimateurController extends BaseController
             ]);
     }
 
+    /**
+     * @param $request
+     * @param $response
+     * @return false|string
+     * Fonction appelée par le JS lors d'une émission, elle reçoit les fichiers audios (enregistrements) et, permet de les concaténer.
+     */
     public function receiveAudio($request, $response)
     {
         $emission_id = (isset($_POST["emission_id"])) ? $_POST["emission_id"] : null;
@@ -134,6 +160,7 @@ class AnimateurController extends BaseController
                         chmod("emissions/" . $titre . "/2.mp3", 0777);
                         //on convertit en ogg
                         exec("ffmpeg -y -i ./emissions/${titre}/2.mp3 -c:a libopus -b:a 19.1k -ac 1 -r 16k ./emissions/${titre}/2.ogg");
+                        //On donne les droits
                         chmod("emissions/" . $titre . "/2.ogg", 0777);
                         exec("ffmpeg -y -i ./emissions/${titre}/2.ogg -vn -acodec libopus ./emissions/${titre}/2.ogg");
                         chmod("emissions/" . $titre . "/2.ogg", 0777);
@@ -161,7 +188,11 @@ class AnimateurController extends BaseController
 
     }
 
-
+    /**
+     * @param $titre : Titre de l'émission, pour le nom du dossier
+     * @return string : On retourne le chemin vers le fichier audio crée
+     * Fonction qui permet de concaténer deux fichiers audios, soit 1.ogg et 2.ogg soit out.ogg et 2.ogg
+     */
     private function concatAudio($titre)
     {
         $titre = $this->escapeSpace($titre);
@@ -186,6 +217,11 @@ class AnimateurController extends BaseController
         return ("emissions/${titre}/out.ogg");
     }
 
+    /**
+     * @param $titre : Nom de l'émission
+     * @return bool : On retourne si le fichier existe ou non
+     * Fonction permettant de créer un dossier de travail (du nom de l'émission)
+     */
     private function createWorkingDir($titre)
     {
         $titre = $this->escapeSpace($titre);
