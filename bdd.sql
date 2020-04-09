@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS EMISSION(
   emission_id int(50) AUTO_INCREMENT,
   titre varchar(50) NOT NULL,
   resume text,
-  fichier blob,
+  fichier varchar(1024),
   animateur int(50),
   programme_id int(50),
   deleted_at date,
