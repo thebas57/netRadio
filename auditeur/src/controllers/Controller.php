@@ -24,7 +24,7 @@ class Controller extends BaseController
      */
     public function afficherAccueil($request, $response)
     {
-
+        
         $emissionRap = Emission::where('emission_id', 1)->first();
         $programmeRap = Programme::where('programme_id', 3)->first();
         $creneauRap = Creneau::where('creneau_id', 3)->first();
@@ -32,7 +32,7 @@ class Controller extends BaseController
         $emissionInfo = Emission::where('emission_id', 2)->first();
         $programmeInfo = Programme::where('programme_id', 2)->first();
         $creneauInfo = Creneau::where('creneau_id', 1)->first();
-
+        
         $emissionCuisine = Emission::where('emission_id', 3)->first();
         $programmeCuisine = Programme::where('programme_id', 1)->first();
         $creneauCuisine = Creneau::where('creneau_id', 13)->first();
@@ -40,7 +40,7 @@ class Controller extends BaseController
         $programmeBeauté = Programme::where('programme_id', 4)->first();
 
         $programmeJt = Programme::where('programme_id', 2)->first();
-
+        
 
         return $this->render($response, 'Accueil.html.twig', ['emissionRap' => $emissionRap, 'programmeRap' => $programmeRap, 'creneauRap' => $creneauRap, 'emissionInfo' => $emissionInfo, 'programmeInfo' => $programmeInfo, 'creneauInfo' => $creneauInfo, 'emissionCuisine' => $emissionCuisine, 'programmeCuisine' => $programmeCuisine, 'creneauCuisine' => $creneauCuisine, 'programmeBeaute' => $programmeBeauté, 'programmeJt' => $programmeJt]);
     } //End of function afficherAccueil
@@ -263,6 +263,9 @@ class Controller extends BaseController
             if (!empty(Utilisateur::where("identifiant", $login)->orWhere("email", $email)->first())) {
                 throw new \Exception("Un compte existe déjà avec ces informations !");
             }
+            if ($_POST['password'] != $_POST['password2']) {
+                throw new \Exception("Les mots de passe ne correspondent pas");
+            }
             $email = filter_var($email, FILTER_SANITIZE_EMAIL);
             $login = filter_var($login, FILTER_SANITIZE_STRING);
 
@@ -279,7 +282,7 @@ class Controller extends BaseController
             unset($email);
             unset($user);
 
-            return $this->redirect($response, 'Accueil');
+            return $this->render($response, 'Connexion.html.twig');
         } catch (\Exception $e) {
             return $this->render($response, 'Inscription.html.twig', ['erreur' => $e->getMessage()]);
         }

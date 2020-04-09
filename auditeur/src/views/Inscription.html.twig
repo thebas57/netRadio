@@ -12,7 +12,7 @@
 {% block body %}
     {{ parent() }}
     <div class="col-sm-8 mx-auto">
-        <h1 class="titre mb-5 mt-3">Inscription</h1>
+        <h1 class="titre mb-5 mt-3 text-white">Inscription</h1>
     </div>
     <div class="divForm container-fluid">
         <form action="{{ root }}/inscription" method="post">
@@ -32,7 +32,7 @@
                 </div>
                 <div class="form-group col-lg-6 col-xs-12">
                     <label for="password2">Veuillez répéter votre mot de passe :</label>
-                    <input type="password" class="form-control" id="password2">
+                    <input type="password" class="form-control" id="password2" name="password2">
                 </div>
 
             </div>
@@ -42,7 +42,7 @@
     </div>
     <div class="erreur">
         {% if erreur %}
-            {{ erreur }}
+            <p class="text-white text-center">{{ erreur }}</p>
         {% endif %}
     </div>
 {% endblock %}
