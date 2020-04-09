@@ -21,7 +21,7 @@
 	<div class="containerP">
 
 		{% if programmes is empty %}
-			<p> Aucune programme trouvé.</p> 
+			<span style="color:white;"> Aucun programme trouvé.</span>
 		{% endif %}
 
 		{% for programme in programmes %}
@@ -33,7 +33,6 @@
 				<div class="logo">
 					<a href="{{ path_for('modifProgramme', {'id' : programme.programme_id } ) }}"<i class="far fa-edit fa-2x"></i></a>
 					<a href="#" class="supprProgramme" data-id="{{programme.programme_id}}"><i class="far fa-trash-alt fa-2x"></i></a>
-					<i class="far fa-eye fa-2x"></i>
 				</div>
 			</div>
 		{% endfor %}

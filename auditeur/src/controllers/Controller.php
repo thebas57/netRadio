@@ -196,28 +196,70 @@ class Controller extends BaseController
      * @param $args
      * Permet de modifier le login de l'utilisateur
      */
-    public function updateLogin($request, $response, $args)
+        public function updateLogin($request, $response, $args)
     {
 
-    public function updateLogin($request,$response, $args){
-        
-        $existLogin = Utilisateur::where('identifiant', 'like', $_POST['newLogin'])
-            ->first();
+        $newlog = $_POST['login'];
+        $postId = intval($_POST['id']);
+        // $existLogin = Utilisateur::where('identifiant', 'like',$newlog)
+        //   ->first();
+
 
 
         // test si le login existe
-        $login = Utilisateur::find($args['id']);
+        $login = Utilisateur::find($postId);
 
-        if ($login->identifiant != $_POST['newLogin']) {
-            if ($existLogin) {
+        // return json_encode($_POST['id']);
 
+        //   if($login->identifiant != $_POST['newLogin'])
+        //   {
+        //     if ($existLogin)
+        //     {
+        //         echo "<script>alert(\"icciiii\")</script>";
+        //     }
+        //   }
+
+        //   echo "<script>alert(\"laaaaa\")</script>";
+
+
+        $login->identifiant   = $newlog;
+
+        $login->save();
+        return json_encode($login);
+    }
+
+        public function ecouterDirect($request, $response)
+    {
+        date_default_timezone_set('Europe/Paris');
+
+        $creneauMtn = null;
+        $creneauAvenir = [];
+        $creneauPasse = [];
+        $hActuelle = date("H:i:s");
+        $dateActuelle = date("Y-m-d");
+        $hAvenir = "";
+
+        $creneaux = Creneau::where('date_creneau', $dateActuelle)->orderBy('heure_debut')->get();
+
+        foreach ($creneaux as $creneau) {
+            if ($creneau->heure_debut < $hActuelle && $hActuelle < $creneau->heure_fin) {
+                $creneauMtn = $creneau;
+            } else if ($creneau->heure_debut > $hActuelle) {
+                array_push($creneauAvenir, $creneau);
+            } else {
+                array_push($creneauPasse, $creneau);
             }
         }
 
-        $login->identifiant = $_POST['newLogin'];
+        if (empty($creneauAvenir)) {
+        } else {
+            $hAvenir = $creneauAvenir[0]->heure_debut;
+            $h1 = strtotime($creneauAvenir[0]->heure_debut);
+            $h2 = strtotime($hActuelle);
+            $hAvenir = gmdate("H:i", $h1 - $h2);
+        }
 
-        $login->save();
-
-    }
+        return $this->render($response, 'Direct.html.twig', ['creneaux' => $creneaux, 'creneauMtn' => $creneauMtn, 'creneauAvenir' => $creneauAvenir, 'creneauPasse' => $creneauPasse, 'hAvenir' => $hAvenir]);
+    } //End of function ecouterDirect
 }
 

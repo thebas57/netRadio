@@ -1,0 +1,71 @@
+.leDirect {
+    border: 1px solid white;
+}
+
+.ico-btn {
+    color: #e19a3e;
+}
+
+.volume {
+    vertical-align: bottom;
+    display: inline-block;
+    height: 25px;
+    white-space: nowrap;
+    position: relative;
+    width: 45px;
+
+    > a {
+        display: inline-block;
+        background-color: #ebebeb;
+        width: 8px;
+        margin-left: 0px;
+        margin-right: 0px;
+        cursor: pointer;
+        border-left: 1px solid #fff;
+        position: absolute;
+        bottom: 0;
+    }
+}
+
+.stick1 {
+    height: 8px;
+    left: 0px;
+}
+
+.stick2 {
+    height: 13px;
+    left: 9px;
+}
+
+.stick3 {
+    height: 20px;
+    left: 18px;
+}
+
+.stick4 {
+    height: 25px;
+    left: 27px;
+}
+
+.stick5 {
+    height: 30px;
+    left: 36px;
+}
+
+#progressBarControl {
+    width: 80%;
+    height: 15%;
+    border: 1px solid #aaa;
+    margin: 5px;
+    display: inline-block;
+}
+
+#progressBar {
+    background-color: red;
+    height: 15%;
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 5px;
+    color: white;
+}

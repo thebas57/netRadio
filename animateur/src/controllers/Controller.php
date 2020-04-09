@@ -23,7 +23,7 @@ class Controller extends BaseController
      */
     public function afficherAccueil($request, $response)
     {
-        $mdp = password_hash("theo", PASSWORD_DEFAULT);
+        $mdp = password_hash("0403", PASSWORD_DEFAULT);
         return $this->render($response, 'Accueil.html.twig', ["mdp" => $mdp]);
     } //End of function afficherAccueil
 
@@ -39,8 +39,53 @@ class Controller extends BaseController
         $emission = new Emission();
         $anim = new Utilisateur();
         $tab = [];
+        $dateActuelle = date("Y-m-d");
 
         $creneaux = Creneau::all();
+
+        foreach ($creneaux as $key => $creneau) {
+            // modif format heure
+            $hddModif = date('G:i', strtotime($creneau->heure_debut));
+            $creneau->heure_debut = $hddModif;
+
+            $hdfModif = date('G:i', strtotime($creneau->heure_fin));
+            $creneau->heure_fin = $hdfModif;
+
+            // Pour récupérer donnée avec clé etrangere
+            if ($creneau->emission_id != null) {
+                $emission = Emission::find($creneau->emission_id);
+                if ($emission != null) {
+                    $anim = Utilisateur::find($emission->animateur);
+                }
+            }
+            if ($emission != null && $anim != null) {
+                $tmp = ['user' => $anim->identifiant, 'emission' => $emission->titre];
+                array_push($tab, $tmp);
+            }
+        }
+
+        unset($emission);
+        unset($anim);
+        unset($tmp);
+
+        return $this->render($response, 'Creneau.html.twig', ['creneaux' => $creneaux, 'userEmission' => $tab, 'dateAjd' => $dateActuelle]);
+    } //End of function voirCreaneau
+
+    /**
+     * Fonction permettant d'afficher les creneaux DAUJOUDRDHUI.
+     * @param $request
+     * @param $response
+     * @return mixed
+     */
+    public function voirCreneauAjd($request, $response)
+    {
+
+        $emission = new Emission();
+        $anim = new Utilisateur();
+        $tab = [];
+        $dateActuelle = date("Y-m-d");
+
+        $creneaux = Creneau::where('date_creneau', $dateActuelle)->orderBy('heure_debut')->get();
 
         foreach ($creneaux as $key => $creneau) {
             // modif format heure
@@ -61,8 +106,46 @@ class Controller extends BaseController
         unset($anim);
         unset($tmp);
 
-        return $this->render($response, 'Creneau.html.twig', ['creneaux' => $creneaux, 'userEmission' => $tab]);
-    } //End of function voirCreaneau
+        return $this->render($response, 'Creneau.html.twig', ['creneaux' => $creneaux, 'userEmission' => $tab, 'dateAjd' => $dateActuelle]);
+    } //End of function voirCreaneauAjd
+
+    /**
+     * Fonction permettant d'afficher les creneaux de demain.
+     * @param $request
+     * @param $response
+     * @return mixed
+     */
+    public function voirCreneauDemain($request, $response)
+    {
+
+        $emission = new Emission();
+        $anim = new Utilisateur();
+        $tab = [];
+        $dateActuelle = date("Y-m-d");
+        $dateDemain = date('Y-m-d', strtotime($dateActuelle . ' + 1 DAY'));
+        $creneaux = Creneau::where('date_creneau', $dateDemain)->orderBy('heure_debut')->get();
+
+        foreach ($creneaux as $key => $creneau) {
+            // modif format heure
+            $hddModif = date('G:i', strtotime($creneau->heure_debut));
+            $creneau->heure_debut = $hddModif;
+
+            $hdfModif = date('G:i', strtotime($creneau->heure_fin));
+            $creneau->heure_fin = $hdfModif;
+
+            // Pour récupérer donnée avec clé etrangere
+            $emission = Emission::find($creneau->emission_id);
+            $anim = Utilisateur::find($emission->animateur);
+            $tmp = ['user' => $anim->identifiant, 'emission' => $emission->titre];
+            array_push($tab, $tmp);
+        }
+
+        unset($emission);
+        unset($anim);
+        unset($tmp);
+
+        return $this->render($response, 'Creneau.html.twig', ['creneaux' => $creneaux, 'userEmission' => $tab, 'dateAjd' => $dateActuelle]);
+    } //End of function voirCreneauDemain
 
     /**
      * Fonction permettant d'afficher les programmes.
@@ -137,6 +220,29 @@ class Controller extends BaseController
             $date = filter_var($date, FILTER_SANITIZE_STRING);
             $emission = filter_var($emission, FILTER_SANITIZE_STRING);
 
+            //Verif si heure ok
+            if ($hdd > $hdf) {
+                throw new \Exception("L'heure de début ne peut pas être supérieur à celle de fin voyons...");
+            }
+
+            // Verif si un creneau est déjà occupé
+            $dateActuelle = date("Y-m-d");
+
+            //$creneaux = Creneau::where('date_creneau', $dateActuelle)->orderBy('heure_debut')->get();
+            $creneaux = Creneau::all();
+
+            foreach ($creneaux as $creneau) {
+                if ($creneau->date_creneau == $date) {
+                    if (
+                        $creneau->heure_debut <= $hdd && $creneau->heure_fin <= $hdd ||
+                        $creneau->heure_debut >= $hdf && $creneau->heure_fin >= $hdf
+                    ) {
+                    } else {
+                        throw new \Exception("Il existe déjà un créneau dans cette tranche d'horaire");
+                    }
+                }
+            }
+
             //on les insère en bdd
             $creneau = new Creneau();
             $creneau->heure_debut = $hdd;
@@ -204,7 +310,7 @@ class Controller extends BaseController
      * @param $response
      * @return mixed
      */
-    public function modifCreneau($request, $response, $args)
+    public function modifCreneau($request, $response,$args)
     {
 
         $creneau = Creneau::find(intVal($args['id']));
@@ -290,7 +396,7 @@ class Controller extends BaseController
         //redirection
         $programme = Programme::all();
         return $this->redirect($response, 'programme');
-    } //end of function addCreneau
+    } //end of function modifProgramme
 
     /**
      * Fonction permettant l'ajout d'un programme en BDD
@@ -340,7 +446,7 @@ class Controller extends BaseController
     public function afficherAddEmission($request, $response, $args)
     {
         $prog = Programme::all();
-        $anim = Utilisateur::where('droit',2)->get();
+        $anim = Utilisateur::where('droit', 2)->get();
         return $this->render($response, 'AddEmission.html.twig', ['programmes' => $prog, 'utilisateurs' => $anim]);
     } //End of function addEmission
 
@@ -365,8 +471,8 @@ class Controller extends BaseController
      */
     public function supprProgramme($request, $response, $args)
     {
-        
-/*
+
+        /*
         $emissions = DB::table('emission') 
             ->join('emission','emission.programme_id','=',$id)->get();
 
@@ -381,8 +487,8 @@ class Controller extends BaseController
 
         $programme = Programme::find(intVal($id));
         $programme->delete();
-        
-        $emissions = Emission::where('programme_id',intval($id))->get();
+
+        $emissions = Emission::where('programme_id', intval($id))->get();
         foreach ($emissions as $key => $emission) {
             $emission->delete();
         }
@@ -394,8 +500,6 @@ class Controller extends BaseController
             $emission->delete();
         }
         */
-
-
     } //End of function supprCreneau
 
     /**
@@ -409,16 +513,13 @@ class Controller extends BaseController
     {
         $id = $args['id'];
         $emission = Emission::find(intVal($id));
-        $creneaux = Creneau::where('emission_id',intval($id))->get();
-        if (count($creneaux)>0) {
+        $creneaux = Creneau::where('emission_id', intval($id))->get();
+        if (count($creneaux) > 0) {
             throw new \Exception("Impossible, cette émission est attribuée à un créneau");
-        }
-        else {
+        } else {
             $emission->delete();
             return $this->redirect($response, 'emission');
         }
-
-
     } //End of function supprEmission
 
     /**
@@ -556,13 +657,13 @@ class Controller extends BaseController
         $email = (isset($_POST['email'])) ? $_POST['email'] : null;
         $login = (isset($_POST['identifiant'])) ? $_POST['identifiant'] : null;
         $password = (isset($_POST['password'])) ? $_POST['password'] : null;
-        $droit = (isset($_POST['droit'])) ? $_POST['droit'] : null;
+        $droit = (isset($_POST['droit'])) ? $_POST['droit'] : null ;
 
         $login = filter_var($login, FILTER_SANITIZE_STRING);
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
         $droit = filter_var($droit, FILTER_SANITIZE_NUMBER_INT);
 
-        $password = password_hash($password, PASSWORD_DEFAULT);
+        $password = password_hash($password,PASSWORD_DEFAULT);
 
         $user = new Utilisateur();
         $user->identifiant = $login;
@@ -572,8 +673,7 @@ class Controller extends BaseController
         $user->save();
 
         return $this->redirect($response, 'accueil');
-
-    }//End of function ajoutStaff
+    } //End of function ajoutStaff
 
     /**
      * @param $request
@@ -604,7 +704,7 @@ class Controller extends BaseController
                 $user->delete();
             }
         }
-    }//End of function supprUser
+    } //End of function supprUser
 
     /**
      * @param $request

@@ -2,12 +2,23 @@
     font-weight: bold;
     font-size: 1.3em; 
 }
-
-.navbar-nav a {
+.nav-link {
     color: #e19a3e !important;
-
 }
 
+.btn-live a {
+    color: #e19a3e;
+    &:hover {
+        color: #fff;
+        text-decoration: none;
+    }
+}
+
+.btn-live:hover {
+    a {
+        color: #fff !important;
+    }
+}
 
 .btn-search {
     border-color: #fff !important;
@@ -27,6 +38,11 @@
         box-shadow: 0 0 0 .2rem rgba(215, 101, 33, 0.42);
     }
 
+}
+
+.dropdown a:hover {
+    text-decoration: none;
+    color: #b32200;
 }
  
 .navbar-brand {
@@ -50,7 +66,7 @@ body {
 
 @media all and (min-width: 1315px) {
     body {
-        background-image: url("https://images.wallpaperscraft.com/image/evening_hill_radio_tower_130835_3840x2400.jpg");
+        background-image: url("https://images.wallpaperscraft.com/image/evening_hill_radio_tower_130835_3415x3415.jpg");
         // https://mb.cision.com/Public/13765/2085545/98c43535772ead27_org.jpg
         background-repeat: no-repeat;
         background-size: cover;
@@ -69,11 +85,6 @@ li {
 .txt-drop {
     color: #4f3e28;
     font-weight: bold;
-}
-
-a:hover {
-    text-decoration: none;
-    color: #b32200;
 }
 
 .dropdown-submenu > a::after {

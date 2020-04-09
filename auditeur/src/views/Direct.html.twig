@@ -1,0 +1,129 @@
+{% extends 'Template.html.twig' %}
+{% set root = base_url() %}
+
+{% block head %}
+<!--  block head qui hérite de son parent, template.html.twig. On y ajoute le css désiré -->
+{{ parent() }}
+<link rel="stylesheet" href="{{ root }}/public/style/css/Direct.css"> 
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    
+    <div class="col-lg-6 mx-auto my-5 col-sm-8 col-10 leDirect py-3">
+        
+        <i class="fa fa-spinner fa-pulse fa-4x ico-btn"></i>
+        {# <i class="fas fa-pause-circle fa-4x pl-2 ico-btn"></i>
+        <i class="fas fa-play-circle fa-4x ico-btn pl-2"></i> #}
+        <audio id="audioPlayer" ontimeupdate="update(this)">
+            <source src="{{root}}/public/piano.mp3" type="audio/ogg" />
+            <source src="{{root}}/public/piano.mp3" type="audio/mp3" />
+            Votre navigateur ne supporte pas la balise AUDIO.
+        </audio>
+
+        <button class="control" onclick="play('audioPlayer', this)">Play</button>
+        <button class="control" onclick="resume('audioPlayer')">Stop</button>
+    
+        <span class="volume">
+            <a class="stick1" id="stick1" onclick="volume('audioPlayer', 0)"></a>
+            <a class="stick2" id="stick2" onclick="volume('audioPlayer', 0.3)"></a>
+            <a class="stick3" id="stick3" onclick="volume('audioPlayer', 0.5)"></a>
+            <a class="stick4" id="stick4" onclick="volume('audioPlayer', 0.7)"></a>
+            <a class="stick5" id="stick5" onclick="volume('audioPlayer', 1)"></a>
+        </span>
+
+        <div>
+            <div id="progressBarControl">
+                <div id="progressBar">Pas de lecture</div>
+            </div>
+        </div> 
+
+    </div>
+    <div style="color:white;">
+        {% if creneauMtn is null %}
+            Pas d'émission actuellement. La prochaine émission arrive dans {{hAvenir}}min
+        {% else %}
+            Emission en direct : {{creneauMtn}}
+        {% endif %}
+        </br>
+        Les prochaines émissions d'aujourd'hui : 
+        {% for creneauAjd in creneauAvenir %}
+            {{ creneauAjd}}
+        {% endfor %}
+        {% if creneauAvenir is empty %}
+            Il n'y a aucune émission programmée
+        {% endif %}
+        </br>
+        {% if creneauPasse is null %}
+            Vous avez raté aucune émission
+        {% else %}
+            Les émissions que vous avez ratées : 
+            {% for creneauTest in creneauPasse %}
+                {{ creneauTest}}
+            {% endfor %}
+        {% endif %}
+        
+            
+        
+    </div>
+<script>
+
+function play(idPlayer, control) {
+    let player = document.querySelector('#' + idPlayer);
+    let datCren = new Date();
+    let datActu = new Date();
+    // Début créneau
+    let debutCren = datCren.setHours(15, 45, 00, 00);
+    // Obtention de l'heure actuel en milliseconds
+    let actuHour = datActu.getTime();
+    // Différence entre l'heure actuelle et le début du créneau converti en seconds
+    let diffDirect = (actuHour - debutCren) / 1000;
+	
+    if (player.paused) {
+        // Départ du direct au nombre de secondes écoulées depuis le début du créneau
+        player.currentTime = diffDirect;
+            console.log(debutCren);
+            console.log(actuHour);
+            console.log(diffDirect);
+
+
+            player.play();
+
+
+        control.textContent = 'Pause';
+    } else {
+        player.pause();	
+        control.textContent = 'Play';
+    }
+}
+
+function resume(idPlayer) {
+    var player = document.querySelector('#' + idPlayer);
+	
+    player.currentTime = 0;
+    player.pause();
+}
+
+function volume(idPlayer, vol) {
+    let player = document.querySelector('#' + idPlayer);
+
+
+    player.volume = vol;	
+
+}
+
+function update(player) {
+    var duration = player.duration;    // Durée totale
+    var time     = player.currentTime; // Temps écoulé
+    var fraction = time / duration;
+    var percent  = Math.ceil(fraction * 100);
+
+    var progress = document.querySelector('#progressBar');
+	
+    progress.style.width = percent + '%';
+    progress.textContent = percent + '%';
+}
+
+
+</script>
+{% endblock %}
