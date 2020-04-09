@@ -134,7 +134,6 @@ $(document).ready(() => {
                 });
 
                 $("#musiquesList").on("click", ".musique", async (evenement) => {
-                    // $("#finEmission").prop("disabled", true);
                     let id = evenement.currentTarget.getAttribute("data-id");
 
                     let audios = document.getElementsByClassName("musique");
@@ -166,15 +165,12 @@ $(document).ready(() => {
 
                     lecteur.onended = async function () {
                         let res = await ajouterMusique(id);
-                        // $("#onAir h3").addClass("red");
                         console.log("envoyé : ", res);
-                        // recorder.start();
-                        // $("#onAir h3").addClass("red");
+                        recorder.start();
+                        $("#onAir h3").addClass("red");
                         $("#finEmission").show();
                         $("#lancerEnregistrement").hide();
                         $("#finEmission").prop("disabled", false);
-
-
                     };
                 });
 
@@ -205,6 +201,8 @@ $(document).ready(() => {
 
                     $("#finEmission").hide();
                     $("#lancerEnregistrement").show();
+
+                    console.log("fin emission");
 
                 });
 
