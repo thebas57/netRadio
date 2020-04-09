@@ -241,6 +241,11 @@ class AnimateurController extends BaseController
         }
     }
 
+    /**
+     * @param $titre titre du répertoire à supprimer
+     * @return bool
+     * méthode qui permet de supprimer un dossier (vide) sur le serveur
+     */
     private function deleteWorkingDir($titre)
     {
         $titre = $this->escapeSpace($titre);
@@ -257,6 +262,11 @@ class AnimateurController extends BaseController
         }
     }
 
+    /**
+     * @param $str
+     * @return string
+     * méthode qui permet de rempalcer les espaces d'une chaîne de caractères par des _
+     */
     private function escapeSpace($str)
     {
         $tmp = explode(" ", $str);
