@@ -6,8 +6,10 @@
 		<head>
 			{% block head %}
 				{{ parent() }}
-			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-			<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<meta http-equiv="X-UA-Compatible" content="ie=edge">
+			<script src="{{ root }}/public/lib/jquery-3.4.1.js"></script>
 			<script src="{{ root }}/public/lib/notify.min.js"></script>
 			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 			<link rel="icon" type="image/png" href="{{ root }}/public/images/logo_netradio.png" />

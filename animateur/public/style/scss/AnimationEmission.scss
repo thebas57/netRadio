@@ -1,6 +1,8 @@
 $orange : #e19a3e !default;
 @import url('https://fonts.googleapis.com/css?family=Play&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Russo+One&display=swap');
 $police : 'Seymour One', sans-serif !default;
+$policeRusso : 'Russo One', sans-serif !default;
 
 body, html{
   width: 100%;
@@ -17,10 +19,40 @@ h1{
   font-weight: bold;
 }
 
+
+#content{
+  min-height: 35%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+#timer{
+  margin-left: 2%;
+  justify-content: center;
+  text-align: center;
+
+  font-size : 2rem;
+  font-family: $policeRusso;
+  color: red;
+}
+
+#actions{
+  width: 40%;
+
+  button{
+    min-height: 10vh;
+    font-size: 1.5rem;
+    font-family: $policeRusso;
+  }
+}
+
 #musiques{
   width: 30%;
   border: 1px solid black;
-  height: 85%;
+  height: 70%;
   float: right;
   margin-right: 1%;
   background: darken($orange, 5);
@@ -49,6 +81,7 @@ ul{
     box-sizing: border-box;
     justify-content: space-between;
     list-style-type: none;
+    margin-top: 1%;
 
     a {
       text-decoration: none;
@@ -60,4 +93,31 @@ ul{
 .suppMusique{
   position: absolute;
   right: 50px;
+}
+
+
+#onAir{
+  background: black;
+  color : lighten(grey, 5%);
+  text-align: center;
+  box-sizing: border-box;
+  margin: 1%;
+  text-transform: uppercase;
+  min-width: 15vw;
+
+  h3{
+    font-size: 3rem;
+    font-family: $policeRusso;
+  }
+}
+
+.red{
+  color: red;
+}
+
+footer{
+  min-height: 10%;
+  font-size: 3rem;
+  font-family: $policeRusso;
+  margin-left: 2%
 }

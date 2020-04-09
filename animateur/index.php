@@ -62,6 +62,10 @@ $app->get('/connexion','\\animateur\\controllers\\Controller:afficherConnexion')
 $app->post('/connexion','\\animateur\\controllers\\Controller:gererConnexion');
 $app->get('/deconnexion','\\animateur\\controllers\\Controller:deconnexion')->setName("deconnexion");
 
+//Page monCompte
+$app->get('/monCompte','\\animateur\\controllers\\Controller:afficherMonCompte');
+$app->post("/monCompte",'\\animateur\\controllers\\Controller:modifMonCompte');
+
 // Accueil Creneau
 $app->get('/creneau','\\animateur\\controllers\\Controller:voirCreneau')->setName('creneau')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()));
 
@@ -120,6 +124,8 @@ $app->post('/modifProgramme{id}', "\\animateur\\controllers\\Controller:modifPro
 // Modifier une emission
 $app->get('/modifEmission{id}', "\\animateur\\controllers\\Controller:afficherModifEmission")->setName('modifEmission');
 $app->post('/modifEmission{id}', "\\animateur\\controllers\\Controller:modifEmission");
+
+$app->post('/addSongEmission','\\animateur\\controllers\\AnimateurController:addSongEmission');
 
 /////////////
 // RUN     //

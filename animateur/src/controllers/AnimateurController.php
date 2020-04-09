@@ -94,4 +94,21 @@ class AnimateurController extends BaseController
              "emission_id" => $emission_id
             ]);
     }
+
+    /**
+     * @param $request
+     * @param $response
+     * @return false|string
+     * Stocke le blob d'une émission en BDD
+     */
+    public function addSongEmission($request,$response){
+        $id = (!empty($_POST['emission_id'])) ? $_POST['emission_id'] : null;
+        $song = (!empty($_FILES['song'])) ? $_FILES['song'] : null;
+        $id = intval($id);
+        $emission = Emission::where("emission_id",$id)->first();
+
+        $emission->fichier = $song;
+        $emission->save();
+        return json_encode($emission);
+    }
 }

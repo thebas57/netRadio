@@ -1,6 +1,6 @@
 # noinspection SqlNoDataSourceInspectionForFile
 
-CREATE DATABASE IF NOT EXISTS `netradio`;
+CREATE DATABASE IF NOT EXISTS `netradio` CHARACTER SET utf8 COLLATE utf8_general_ci;
 use `netradio`;
 
 CREATE TABLE IF NOT EXISTS UTILISATEUR(

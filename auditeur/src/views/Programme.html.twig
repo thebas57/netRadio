@@ -1,0 +1,16 @@
+{% extends 'Template.html.twig' %}
+{% set root = base_url() %}
+{% block body %}
+    <link rel="stylesheet" href="{{ root }}/public/style/css/Programme.css">
+    {{ parent() }}
+
+    <div class="conteneur-programmes">
+    {% for programme in programmes %}
+        <div class="programme">
+            <h4>{{programme.nom}}</h4>
+            <p>{{programme.description}}</p>
+            <a class="btn btn-outline-info" href="{{ root }}/emissions/{{ programme.programme_id }}">Voir les émissions</a>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'Template.html.twig' %}
+
+{% set root = base_url() %}
+
+{% block head %}
+    {{ parent() }}
+    <script src="{{ root }}/public/js/Emission.js"></script>
+    <link rel="stylesheet" href="{{ root }}/public/style/css/Emission.css">
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <div id="conteneur-emission">
+        {% for emission in emissions %}
+            <div class="emission">
+                <h5>{{ emission.titre }}</h5>
+                <p>{{ emission.resume }}</p>
+                {% if (emission.creneau_id is not null) %}
+
+                    <p>Le {{ emission.date_creneau }} de {{ emission.heure_debut }} à {{ emission.heure_fin }}</p>
+                    {% if emission.fichier is not null %}
+                        <button class="btn btn-outline-info btn-ecoute">Ecouter</button>
+                        <div id="ecoute" style="display:none;">
+                            <audio class="audio-ecoute" src="{{ emission.fichier }}" controls></audio>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <p>Pas de créneau de prévu.</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
