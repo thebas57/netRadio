@@ -252,7 +252,7 @@ class Controller extends BaseController
                 throw new \Exception("Le nom d'utilisateur n'existe pas !");
             }
             if (!password_verify($password, $user->password)) {
-                throw new \Exception("Lee mot de passe ne correspond pas !");
+                throw new \Exception("Le mot de passe ne correspond pas !");
             }
 
             $_SESSION['user'] = ['id' => $user->utilisateur_id, 'droit' => $user->droit];
