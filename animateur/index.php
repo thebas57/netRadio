@@ -77,29 +77,29 @@ $app->get('/demain','\\animateur\\controllers\\Controller:voirCreneauDemain')->a
 
 // Ajouter un creneau
 $app->get('/addCreneau','\\animateur\\controllers\\Controller:afficherAddCreneau')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('addCreneau');
-$app->post('/addCreneau','\\animateur\\controllers\\Controller:addCreneau');
+$app->post('/addCreneau','\\animateur\\controllers\\Controller:addCreneau')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()));
 
 // Supprimer un creneau
-$app->get('/supprCreneau/{id}','\\animateur\\controllers\\Controller:supprCreneau');
+$app->get('/supprCreneau/{id}','\\animateur\\controllers\\Controller:supprCreneau')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()));
 
 // Accueil Programme
 $app->get('/programme','\\animateur\\controllers\\Controller:voirProgramme')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('programme');
 
 // Ajouter un programme
-$app->get('/addProgramme','\\animateur\\controllers\\Controller:afficherAddProgramme')->setName('addProgramme');
-$app->post('/addProgramme','\\animateur\\controllers\\Controller:addProgramme');
+$app->get('/addProgramme','\\animateur\\controllers\\Controller:afficherAddProgramme')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('addProgramme');
+$app->post('/addProgramme','\\animateur\\controllers\\Controller:addProgramme')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()));
 
 // Supprimer un pprogramme
-$app->get('/supprProgramme/{id}','\\animateur\\controllers\\Controller:supprProgramme');
+$app->get('/supprProgramme/{id}','\\animateur\\controllers\\Controller:supprProgramme')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()));
 
 // Accueil Actualité
 $app->get('/actualite','\\animateur\\controllers\\Controller:voirActualite')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('actualite');
 
 $app->get('/ajoutStaff','\\animateur\\controllers\\Controller:afficherAjoutStaff')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()));
-$app->post('/ajoutStaff','\\animateur\\controllers\\Controller:ajoutStaff');
+$app->post('/ajoutStaff','\\animateur\\controllers\\Controller:ajoutStaff')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()));
 
 $app->get('/listeUsers','\\animateur\\controllers\\Controller:afficherListeUsers')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()));
-$app->get('/supprUser/{id}','\\animateur\\controllers\\Controller:supprUser');
+$app->get('/supprUser/{id}','\\animateur\\controllers\\Controller:supprUser')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()));
 
 // Accueil Emission
 $app->get('/emission','\\animateur\\controllers\\Controller:voirEmission')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('emission');
@@ -108,20 +108,23 @@ $app->get('/emission','\\animateur\\controllers\\Controller:voirEmission')->add(
 
 //page accueil animateur
 
-$app->get("/animateur", "\\animateur\\controllers\\AnimateurController:accueil")->setName("accueilAnimateur");
-$app->get("/animateur/animerProgramme/{id}", "\\animateur\\controllers\\AnimateurController:emissionsAAnimer");
-$app->get("/animateur/animerEmission/{id}", "\\animateur\\controllers\\AnimateurController:animerEmission");
+$app->get("/animateur", "\\animateur\\controllers\\AnimateurController:accueil")->setName("AccueilAnimateur")->add(new \animateur\middlewares\EstConnectAnimateur($app->getContainer()))->setName("AccueilAnimateur");
+$app->get("/animateur/animerProgramme/{id}", "\\animateur\\controllers\\AnimateurController:emissionsAAnimer")->add(new \animateur\middlewares\EstConnectAnimateur($app->getContainer()));
+$app->get("/animateur/animerEmission/{id}", "\\animateur\\controllers\\AnimateurController:animerEmission")->add(new \animateur\middlewares\EstConnectAnimateur($app->getContainer()));
+$app->post("/animateur/importerEmission", "\\animateur\\controllers\\AnimateurController:importerEmission")->add(new \animateur\middlewares\EstConnectAnimateur($app->getContainer()));
+
+$app->post("/emission/receiveAudio", "\\animateur\\controllers\\AnimateurController:receiveAudio")->add(new \animateur\middlewares\EstConnectAnimateur($app->getContainer()));
 
 // Ajouter une émssion
-$app->get('/addEmission','\\animateur\\controllers\\Controller:afficherAddEmission')->setName('addEmission');
-$app->post('/addEmission','\\animateur\\controllers\\Controller:addEmission');
+$app->get('/addEmission','\\animateur\\controllers\\Controller:afficherAddEmission')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('addEmission');
+$app->post('/addEmission','\\animateur\\controllers\\Controller:addEmission')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()));
 
-// Supprimer une emission
-$app->get('/supprEmission{id}','\\animateur\\controllers\\Controller:supprEmission')->setName('supprEmission');
+// Supprimer un emission
+$app->get('/supprEmission/{id}','\\animateur\\controllers\\Controller:supprEmission')->setName('supprEmission')->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()));
 
 // Modifier un créneau
-$app->get('/modifCreneau{id}', "\\animateur\\controllers\\Controller:afficherModifCreneau")->setName('modifCreneau');
-$app->post('/modifCreneau{id}', "\\animateur\\controllers\\Controller:modifCreneau");
+$app->get('/modifCreneau{id}', "\\animateur\\controllers\\Controller:afficherModifCreneau")->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()))->setName('modifCreneau');
+$app->post('/modifCreneau{id}', "\\animateur\\controllers\\Controller:modifCreneau")->add(new \animateur\middlewares\EstConnectGestionnaire($app->getContainer()));
 
 // Modifier un programme
 $app->get('/modifProgramme{id}', "\\animateur\\controllers\\Controller:afficherModifProgramme")->setName('modifProgramme');
@@ -130,10 +133,10 @@ $app->post('/modifProgramme{id}', "\\animateur\\controllers\\Controller:modifPro
 // Modifier une emission
 $app->get('/modifEmission{id}', "\\animateur\\controllers\\Controller:afficherModifEmission")->setName('modifEmission');
 $app->post('/modifEmission{id}', "\\animateur\\controllers\\Controller:modifEmission");
-
 $app->post('/addSongEmission','\\animateur\\controllers\\AnimateurController:addSongEmission');
 
 /////////////
 // RUN     //
 /////////////
 $app->run();
+
