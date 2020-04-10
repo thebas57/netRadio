@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Emission extends \Illuminate\Database\Eloquent\Model
 {
 
-    protected $table = 'EMISSION';
+    protected $table = 'emission';
     protected $primaryKey = 'emission_id';
     public $timestamps = false;
     use SoftDeletes;
