@@ -41,8 +41,9 @@ class Controller extends BaseController
 
         $programmeJt = Programme::where('programme_id', 2)->first();
         
+        $programmeMusique = Programme::where('programme_id', 5)->first();
 
-        return $this->render($response, 'Accueil.html.twig', ['emissionRap' => $emissionRap, 'programmeRap' => $programmeRap, 'creneauRap' => $creneauRap, 'emissionInfo' => $emissionInfo, 'programmeInfo' => $programmeInfo, 'creneauInfo' => $creneauInfo, 'emissionCuisine' => $emissionCuisine, 'programmeCuisine' => $programmeCuisine, 'creneauCuisine' => $creneauCuisine, 'programmeBeaute' => $programmeBeauté, 'programmeJt' => $programmeJt]);
+        return $this->render($response, 'Accueil.html.twig', ['emissionRap' => $emissionRap, 'programmeRap' => $programmeRap, 'creneauRap' => $creneauRap, 'emissionInfo' => $emissionInfo, 'programmeInfo' => $programmeInfo, 'creneauInfo' => $creneauInfo, 'emissionCuisine' => $emissionCuisine, 'programmeCuisine' => $programmeCuisine, 'creneauCuisine' => $creneauCuisine, 'programmeBeaute' => $programmeBeauté, 'programmeJt' => $programmeJt, 'programmeMusique' => $programmeMusique]);
     } //End of function afficherAccueil
 
     public function afficherEmissions($request, $response, $args)
@@ -199,9 +200,11 @@ class Controller extends BaseController
         $email = (isset($_POST['email'])) ? $_POST['email'] : null;
         $login = (isset($_POST['login'])) ? $_POST['login'] : null;
         $password = (isset($_POST['password'])) ? $_POST['password'] : null;
+        $password2 = (isset($_POST['password2'])) ? $_POST['password2'] : null;
+
 
         try {
-            if (!isset($email) || !isset($password) || !isset($login)) {
+            if (!isset($email) || !isset($password) || !isset($login) || empty($email) || empty($login) || empty($password) || empty($password2)) {
                 throw new \Exception("Il manque une donnée");
             }
             if (!empty(Utilisateur::where("identifiant", $login)->orWhere("email", $email)->first())) {
@@ -249,7 +252,7 @@ class Controller extends BaseController
                 throw new \Exception("Le nom d'utilisateur n'existe pas !");
             }
             if (!password_verify($password, $user->password)) {
-                throw new \Exception("Les mots de passe ne correspondent pas !");
+                throw new \Exception("Le mot de passe ne correspond pas !");
             }
 
             $_SESSION['user'] = ['id' => $user->utilisateur_id, 'droit' => $user->droit];

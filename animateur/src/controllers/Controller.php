@@ -337,8 +337,8 @@ class Controller extends BaseController
     {
         $id = Emission::find(intVal($args['id']));
         $programmes = Programme::all();
-        $utilisateurs = Utilisateur::all();
-        return $this->render($response, 'ModifEmission.html.twig', ['emission' => $id, 'programmes' => $programmes, 'utilisateurs' => $utilisateurs]);
+        $anim = Utilisateur::where('droit', 2)->get();
+        return $this->render($response, 'ModifEmission.html.twig', ['emission' => $id, 'programmes' => $programmes, 'utilisateurs' => $anim]);
     } //End of function afficherModifCreneau
 
     /**
