@@ -51,7 +51,9 @@ body {
   background-image:url('https://www.photohdx.com/images/2016/03/old-yellow-vintage-music-notes-background.jpg');
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
   background-size: cover;
   position: relative;
+  height: 100%;
   width:100%;
 }
