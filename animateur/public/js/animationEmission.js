@@ -1,5 +1,7 @@
 $(document).ready(() => {
 
+    $("#emissionEnregistree").hide();
+
     $("#emissionAudacity").change(() => {
         if($("#emissionAudacity").get(0).files.length > 0)
             $("#validerImport").prop("disabled", false);
@@ -176,11 +178,15 @@ $(document).ready(() => {
                     lecteur.onended = async function () {
                         let res = await ajouterMusique(id);
                         console.log("envoyé : ", res);
-                        recorder.start();
-                        $("#onAir h3").addClass("red");
-                        $("#finEmission").show();
-                        $("#lancerEnregistrement").hide();
-                        $("#finEmission").prop("disabled", false);
+                        $("#emissionEnregistree").show();
+                        $("#finEmission").hide();
+                        $("#retourHome").show();
+
+                        // recorder.start();
+                        // $("#onAir h3").addClass("red");
+                        // $("#finEmission").show();
+                        // $("#lancerEnregistrement").hide();
+                        // $("#finEmission").prop("disabled", false);
                     };
                 });
 
@@ -200,6 +206,7 @@ $(document).ready(() => {
                     $("#onAir h3").addClass("red");
                     $("#finEmission").show();
                     $("#lancerEnregistrement").hide();
+                    $("#retourHome").hide();
                 });
 
                 $("#finEmission").click(async () => {
@@ -213,8 +220,6 @@ $(document).ready(() => {
                     $("#lancerEnregistrement").show();
 
                     console.log("fin emission");
-                    window.location.href = route + "/animateur";
-
 
                 });
 

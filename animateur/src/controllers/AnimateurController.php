@@ -328,7 +328,7 @@ class AnimateurController extends BaseController
            die($e->getMessage());
        }
 
-       return $this->redirect($response, "AccueilAnimateur");
+       return $this->redirect($response, "accueilAnimateur");
     }
 }
 

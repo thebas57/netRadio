@@ -108,7 +108,7 @@ $app->get('/emission','\\animateur\\controllers\\Controller:voirEmission')->add(
 
 //page accueil animateur
 
-$app->get("/animateur", "\\animateur\\controllers\\AnimateurController:accueil")->setName("AccueilAnimateur")->add(new \animateur\middlewares\EstConnectAnimateur($app->getContainer()))->setName("AccueilAnimateur");
+$app->get("/animateur", "\\animateur\\controllers\\AnimateurController:accueil")->setName("AccueilAnimateur")->add(new \animateur\middlewares\EstConnectAnimateur($app->getContainer()))->setName("accueilAnimateur");
 $app->get("/animateur/animerProgramme/{id}", "\\animateur\\controllers\\AnimateurController:emissionsAAnimer")->add(new \animateur\middlewares\EstConnectAnimateur($app->getContainer()));
 $app->get("/animateur/animerEmission/{id}", "\\animateur\\controllers\\AnimateurController:animerEmission")->add(new \animateur\middlewares\EstConnectAnimateur($app->getContainer()));
 $app->post("/animateur/importerEmission", "\\animateur\\controllers\\AnimateurController:importerEmission")->add(new \animateur\middlewares\EstConnectAnimateur($app->getContainer()));

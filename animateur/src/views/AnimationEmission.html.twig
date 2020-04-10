@@ -24,6 +24,8 @@
         <div id="actions">
             <button id="lancerEnregistrement" class="btn btn-info btn-block"><i class="fas fa-microphone-alt">&emsp;</i>Lancer Enregistrement</button>
             <button id="finEmission" class="btn btn-info btn-block"><i class="fas fa-stop-circle">&emsp;</i>Terminer l'émisson</button>
+            <h2 id="emissionEnregistree" style="color: white;">Emission enregistrée</h2>
+            <br><a id="retourHome" class="btn btn-success btn-block" href="{{ base_url() }}/animateur"><i class="fas fa-home">&emsp;</i>Retour</a>
         </div>
 
         <div id="musiques">
@@ -42,7 +44,7 @@
 
     <footer id="#footer">
         <div id="importAudacity">
-            <h5>Importer une émission (format ogg)</h5>
+            <h5 style="color: white">Importer une émission (format ogg)</h5>
             <form enctype="multipart/form-data" action="{{ base_url() }}/animateur/importerEmission" method="post">
                 <input type="hidden" name="id" id="id" value="{{ emission_id }}">
                 <input type="file" name="emissionAudacity" id="emissionAudacity" accept="audio/ogg">
