@@ -3,6 +3,7 @@
 {% block head %}
     {{ parent() }}
     <script src="{{ root }}/public/js/MonCompte.js"></script>
+    <link rel="stylesheet" href="{{ root }}/public/style/css/MonCompte.css">
     <input type="hidden" name="root" id="root" value="{{ root }}">
 {% endblock %}
 
@@ -13,16 +14,18 @@
 
         <div id="modification">
             <div id="loginDiv" class="">
+                <label for="login">Nouvel identifiant :</label>
                 <input type="text" class="form-control" name="login" placeholder="{{ user.identifiant }}"
                        id="login"><br>
-                <button class="btn btn-outline-primary" id="modif-login">Modifier</button>
+                <button class="btn btn-success" id="modif-login">Modifier</button>
             </div>
             <br><br>
             <div id="passwordDiv" class="">
+                <label for="password">Nouveau mot de passe :</label>
                 <input type="password" name="password" class="form-control" placeholder="" value="" id="password">
                 <input type="password" name="passwordVerif" class="form-control" placeholder="" value=""
                        style="margin-top:2vh;display: none;" id="passwordVerif"><br>
-                <button class="btn btn-outline-primary" id="modif-password">Modifier</button>
+                <button class="btn btn-success" id="modif-password">Modifier</button>
             </div>
 
         </div>
