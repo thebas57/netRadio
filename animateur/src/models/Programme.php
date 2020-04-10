@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Programme extends \Illuminate\Database\Eloquent\Model
 {
 
-    protected $table = 'PROGRAMME';
+    protected $table = 'programme';
     protected $primaryKey = 'programme_id';
     public $timestamps = false;
     use SoftDeletes;

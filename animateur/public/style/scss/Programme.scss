@@ -1,7 +1,7 @@
 .containerP {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 12em 12em 12em 12em;
+  grid-template-rows: 14em 14em 14em 14em;
   grid-row-gap: 10px;
   gap: 7px;
   width: 80%;
@@ -10,7 +10,7 @@
 }
 
 .programme {
-  height: 11em;
+  height: 14em;
   width: auto;
   border : 2px solid #343a40;
   padding-left: 10px;

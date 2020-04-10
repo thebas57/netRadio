@@ -744,8 +744,8 @@ class Controller extends BaseController
 
             return json_encode(["error" => "Modification du login reussie ! ", "status" => 200]);
         } else {
-            if (password_verify($password, $user->password)) {
-              return json_encode(["error" => "Les mots de passe sont identiques !", "status" => 400]);
+            if (!password_verify($password, $user->password)) {
+              return json_encode(["error" => "Les mots de passe ne sont pas identiques !", "status" => 400]);
             }
             $user->password = password_hash($password,PASSWORD_DEFAULT);
             $user->save();
