@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Creneau extends \Illuminate\Database\Eloquent\Model
 {
 
-    protected $table = 'CRENEAU';
+    protected $table = 'creneau';
     protected $primaryKey = 'creneau_id';
     public $timestamps = false;
     use SoftDeletes;

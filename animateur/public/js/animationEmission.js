@@ -213,6 +213,8 @@ $(document).ready(() => {
                     $("#lancerEnregistrement").show();
 
                     console.log("fin emission");
+                    window.location.href = route + "/animateur";
+
 
                 });
 
