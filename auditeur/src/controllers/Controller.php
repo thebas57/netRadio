@@ -41,8 +41,9 @@ class Controller extends BaseController
 
         $programmeJt = Programme::where('programme_id', 2)->first();
         
+        $programmeMusique = Programme::where('programme_id', 5)->first();
 
-        return $this->render($response, 'Accueil.html.twig', ['emissionRap' => $emissionRap, 'programmeRap' => $programmeRap, 'creneauRap' => $creneauRap, 'emissionInfo' => $emissionInfo, 'programmeInfo' => $programmeInfo, 'creneauInfo' => $creneauInfo, 'emissionCuisine' => $emissionCuisine, 'programmeCuisine' => $programmeCuisine, 'creneauCuisine' => $creneauCuisine, 'programmeBeaute' => $programmeBeauté, 'programmeJt' => $programmeJt]);
+        return $this->render($response, 'Accueil.html.twig', ['emissionRap' => $emissionRap, 'programmeRap' => $programmeRap, 'creneauRap' => $creneauRap, 'emissionInfo' => $emissionInfo, 'programmeInfo' => $programmeInfo, 'creneauInfo' => $creneauInfo, 'emissionCuisine' => $emissionCuisine, 'programmeCuisine' => $programmeCuisine, 'creneauCuisine' => $creneauCuisine, 'programmeBeaute' => $programmeBeauté, 'programmeJt' => $programmeJt, 'programmeMusique' => $programmeMusique]);
     } //End of function afficherAccueil
 
     public function afficherEmissions($request, $response, $args)
